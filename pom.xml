@@ -57,6 +57,9 @@
 		<!-- fastjson -->
 		<fastjson-version>1.2.7</fastjson-version>
 		
+		<!-- commons-util -->
+		<commons-util-version>0.0.1</commons-util-version>
+		
 		<!-- junit -->
 		<junit-version>4.11</junit-version>
 	</properties>
@@ -224,6 +227,7 @@
 			<version>${commons-pool-version}</version>
 		</dependency>
 		
+		<!-- Netty -->
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId> <!-- Use 'netty-all' for 4.0 or above -->
@@ -231,6 +235,14 @@
 			<scope>compile</scope>
 		</dependency>
 		
+		<!-- commons-util(自己的) -->
+		<dependency>
+			<groupId>com.eboji</groupId>
+			<artifactId>commons-util</artifactId>
+			<version>${commons-util-version}</version>
+		</dependency>
+		
+		<!-- fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>

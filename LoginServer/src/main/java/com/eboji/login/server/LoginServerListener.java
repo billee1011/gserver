@@ -13,8 +13,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eboji.login.codec.LoginDecoder;
-import com.eboji.login.codec.LoginEncoder;
+import com.eboji.commons.util.memcached.MemCacheClient;
+import com.eboji.login.codec.MsgDecoder;
+import com.eboji.login.codec.MsgEncoder;
 import com.eboji.login.handler.LoginServerHandler;
 
 public class LoginServerListener {
@@ -22,8 +23,12 @@ public class LoginServerListener {
 	
 	private int port;
 	
-	public LoginServerListener(int port) throws Exception {
+	private MemCacheClient memCacheClient;
+	
+	public LoginServerListener(int port, MemCacheClient memCacheClient) throws Exception {
 		this.port = port;
+		this.memCacheClient = memCacheClient;
+		
 		bind();
 	}
 	
@@ -43,9 +48,9 @@ public class LoginServerListener {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
 					ChannelPipeline pipe = ch.pipeline();
-					pipe.addLast(new LoginEncoder());
-					pipe.addLast(new LoginDecoder());
-					pipe.addLast(new LoginServerHandler());
+					pipe.addLast(new MsgEncoder());
+					pipe.addLast(new MsgDecoder());
+					pipe.addLast(new LoginServerHandler(memCacheClient));
 				}
 			});
 			

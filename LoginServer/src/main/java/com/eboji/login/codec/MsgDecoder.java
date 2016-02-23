@@ -1,4 +1,4 @@
-package com.eboji.agent.codec;
+package com.eboji.login.codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,7 +16,7 @@ import com.eboji.model.constant.Constant;
  * @author zhoucl 2016-02-21
  *
  */
-public class LoginDecoder extends ByteToMessageDecoder {
+public class MsgDecoder extends ByteToMessageDecoder {
 	private final int HEAD_LENGTH = 4;
 	
 	@Override

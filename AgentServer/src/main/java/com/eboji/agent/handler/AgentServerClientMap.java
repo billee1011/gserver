@@ -6,28 +6,43 @@ import io.netty.channel.socket.SocketChannel;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class AgentServerClientMap {
-	private static Map<String, SocketChannel> clientMap = new ConcurrentHashMap<String, SocketChannel>();
+	private static final Logger logger = LoggerFactory.getLogger(AgentServerClientMap.class);
 	
-	public static void put(String clientId, SocketChannel socketChannel) {
-		clientMap.put(clientId, socketChannel);
+	private static Map<String, SocketChannel> userMap = new ConcurrentHashMap<String, SocketChannel>();
+	
+	protected static void println() {
+		for(Map.Entry<String, SocketChannel> entry : userMap.entrySet()) {
+			logger.warn("userID = " + entry.getKey());
+		}
 	}
 	
-	public static Channel get(String clientId) {
-		return clientMap.get(clientId);
+	public static Channel get(String userId) {
+		return userMap.get(userId);
+	}
+	
+	public static void put(String userId, SocketChannel socketChannel) {
+		userMap.put(userId, socketChannel);
+		
+		println();
+	}
+	
+	public static void remove(String userId) {
+		userMap.remove(userId);
 	}
 	
 	public static void remove(SocketChannel socketChannel) {
-		for(Map.Entry<String, SocketChannel> entry : clientMap.entrySet()) {
+		for(Map.Entry<String, SocketChannel> entry : userMap.entrySet()) {
 			if(entry.getValue() == socketChannel) {
-				clientMap.remove(entry.getKey());
+				userMap.remove(entry.getKey());
 			}
 		}
 	}
-
-	public static Map<String, SocketChannel> getClientMap() {
-		return clientMap;
+	
+	public static int getUserCount() {
+		return userMap.size();
 	}
-	
-	
 }

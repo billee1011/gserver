@@ -1,4 +1,4 @@
-package com.eboji.agent.transfer.connection;
+package com.eboji.center.transfer.tcp.connection;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -14,18 +14,18 @@ import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eboji.agent.codec.LoginDecoder;
-import com.eboji.agent.codec.LoginEncoder;
-import com.eboji.agent.transfer.handler.LoginServerClientHandler;
+import com.eboji.center.codec.AgentDecoder;
+import com.eboji.center.codec.AgentEncoder;
+import com.eboji.center.transfer.tcp.handler.RegClientHandler;
 
-public class LoginServerClientConnection {
-	private static final Logger logger = LoggerFactory.getLogger(LoginServerClientConnection.class);
+public class AgentRegClientConnection {
+	private static final Logger logger = LoggerFactory.getLogger(AgentRegClientConnection.class);
 	
 	private int port;
 	private String host;
 	private SocketChannel socketChannel;
 
-	public LoginServerClientConnection(int port, String host) {
+	public AgentRegClientConnection(int port, String host) {
 		this.port = port;
 		this.host = host;
 		
@@ -45,9 +45,9 @@ public class LoginServerClientConnection {
 				protected void initChannel(SocketChannel ch) throws Exception {
 					ChannelPipeline pipe = ch.pipeline();
 					pipe.addLast(new IdleStateHandler(20, 10, 0));
-					pipe.addLast(new LoginEncoder());
-					pipe.addLast(new LoginDecoder());
-					pipe.addLast(new LoginServerClientHandler());
+					pipe.addLast(new AgentEncoder());
+					pipe.addLast(new AgentDecoder());
+					pipe.addLast(new RegClientHandler());
 				}
 			});
 			

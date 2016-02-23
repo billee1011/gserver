@@ -4,17 +4,31 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.eboji.commons.util.memcached.MemCacheClient;
+import com.eboji.login.bootstrap.Daemon;
+import com.eboji.login.server.transfer.tcp.ServerClientFactory;
+import com.eboji.login.server.transfer.tcp.ServerClientTransfer;
 import com.eboji.model.common.MsgType;
+import com.eboji.model.constant.Constant;
 import com.eboji.model.message.BaseMsg;
 import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.LoginMsg;
 import com.eboji.model.message.LoginResMsg;
+import com.eboji.model.message.RegisterMsg;
 
 public class LoginServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(LoginServerHandler.class);
+	
+	protected MemCacheClient memCacheClient = null;
+	
+	public LoginServerHandler(MemCacheClient memCacheClient) {
+		this.memCacheClient = memCacheClient;
+	}
 	
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
@@ -30,10 +44,8 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				LoginResMsg loginResMsg = new LoginResMsg();
 				loginResMsg.setCid(loginMsg.getCid());
 				if("robin".equals(loginMsg.getUsername()) && "robin".equals(loginMsg.getPassword())) {
-					LoginServerClientMap.put(loginMsg.getCid(), (SocketChannel)ctx.channel());
-					
 					logger.info("client " + loginMsg.getCid() + " Login SUCCESS!");
-					
+					loginResMsg.setUserId(String.valueOf(new Random(System.currentTimeMillis()).nextInt(9999)));
 					loginResMsg.setStatus("OK");
 				} else {
 					loginResMsg.setStatus("FAIL");
@@ -53,6 +65,16 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				connResMsg.setStatus("OK");
 				
 				ctx.channel().writeAndFlush(connResMsg);
+			} else if(MsgType.REG.equals(msg.getT())) { 
+				RegisterMsg regMsg = (RegisterMsg)msg;
+				
+				String remote = ctx.channel().remoteAddress().toString();
+				ServerClientFactory.initConnection(remote.substring(1, remote.indexOf(Constant.STR_COLON)), 
+						regMsg.getPort(), Constant.SRV_CENTER);
+				
+				regMsg.setCport(Daemon.getInstance().getPort());
+				regMsg.setServerId(Constant.SRV_LOGIN);
+				ServerClientTransfer.write(Constant.SRV_CENTER, regMsg);
 			} else {
 				if(LoginServerClientMap.get(msg.getCid()) == null) {
 					LoginMsg loginMsg = new LoginMsg();

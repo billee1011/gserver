@@ -3,6 +3,7 @@ package com.eboji.agent.transfer.handler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
@@ -18,8 +19,8 @@ import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.LoginResMsg;
 import com.eboji.model.message.PingMsg;
 
-public class LoginServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
-	private static final Logger logger = LoggerFactory.getLogger(LoginServerClientHandler.class);
+public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
+	private static final Logger logger = LoggerFactory.getLogger(ServerClientHandler.class);
 	
 	//利用写空闲发送心跳检测消息
 	@Override
@@ -66,6 +67,10 @@ public class LoginServerClientHandler extends SimpleChannelInboundHandler<BaseMs
 			LoginResMsg loginRes = (LoginResMsg)msg;
 			Channel channel = AgentServerClientMap.get(loginRes.getCid());
 			if(loginRes.getStatus().equals("OK")) {
+				AgentServerClientMap.remove(loginRes.getCid());
+				AgentServerClientMap.put(loginRes.getUserId(), (SocketChannel)channel);
+				
+				logger.info("用户[" + loginRes.getUserId() +"]登陆成功!"); 
 				channel.writeAndFlush("{\"status\": \"Login SUCCESS\"}");
 			} else {
 				channel.writeAndFlush("{\"status\": \"Login FAILED\"}");

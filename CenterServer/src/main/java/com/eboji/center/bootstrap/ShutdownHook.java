@@ -11,11 +11,11 @@ public class ShutdownHook {
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			@Override
 			public void run() {
-				logger.info("Server is stopping...");
+				logger.info("CenterServer is stopping...");
 				
 				dofinish();
 				
-				logger.info("Server has been stopped.");
+				logger.info("CenterServer has been stopped.");
 			}
 		});
 	}

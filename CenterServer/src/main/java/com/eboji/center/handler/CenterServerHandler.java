@@ -7,11 +7,13 @@ import io.netty.channel.socket.SocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.eboji.center.transfer.tcp.RegClientTransfer;
+import com.eboji.model.common.MsgType;
 import com.eboji.model.constant.Constant;
+import com.eboji.model.message.BaseMsg;
+import com.eboji.model.message.RegisterMsg;
 
-public class CenterServerHandler extends SimpleChannelInboundHandler<String> {
+public class CenterServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(CenterServerHandler.class);
 	
 	@Override
@@ -20,22 +22,30 @@ public class CenterServerHandler extends SimpleChannelInboundHandler<String> {
 	}
 	
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, String msg)
+	protected void channelRead0(ChannelHandlerContext ctx, BaseMsg msg)
 			throws Exception {
-		//读取请求的类型直接转发至各特定的服务进行处理
-		//1. msg解析为JSON对象
 		try {
-			JSONObject obj = JSON.parseObject(msg);
-			String type = obj.getString(Constant.KEY_TYPE);
-			String gid = obj.getString(Constant.KEY_GID);
-			String cid = obj.getString(Constant.KEY_CID);
-			
-			//根据type,gid进行转发
-			logger.info("type = " + type);
-			logger.info("gid = " + gid);
-			logger.info("cid = " + cid);
-			
-			CenterServerClientMap.put(cid, (SocketChannel)ctx.channel());
+			MsgType type = msg.getT();
+			switch (type) {
+			case PING:
+				logger.info("receive ping from client[" + ctx.channel().remoteAddress() + "]");
+				
+				break;
+			case REG:
+				RegisterMsg regMsg = (RegisterMsg)msg;
+				
+				String remote = ctx.channel().remoteAddress().toString();
+				String remoteIP = remote.substring(1, remote.indexOf(Constant.STR_COLON));
+				String address = remoteIP + Constant.STR_COLON + regMsg.getCport();
+				
+				logger.info(regMsg.getServerId() + "[" + remote + "]向中心服务注册成功!");
+				
+				RegClientTransfer.getSocketChannelMap().get(address).close();
+				break;
+			default:
+				
+				break;
+			}
 		} catch (Exception e) {
 			logger.error("request param is not json object, request msg is:\n" + msg);
 		}

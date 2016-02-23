@@ -10,7 +10,17 @@ public class LoginResMsg extends BaseMsg {
 		setT(MsgType.LOGINRES);
 	}
 	
+	private String userId;
+	
 	private String status;
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public String getStatus() {
 		return status;

@@ -83,7 +83,7 @@ public class CenterServerBootstrap {
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Agent Server started fail!", e);
+			logger.error("Center Server started fail!", e);
 			System.exit(-1);
 		}
 	}

@@ -47,6 +47,9 @@ public enum MsgType {
 	CONN("ConnMsg"),						//服务之间建立TCP请求消息
 	CONNRES("ConnResMsg"),					//服务之间建立TCP请求响应消息
 	
+	REG("RegisterMsg"),						//各服务向中心服务注册请求消息
+	REGRES("RegisterResMsg"),				//中心服务相应注册请求的消息
+	
 	ASK("AskMsg"),
 	 
 	REPLY2SERVER("ReplyToServerMsg"),

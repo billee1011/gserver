@@ -2,8 +2,11 @@ package com.eboji.login.util;
 
 import java.util.Properties;
 
+import com.eboji.commons.util.memcached.MemCacheClient;
+
 public class ConfigUtil {
 	private static Properties props = null;
+	private static MemCacheClient client = null;
 	
 	protected static Properties getProps() {
 		return props;
@@ -19,5 +22,13 @@ public class ConfigUtil {
 		} else {
 			return null;
 		}
+	}
+
+	public static MemCacheClient getClient() {
+		return client;
+	}
+
+	public static void setClient(MemCacheClient client) {
+		ConfigUtil.client = client;
 	}
 }

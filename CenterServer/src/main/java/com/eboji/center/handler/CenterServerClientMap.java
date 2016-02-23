@@ -24,10 +24,4 @@ public class CenterServerClientMap {
 			}
 		}
 	}
-
-	public static Map<String, SocketChannel> getClientMap() {
-		return clientMap;
-	}
-	
-	
 }

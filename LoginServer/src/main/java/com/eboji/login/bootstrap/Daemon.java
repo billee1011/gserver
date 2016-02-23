@@ -7,6 +7,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.eboji.login.bootstrap.config.SpringConfiguration;
 import com.eboji.login.server.LoginServerListener;
+import com.eboji.login.util.ConfigUtil;
 
 public class Daemon {
 	private static final Logger logger = LoggerFactory.getLogger(Daemon.class);
@@ -29,7 +30,7 @@ public class Daemon {
 	
 	public void init() {
 		logger.info("LoginServer initialize context is starting.");
-		//initContext();
+		initContext();
 	}
 	
 	public static Daemon getInstance() {
@@ -42,7 +43,7 @@ public class Daemon {
 	public void start() throws Exception {
 		logger.info("LoginServer is starting.");
 		
-		new LoginServerListener(getPort());
+		new LoginServerListener(getPort(), ConfigUtil.getClient());
 	}
 
 	/**

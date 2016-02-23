@@ -1,4 +1,4 @@
-package com.eboji.login.codec;
+package com.eboji.center.codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -6,17 +6,12 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.eboji.model.common.MsgType;
-import com.eboji.model.constant.Constant;
-
 /**
- * LoginServer的自定义解码类
- * @author zhoucl 2016-02-21
+ * AgentServer的自定义解码类
+ * @author zhoucl 2016-02-19
  *
  */
-public class LoginDecoder extends ByteToMessageDecoder {
+public class AgentDecoder extends ByteToMessageDecoder {
 	private final int HEAD_LENGTH = 4;
 	
 	@Override
@@ -43,11 +38,7 @@ public class LoginDecoder extends ByteToMessageDecoder {
 		
 		//将byte数据转化为我们需要的对象。序列化
 		String sbody = new String(body, "UTF-8");
-		JSONObject obj = JSON.parseObject(sbody);
-		String clazzName = MsgType.valueOf(obj.getString(Constant.KEY_TYPE)).getClazz();
-		Class<?> clazz = Class.forName(clazzName).newInstance().getClass();
-		Object o = JSON.toJavaObject(obj, clazz);
-		out.add(o);
+		out.add(sbody);
 		
 	}
 

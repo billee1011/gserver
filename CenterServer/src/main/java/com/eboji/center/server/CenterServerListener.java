@@ -13,9 +13,10 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eboji.center.codec.CenterDecoder;
-import com.eboji.center.codec.CenterEncoder;
+import com.eboji.center.codec.MsgDecoder;
+import com.eboji.center.codec.MsgEncoder;
 import com.eboji.center.handler.CenterServerHandler;
+import com.eboji.center.util.RegisterServiceUtil;
 
 public class CenterServerListener {
 	private static final Logger logger = LoggerFactory.getLogger(CenterServerListener.class);
@@ -43,8 +44,8 @@ public class CenterServerListener {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
 					ChannelPipeline pipe = ch.pipeline();
-					pipe.addLast(new CenterEncoder());
-					pipe.addLast(new CenterDecoder());
+					pipe.addLast(new MsgEncoder());
+					pipe.addLast(new MsgDecoder());
 					pipe.addLast(new CenterServerHandler());
 				}
 			});
@@ -52,6 +53,8 @@ public class CenterServerListener {
 			ChannelFuture f = bootstrap.bind(port).sync();
 			if(f.isSuccess()) {
 				logger.info("Agent Server listened in port " + this.port + " started.");
+				
+				RegisterServiceUtil.registerService();
 			}
 			
 			f.channel().closeFuture().sync();

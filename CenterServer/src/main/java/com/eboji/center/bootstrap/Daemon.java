@@ -13,23 +13,23 @@ public class Daemon {
 	
 	private static final Daemon daemon = new Daemon();
 	
-	private int port = 9090;
+	private int port = 9091;
 	
 	private ApplicationContext context = null;
 
 	private Daemon() {
 	}
 	
+	public void init() {
+		logger.info("CenterServer initialize context is starting...");
+		initContext();
+	}
+	
 	protected void initContext() {
 		setContext(null);
 		setContext(new AnnotationConfigApplicationContext(SpringConfiguration.class));
 		
-		logger.info("AgentServer initialzed context.");
-	}
-	
-	public void init() {
-		logger.info("AgentServer initialize context is starting...");
-		initContext();
+		logger.info("CenterServer initialize context finished.");
 	}
 	
 	public static Daemon getInstance() {
@@ -37,7 +37,7 @@ public class Daemon {
 	}
 
 	/**
-	 * AgentServer启动
+	 * CenterServer启动
 	 */
 	public void start() throws Exception {
 		logger.info("AgentServer will be started...");
@@ -46,14 +46,14 @@ public class Daemon {
 	}
 
 	/**
-	 * AgentServer重新启动
+	 * CenterServer重新启动
 	 */
 	public void restart() {
 
 	}
 
 	/**
-	 * AgentServer停止
+	 * CenterServer停止
 	 */
 	public void stop() {
 		
