@@ -9,14 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.eboji.agent.bootstrap.Daemon;
-import com.eboji.agent.transfer.ServerClientFactory;
-import com.eboji.agent.transfer.ServerClientTransfer;
+import com.eboji.agent.transfer.facade.TransferFacade;
 import com.eboji.agent.util.RandomUtil;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.constant.Constant;
 import com.eboji.model.message.LoginMsg;
-import com.eboji.model.message.RegisterMsg;
 
 public class AgentServerHandler extends SimpleChannelInboundHandler<String> {
 	private static final Logger logger = LoggerFactory.getLogger(AgentServerHandler.class);
@@ -28,7 +25,7 @@ public class AgentServerHandler extends SimpleChannelInboundHandler<String> {
 	
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("--------------------");
+		System.out.println("channel active.");
 	}
 
 	@Override
@@ -57,17 +54,9 @@ public class AgentServerHandler extends SimpleChannelInboundHandler<String> {
 				AgentServerClientMap.put(uuid, (SocketChannel)ctx.channel());
 				
 				//将登陆信息转入登陆服务进行业务处理
-				ServerClientTransfer.write(Constant.SRV_LOGIN, loginMsg);
+				//ServerClientTransfer.write(loginMsg);
+				TransferFacade.facade(loginMsg);
 			} else if(MsgType.REG.equals(MsgType.valueOf(type))) {
-				RegisterMsg regMsg = JSONObject.toJavaObject(obj, RegisterMsg.class);
-				
-				String remote = ctx.channel().remoteAddress().toString();
-				ServerClientFactory.initConnection(remote.substring(1, remote.indexOf(Constant.STR_COLON)), 
-						regMsg.getPort(), Constant.SRV_CENTER);
-				
-				regMsg.setCport(Daemon.getInstance().getPort());
-				regMsg.setServerId(Constant.SRV_AGENT);
-				ServerClientTransfer.write(Constant.SRV_CENTER, regMsg);
 			}
 		} catch (Exception e) {
 			logger.error("request param is not json object, request msg is:\n" + msg);

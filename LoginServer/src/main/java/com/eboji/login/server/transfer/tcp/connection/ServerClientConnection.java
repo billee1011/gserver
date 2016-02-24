@@ -44,7 +44,7 @@ public class ServerClientConnection {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
 					ChannelPipeline pipe = ch.pipeline();
-					pipe.addLast(new IdleStateHandler(20, 10, 0));
+					pipe.addLast(new IdleStateHandler(30, 20, 0));
 					pipe.addLast(new MsgEncoder());
 					pipe.addLast(new MsgDecoder());
 					pipe.addLast(new ServerClientHandler());

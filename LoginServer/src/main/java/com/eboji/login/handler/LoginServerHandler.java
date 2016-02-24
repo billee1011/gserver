@@ -10,16 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.eboji.commons.util.memcached.MemCacheClient;
-import com.eboji.login.bootstrap.Daemon;
-import com.eboji.login.server.transfer.tcp.ServerClientFactory;
-import com.eboji.login.server.transfer.tcp.ServerClientTransfer;
 import com.eboji.model.common.MsgType;
-import com.eboji.model.constant.Constant;
 import com.eboji.model.message.BaseMsg;
 import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.LoginMsg;
 import com.eboji.model.message.LoginResMsg;
-import com.eboji.model.message.RegisterMsg;
 
 public class LoginServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(LoginServerHandler.class);
@@ -66,15 +61,7 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				
 				ctx.channel().writeAndFlush(connResMsg);
 			} else if(MsgType.REG.equals(msg.getT())) { 
-				RegisterMsg regMsg = (RegisterMsg)msg;
-				
-				String remote = ctx.channel().remoteAddress().toString();
-				ServerClientFactory.initConnection(remote.substring(1, remote.indexOf(Constant.STR_COLON)), 
-						regMsg.getPort(), Constant.SRV_CENTER);
-				
-				regMsg.setCport(Daemon.getInstance().getPort());
-				regMsg.setServerId(Constant.SRV_LOGIN);
-				ServerClientTransfer.write(Constant.SRV_CENTER, regMsg);
+				//TODO
 			} else {
 				if(LoginServerClientMap.get(msg.getCid()) == null) {
 					LoginMsg loginMsg = new LoginMsg();

@@ -11,7 +11,7 @@ import com.eboji.login.util.ConfigUtil;
 public class ServerInitializingBean implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		createMemCacheClient();
+		//createMemCacheClient();
 	}
 	
 	/**

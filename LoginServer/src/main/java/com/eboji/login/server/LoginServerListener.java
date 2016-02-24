@@ -17,6 +17,7 @@ import com.eboji.commons.util.memcached.MemCacheClient;
 import com.eboji.login.codec.MsgDecoder;
 import com.eboji.login.codec.MsgEncoder;
 import com.eboji.login.handler.LoginServerHandler;
+import com.eboji.login.util.RegisterCenterServerUtil;
 
 public class LoginServerListener {
 	private static final Logger logger = LoggerFactory.getLogger(LoginServerListener.class);
@@ -57,6 +58,8 @@ public class LoginServerListener {
 			ChannelFuture f = bootstrap.bind(port).sync();
 			if(f.isSuccess()) {
 				logger.info("Login Server listened in port " + this.port + " started.");
+				
+				RegisterCenterServerUtil.registerService();
 			}
 			
 			f.channel().closeFuture().sync();

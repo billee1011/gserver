@@ -13,7 +13,7 @@ public class Daemon {
 	
 	private static final Daemon daemon = new Daemon();
 	
-	private int port = 9091;
+	private int port = 9100;
 	
 	private ApplicationContext context = null;
 
@@ -40,7 +40,7 @@ public class Daemon {
 	 * CenterServer启动
 	 */
 	public void start() throws Exception {
-		logger.info("AgentServer will be started...");
+		logger.info("CenterServer will be started...");
 		
 		new CenterServerListener(getPort());
 	}

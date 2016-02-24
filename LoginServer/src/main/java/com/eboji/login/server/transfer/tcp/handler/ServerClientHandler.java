@@ -5,15 +5,20 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
+import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.eboji.login.server.transfer.tcp.ServerClientTransfer;
 import com.eboji.login.util.ConfigUtil;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.message.BaseMsg;
 import com.eboji.model.message.ConnMsg;
 import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.PingMsg;
+import com.eboji.model.message.RegisterResMsg;
 
 public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(ServerClientHandler.class);
@@ -42,7 +47,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		ConnMsg conn = new ConnMsg();
 		conn.setCid(ConfigUtil.getProps("serverid"));
 		
-		ctx.writeAndFlush(conn);
+		//ctx.writeAndFlush(conn);
 	}
 
 	@Override
@@ -57,10 +62,15 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		case CONNRES:
 			ConnResMsg connResMsg = (ConnResMsg)msg;
 			logger.info("receive server msg: " + connResMsg.getStatus());
+			
 			break;
+		case REGRES:		//中心注册响应
+			RegisterResMsg regResMsg = (RegisterResMsg)msg;
+			Map<Integer, Set<String>> sets = regResMsg.getServiceMap();
+			ServerClientTransfer.parse(sets);
 			
-		case LOGINRES:
-			
+			logger.info("接收中心注册信息成功!");
+			break;
 		default:
 			break;
 		}

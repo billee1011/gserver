@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.eboji.agent.codec.AgentDecoder;
 import com.eboji.agent.codec.AgentEncoder;
 import com.eboji.agent.handler.AgentServerHandler;
+import com.eboji.agent.util.RegisterCenterServerUtil;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -52,6 +53,8 @@ public class AgentServerListener {
 			ChannelFuture f = bootstrap.bind(port).sync();
 			if(f.isSuccess()) {
 				logger.info("Agent Server listened in port " + this.port + " started.");
+				
+				RegisterCenterServerUtil.registerService();
 			}
 			
 			f.channel().closeFuture().sync();

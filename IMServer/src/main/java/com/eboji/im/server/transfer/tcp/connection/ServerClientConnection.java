@@ -1,4 +1,4 @@
-package com.eboji.agent.transfer.connection;
+package com.eboji.im.server.transfer.tcp.connection;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -14,9 +14,9 @@ import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eboji.agent.codec.MsgDecoder;
-import com.eboji.agent.codec.MsgEncoder;
-import com.eboji.agent.transfer.handler.ServerClientHandler;
+import com.eboji.im.codec.MsgDecoder;
+import com.eboji.im.codec.MsgEncoder;
+import com.eboji.im.server.transfer.tcp.handler.ServerClientHandler;
 
 public class ServerClientConnection {
 	private static final Logger logger = LoggerFactory.getLogger(ServerClientConnection.class);
@@ -44,7 +44,7 @@ public class ServerClientConnection {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
 					ChannelPipeline pipe = ch.pipeline();
-					pipe.addLast(new IdleStateHandler(20, 10, 0));
+					pipe.addLast(new IdleStateHandler(30, 20, 0));
 					pipe.addLast(new MsgEncoder());
 					pipe.addLast(new MsgDecoder());
 					pipe.addLast(new ServerClientHandler());

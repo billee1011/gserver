@@ -1,4 +1,7 @@
-package com.eboji.agent.transfer.handler;
+package com.eboji.agent.transfer.tcp.handler;
+
+import java.util.Map;
+import java.util.Set;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.eboji.agent.handler.AgentServerClientMap;
+import com.eboji.agent.transfer.tcp.ServerClientTransfer;
 import com.eboji.agent.util.ConfigUtil;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.message.BaseMsg;
@@ -18,6 +22,7 @@ import com.eboji.model.message.ConnMsg;
 import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.LoginResMsg;
 import com.eboji.model.message.PingMsg;
+import com.eboji.model.message.RegisterResMsg;
 
 public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(ServerClientHandler.class);
@@ -46,7 +51,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		ConnMsg conn = new ConnMsg();
 		conn.setCid(ConfigUtil.getProps("serverid"));
 		
-		ctx.writeAndFlush(conn);
+		//ctx.writeAndFlush(conn);
 	}
 
 	@Override
@@ -75,6 +80,15 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			} else {
 				channel.writeAndFlush("{\"status\": \"Login FAILED\"}");
 			}
+			break;
+			
+		case REGRES:		//中心注册响应
+			RegisterResMsg regResMsg = (RegisterResMsg)msg;
+			Map<Integer, Set<String>> sets = regResMsg.getServiceMap();
+			ServerClientTransfer.parse(sets);
+			
+			logger.info("接收中心注册信息成功!");
+			break;
 		default:
 			break;
 		}

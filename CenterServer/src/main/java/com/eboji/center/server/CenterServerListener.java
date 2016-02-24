@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import com.eboji.center.codec.MsgDecoder;
 import com.eboji.center.codec.MsgEncoder;
 import com.eboji.center.handler.CenterServerHandler;
-import com.eboji.center.util.RegisterServiceUtil;
 
 public class CenterServerListener {
 	private static final Logger logger = LoggerFactory.getLogger(CenterServerListener.class);
@@ -52,9 +51,9 @@ public class CenterServerListener {
 			
 			ChannelFuture f = bootstrap.bind(port).sync();
 			if(f.isSuccess()) {
-				logger.info("Agent Server listened in port " + this.port + " started.");
+				logger.info("Center Server listened in port " + this.port + " started.");
 				
-				RegisterServiceUtil.registerService();
+				//RegisterServiceUtil.registerService();
 			}
 			
 			f.channel().closeFuture().sync();
