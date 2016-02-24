@@ -20,14 +20,16 @@ public class AgentServerClientMap {
 		}
 	}
 	
+	public static void printCount() {
+		logger.info("=============CURRENT USER TOTOL: " + userMap.size());
+	}
+	
 	public static Channel get(String userId) {
 		return userMap.get(userId);
 	}
 	
 	public static void put(String userId, SocketChannel socketChannel) {
 		userMap.put(userId, socketChannel);
-		
-		println();
 	}
 	
 	public static void remove(String userId) {
