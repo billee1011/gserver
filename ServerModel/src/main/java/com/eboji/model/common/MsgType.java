@@ -15,40 +15,24 @@ public enum MsgType {
 	LOGOUT("LogoutMsg"),					//登出请求消息
 	LOGOUTRES("LogoutResMsg"),				//响应登出消息
 	
-	QNOTICE("QNoticeMsg"),					//查询系统通知消息
-	QNOTICERES("QNoticeMsg"),				//响应查询系统通知消息
-	
-	CROOM("CreateRoomMsg"),					//创建房间请求消息
-	CROOMRES("CreateRoomResMsg"),			//响应创建房间消息
-	
-	JOINGAME("JoinGameMsg"),				//加入房间请求消息
-	JOINGAMERES("JoinGameResMsg"),			//响应加入房间消息
-	
-	GSTART("GameStartMsg"),					//游戏开始请求消息
-	GSTARTRES("GameStartResMsg"),			//响应游戏开始消息
-	
-	GPLAY("GamePlayMsg"),					//出牌请求消息
-	GPLAYRES("GamePlayResMsg"),				//响应出牌请求消息
-	
-	GDRAWRES("GameDrawMsg"),				//摸牌响应消息
-	
-	GPLAYPENG("GamePlayPengMsg"),			//碰牌请求消息
-	GPLAYPENGRES("GamePlayPengResMsg"),		//响应碰牌消息
-	
-	GPLAYGANG("GamePlayGangMsg"),			//杠牌请求消息
-	GPLAYGANGRES("GamePlayGangResMsg"),		//响应杠牌消息
-	
-	GPLAYHU("GamePlayHuMsg"),				//胡牌请求消息
-	GPLAYHURES("GamePlayHuResMsg"),			//响应胡牌消息
-	
-	GPLAYCHI("GamePlayChiMsg"),				//吃牌请求消息
-	GPLAYCHIRES("GamePlayChiResMsg"),		//响应吃牌消息
-	
 	CONN("ConnMsg"),						//服务之间建立TCP请求消息
 	CONNRES("ConnResMsg"),					//服务之间建立TCP请求响应消息
 	
 	REG("RegisterMsg"),						//各服务向中心服务注册请求消息
 	REGRES("RegisterResMsg"),				//中心服务相应注册请求的消息
+	
+	/** 麻将类消息定义开始 **/
+	MJ_START("MjStartMsg"),					//麻将游戏开始消息
+	MJ_DEAL("MjDealMsg"),					//发牌
+	MJ_HU("MjHuMsg"),						//胡牌
+	MJ_CHI("MjChiMsg"),						//吃牌
+	MJ_PENG("MjPengMsg"),					//碰牌
+	MJ_GANG("MjGangMsg"),					//杠牌
+	MJ_GUO("MjGuoMsg"),						//过牌
+	MJ_GET("MjGetMsg"),						//摸牌
+	MJ_END_EMPTY("MjEndEmptyMsg"),			//流局
+	MJ_END("MjEndMsg"),						//游戏结束
+	/** 麻将类消息定义结束 **/
 	
 	ASK("AskMsg"),
 	 
@@ -60,15 +44,18 @@ public enum MsgType {
 	private String clazz;
 	
 	public String getClazz() {
-		return PKG + Constant.STR_DOT + clazz;
+		String midStr = "";
+		if(this.toString().contains(Constant.STR_UNDERLINE)) {
+			String[] midPkgs = this.toString().split(Constant.STR_UNDERLINE);
+			for(int i = 0; i < midPkgs.length - 1; i++) {
+				midStr += midPkgs[i].toLowerCase() + Constant.STR_DOT;
+			}
+		}
+		
+		return PKG + Constant.STR_DOT + midStr + clazz;
 	}
 
 	private MsgType(String clazz) {
 		this.clazz = clazz;
-	}
-
-	@Override
-	public String toString() {
-		return getClazz();
 	}
 }

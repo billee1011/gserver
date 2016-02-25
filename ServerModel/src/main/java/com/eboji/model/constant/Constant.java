@@ -32,7 +32,9 @@ public class Constant {
 	
 	//游戏类型编码
 	//麻将类型
-	public static final Integer GAME_MJ_ZZ		= 0x2710;		//转转麻将
+	public static final Integer GAME_MJ_ZZ		= 0x2710;		//转转麻将(10000)
 	public static final Integer GAME_MJ_CS		= 0x2711;		//长沙麻将
 	
+	//游戏类型名称
+	public static final String GAME_MJ_ZZ_NAME	= "转转麻将";	//转转麻将	
 }

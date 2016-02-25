@@ -94,7 +94,7 @@ public class ZzMjLogic {
 			sendMj.setIsHu(false);
 			sendMj.setIsGang(false);
 			
-			System.out.println("Player " + i + ":\n" + sendMj.toString());
+			System.out.println("Player " + i + ":\n" + Arrays.toString(sendMj.getMjHand()));
 		}
 	}
 }
