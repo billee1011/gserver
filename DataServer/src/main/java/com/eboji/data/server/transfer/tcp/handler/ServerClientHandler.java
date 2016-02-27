@@ -33,7 +33,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			case WRITER_IDLE:
 				PingMsg pingMsg = new PingMsg();
 				ctx.writeAndFlush(pingMsg);
-				logger.info("send ping to server[" + ctx.channel().remoteAddress() + "]");
+				logger.debug("send ping to server[" + ctx.channel().remoteAddress() + "]");
 				break;
 
 			default:
@@ -56,7 +56,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		MsgType msgType = msg.getT();
 		switch (msgType) {
 		case PING:
-			logger.info("receive ping from server[" + ctx.channel().remoteAddress() + "]");
+			logger.debug("receive ping from server[" + ctx.channel().remoteAddress() + "]");
 			break;
 			
 		case CONNRES:

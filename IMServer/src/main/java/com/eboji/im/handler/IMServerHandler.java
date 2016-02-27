@@ -40,7 +40,7 @@ public class IMServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				loginResMsg.setCid(loginMsg.getCid());
 				if("robin".equals(loginMsg.getUsername()) && "robin".equals(loginMsg.getPassword())) {
 					logger.info("client " + loginMsg.getCid() + " Login SUCCESS!");
-					loginResMsg.setUserId(String.valueOf(new Random(System.currentTimeMillis()).nextInt(9999)));
+					loginResMsg.setUid(String.valueOf(new Random(System.currentTimeMillis()).nextInt(9999)));
 					loginResMsg.setStatus("OK");
 				} else {
 					loginResMsg.setStatus("FAIL");

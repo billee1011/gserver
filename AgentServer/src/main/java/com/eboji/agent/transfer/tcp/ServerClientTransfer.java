@@ -65,41 +65,46 @@ public class ServerClientTransfer {
 		
 		boolean isIncludeKey = false;
 		for(Map.Entry<Integer, Set<String>> entry : _serviceMap.entrySet()) {
-			Set<String> centerService = entry.getValue();
-			for(Map.Entry<Integer, Set<String>> innerEntry : serviceMap.entrySet()) {
-				if(entry.getKey() == innerEntry.getKey()) {
-					isIncludeKey = true;
-					Set<String> services = innerEntry.getValue();
-					boolean flag = false;
-					for(String cService : centerService) {
-						for(String service : services) {
-							if(cService.equals(service)) {
-								flag = true;
-								break;
+			//AgentServer-->LoginServer|AgentServer-->GameServer|AgentServer-->IMServer
+			if(entry.getKey().intValue() == Constant.SRV_LOGIN.intValue() 
+					|| entry.getKey().intValue() == Constant.SRV_GAME.intValue() 
+					|| entry.getKey().intValue() == Constant.SRV_IM.intValue()) {
+				Set<String> centerService = entry.getValue();
+				for(Map.Entry<Integer, Set<String>> innerEntry : serviceMap.entrySet()) {
+					if(entry.getKey().intValue() == innerEntry.getKey().intValue()) {
+						isIncludeKey = true;
+						Set<String> services = innerEntry.getValue();
+						boolean flag = false;
+						for(String cService : centerService) {
+							for(String service : services) {
+								if(cService.equals(service)) {
+									flag = true;
+									break;
+								}
 							}
-						}
-						
-						if(!flag) {
-							if(needSets.get(entry.getKey()) == null) {
-								Set<String> sets = new HashSet<String>();
-								sets.add(cService);
-								needSets.put(entry.getKey(), sets);
-							} else {
-								needSets.get(entry.getKey()).add(cService);
+							
+							if(!flag) {
+								if(needSets.get(entry.getKey()) == null) {
+									Set<String> sets = new HashSet<String>();
+									sets.add(cService);
+									needSets.put(entry.getKey(), sets);
+								} else {
+									needSets.get(entry.getKey()).add(cService);
+								}
 							}
 						}
 					}
 				}
-			}
-			
-			if(!isIncludeKey) {
-				for(String cService : centerService) {
-					if(needSets.get(entry.getKey()) == null) {
-						Set<String> sets = new HashSet<String>();
-						sets.add(cService);
-						needSets.put(entry.getKey(), sets);
-					} else {
-						needSets.get(entry.getKey()).add(cService);
+				
+				if(!isIncludeKey) {
+					for(String cService : centerService) {
+						if(needSets.get(entry.getKey()) == null) {
+							Set<String> sets = new HashSet<String>();
+							sets.add(cService);
+							needSets.put(entry.getKey(), sets);
+						} else {
+							needSets.get(entry.getKey()).add(cService);
+						}
 					}
 				}
 			}
@@ -120,6 +125,19 @@ public class ServerClientTransfer {
 	
 	public static void login(Object obj) {
 		Set<String> serviceSet = serviceMap.get(Constant.SRV_LOGIN);
+		if(serviceSet != null && serviceSet.size() > 0) {
+			int index = 0;
+			if(serviceSet.size() > 1) {
+				Random rand = new Random(System.currentTimeMillis());
+				index = rand.nextInt(serviceSet.size());
+			}
+				
+			socketChannelMap.get(serviceSet.toArray()[index]).writeAndFlush(obj);
+		}
+	}
+	
+	public static void processMj(Object obj) {
+		Set<String> serviceSet = serviceMap.get(Constant.SRV_GAME);
 		if(serviceSet != null && serviceSet.size() > 0) {
 			int index = 0;
 			if(serviceSet.size() > 1) {

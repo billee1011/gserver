@@ -31,6 +31,12 @@ public class GameServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	}
 	
 	@Override
+	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		String clientId = ctx.channel().remoteAddress().toString();
+		GameServerClientMap.put(clientId, (SocketChannel)ctx.channel());
+	}
+
+	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, BaseMsg msg)
 			throws Exception {
 		try {
@@ -40,7 +46,7 @@ public class GameServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				loginResMsg.setCid(loginMsg.getCid());
 				if("robin".equals(loginMsg.getUsername()) && "robin".equals(loginMsg.getPassword())) {
 					logger.info("client " + loginMsg.getCid() + " Login SUCCESS!");
-					loginResMsg.setUserId(String.valueOf(new Random(System.currentTimeMillis()).nextInt(9999)));
+					loginResMsg.setUid(String.valueOf(new Random(System.currentTimeMillis()).nextInt(9999)));
 					loginResMsg.setStatus("OK");
 				} else {
 					loginResMsg.setStatus("FAIL");
@@ -63,10 +69,9 @@ public class GameServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			} else if(MsgType.REG.equals(msg.getT())) { 
 				//TODO
 			} else {
-				if(GameServerClientMap.get(msg.getCid()) == null) {
-					LoginMsg loginMsg = new LoginMsg();
-					ctx.channel().writeAndFlush(loginMsg);
-				}
+				//TODO处理游戏逻辑
+				GameServerProcess.process(memCacheClient, msg, 
+					ctx.channel().remoteAddress().toString());
 			}
 		} catch (Exception e) {
 			logger.error("request param is not json object, request msg is:\n" + msg);

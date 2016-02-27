@@ -11,21 +11,21 @@ import com.eboji.game.util.ConfigUtil;
 public class ServerInitializingBean implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		//createMemCacheClient();
+		createMemCacheClient();
 	}
 	
 	/**
 	 * 初始化缓存服务器的连接
 	 */
 	protected void createMemCacheClient() {
-		String memcacheserversp = ConfigUtil.getProps("memcacheservers");
+		String memcacheserversp = ConfigUtil.getProps("memcacheserver");
 		String[] memcacheservers = memcacheserversp.split("\\|");
 		Integer[] weights = new Integer[memcacheservers.length];
 		for(int i = 0; i < memcacheservers.length; i++) {
 			weights[i] = 3;
 		}
 		if(memcacheservers.length > 0) {
-			MemCacheClient client = new MemCacheClient(new MemcachedConfiguration(), memcacheservers, weights, "loginServer");
+			MemCacheClient client = new MemCacheClient(new MemcachedConfiguration(), memcacheservers, weights, "gameServer");
 			ConfigUtil.setClient(client);
 		}
 	}

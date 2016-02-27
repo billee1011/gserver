@@ -9,6 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSONObject;
+import com.eboji.model.message.BaseMsg;
+
 public class AgentServerClientMap {
 	private static final Logger logger = LoggerFactory.getLogger(AgentServerClientMap.class);
 	
@@ -46,5 +49,15 @@ public class AgentServerClientMap {
 	
 	public static int getUserCount() {
 		return userMap.size();
+	}
+	
+	public static void sendData(Object obj) {
+		BaseMsg msg = (BaseMsg)obj;
+		String data = JSONObject.toJSON(obj).toString();
+		if(userMap.get(msg.getUid()) != null) {
+			userMap.get(msg.getUid()).writeAndFlush(data);
+		} else {
+			logger.error("send data to " + msg.getUid() + " failed");
+		}
 	}
 }

@@ -22,6 +22,9 @@ public enum MsgType {
 	REGRES("RegisterResMsg"),				//中心服务相应注册请求的消息
 	
 	/** 麻将类消息定义开始 **/
+	MJ_CREATE("MjCreateMsg"),				//创建房间
+	MJ_CREATERES("MjCreateResMsg"),			//创建房间响应消息
+	MJ_JOIN("MjJoinMsg"),					//加入房间
 	MJ_START("MjStartMsg"),					//麻将游戏开始消息
 	MJ_DEAL("MjDealMsg"),					//发牌
 	MJ_HU("MjHuMsg"),						//胡牌

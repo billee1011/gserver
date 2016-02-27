@@ -64,41 +64,43 @@ public class ServerClientTransfer {
 		
 		boolean isIncludeKey = false;
 		for(Map.Entry<Integer, Set<String>> entry : _serviceMap.entrySet()) {
-			Set<String> centerService = entry.getValue();
-			for(Map.Entry<Integer, Set<String>> innerEntry : serviceMap.entrySet()) {
-				if(entry.getKey() == innerEntry.getKey()) {
-					isIncludeKey = true;
-					Set<String> services = innerEntry.getValue();
-					boolean flag = false;
-					for(String cService : centerService) {
-						for(String service : services) {
-							if(cService.equals(service)) {
-								flag = true;
-								break;
+			if(entry.getKey().intValue() == Constant.SRV_DATA.intValue()) {
+				Set<String> centerService = entry.getValue();
+				for(Map.Entry<Integer, Set<String>> innerEntry : serviceMap.entrySet()) {
+					if(entry.getKey().intValue() == innerEntry.getKey().intValue()) {
+						isIncludeKey = true;
+						Set<String> services = innerEntry.getValue();
+						boolean flag = false;
+						for(String cService : centerService) {
+							for(String service : services) {
+								if(cService.equals(service)) {
+									flag = true;
+									break;
+								}
 							}
-						}
-						
-						if(!flag) {
-							if(needSets.get(entry.getKey()) == null) {
-								Set<String> sets = new HashSet<String>();
-								sets.add(cService);
-								needSets.put(entry.getKey(), sets);
-							} else {
-								needSets.get(entry.getKey()).add(cService);
+							
+							if(!flag) {
+								if(needSets.get(entry.getKey()) == null) {
+									Set<String> sets = new HashSet<String>();
+									sets.add(cService);
+									needSets.put(entry.getKey(), sets);
+								} else {
+									needSets.get(entry.getKey()).add(cService);
+								}
 							}
 						}
 					}
 				}
-			}
-			
-			if(!isIncludeKey) {
-				for(String cService : centerService) {
-					if(needSets.get(entry.getKey()) == null) {
-						Set<String> sets = new HashSet<String>();
-						sets.add(cService);
-						needSets.put(entry.getKey(), sets);
-					} else {
-						needSets.get(entry.getKey()).add(cService);
+				
+				if(!isIncludeKey) {
+					for(String cService : centerService) {
+						if(needSets.get(entry.getKey()) == null) {
+							Set<String> sets = new HashSet<String>();
+							sets.add(cService);
+							needSets.put(entry.getKey(), sets);
+						} else {
+							needSets.get(entry.getKey()).add(cService);
+						}
 					}
 				}
 			}

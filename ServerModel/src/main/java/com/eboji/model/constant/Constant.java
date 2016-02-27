@@ -17,6 +17,7 @@ public class Constant {
 	public static final String KEY_TYPE 		= "t";
 	public static final String KEY_GID			= "gid";
 	public static final String KEY_CID			= "cid";
+	public static final String KEY_UID			= "uid";
 	
 	//状态值
 	public static final String STATUS_SUCCESS	="SUCCESS";
@@ -28,7 +29,7 @@ public class Constant {
 	public static final Integer SRV_GAME		= 0x3EA;		//游戏服务
 	public static final Integer SRV_CENTER		= 0x3EB;		//中心服务
 	public static final Integer SRV_DATA		= 0x3EC;		//数据服务
-	public static final Integer SRV_FILE		= 0x3ED;		//文件服务
+	public static final Integer SRV_IM			= 0x3ED;		//文件服务
 	
 	//游戏类型编码
 	//麻将类型

@@ -25,7 +25,7 @@ public class AgentServerHandler extends SimpleChannelInboundHandler<String> {
 	
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("channel active.");
+		logger.info("channel active.");
 	}
 
 	@Override
@@ -36,11 +36,7 @@ public class AgentServerHandler extends SimpleChannelInboundHandler<String> {
 		try {
 			JSONObject obj = JSON.parseObject(msg);
 			String type = obj.getString(Constant.KEY_TYPE);
-			String gid = obj.getString(Constant.KEY_GID);
-			
-			//根据type,gid进行转发
-			logger.info("type = " + type);
-			logger.info("gid = " + gid);
+			String uID = obj.getString(Constant.KEY_UID);
 			
 			if(MsgType.LOGIN.equals(MsgType.valueOf(type))) {
 				//生成一个唯一标识符
@@ -53,10 +49,20 @@ public class AgentServerHandler extends SimpleChannelInboundHandler<String> {
 				//将SocketChannle放入map
 				AgentServerClientMap.put(uuid, (SocketChannel)ctx.channel());
 				
-				//将登陆信息转入登陆服务进行业务处理
-				//ServerClientTransfer.write(loginMsg);
+				//将登陆请求转发至登陆服务进行业务处理
 				TransferFacade.facade(loginMsg);
-			} else if(MsgType.REG.equals(MsgType.valueOf(type))) {
+			} else {
+				//1、进行用户验证(通过LoginServer服务进行验证)
+				if(uID != null) {
+					//游戏逻辑请求，转换成相应的消息类实例，转发至游戏服务进行业务处理
+					String clazzName = MsgType.valueOf(type).getClazz();
+					Class<?> clazz = Class.forName(clazzName).newInstance().getClass();
+					Object o = JSON.toJavaObject(obj, clazz);
+					TransferFacade.facade(o);
+				} else {
+					//用户重新登录消息
+					ctx.writeAndFlush(new Object());
+				}
 			}
 		} catch (Exception e) {
 			logger.error("request param is not json object, request msg is:\n" + msg);

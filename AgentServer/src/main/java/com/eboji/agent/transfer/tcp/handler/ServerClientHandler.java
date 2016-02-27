@@ -37,7 +37,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			case WRITER_IDLE:
 				PingMsg pingMsg = new PingMsg();
 				ctx.writeAndFlush(pingMsg);
-				logger.info("send ping to server[" + ctx.channel().remoteAddress() + "]");
+				logger.debug("send ping to server[" + ctx.channel().remoteAddress() + "]");
 				break;
 
 			default:
@@ -60,7 +60,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		MsgType msgType = msg.getT();
 		switch (msgType) {
 		case PING:
-			logger.info("receive ping from server[" + ctx.channel().remoteAddress() + "]");
+			logger.debug("receive ping from server[" + ctx.channel().remoteAddress() + "]");
 			break;
 			
 		case CONNRES:
@@ -72,14 +72,14 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			LoginResMsg loginRes = (LoginResMsg)msg;
 			Channel channel = AgentServerClientMap.get(loginRes.getCid());
 			if(loginRes.getStatus().equals("OK")) {
-				AgentServerClientMap.put(loginRes.getUserId(), (SocketChannel)channel);
+				AgentServerClientMap.put(loginRes.getUid(), (SocketChannel)channel);
 				AgentServerClientMap.remove(loginRes.getCid());
 				AgentServerClientMap.printCount();
 				
-				logger.info("用户[" + loginRes.getUserId() +"]登陆成功!"); 
-				channel.writeAndFlush("{\"status\": \"Login SUCCESS\"}");
+				logger.info("用户[" + loginRes.getUid() +"]登陆成功!"); 
+				channel.writeAndFlush("{\"status\": \"1\", \"message\": \"Login Success\", \"uid\": \"UID\"}");
 			} else {
-				channel.writeAndFlush("{\"status\": \"Login FAILED\"}");
+				channel.writeAndFlush("{\"status\": \"-1\", \"message\": \"Login Failed\", \"uid\": \"FAILE UID\"}");
 			}
 			break;
 			
@@ -91,6 +91,9 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			logger.info("接收中心注册信息成功!");
 			break;
 		default:
+			//进行游戏服务信息的解析，获取需要转发的数据
+			String uId = msg.getUid();
+			AgentServerClientMap.get(uId).writeAndFlush(msg);
 			break;
 		}
 		
