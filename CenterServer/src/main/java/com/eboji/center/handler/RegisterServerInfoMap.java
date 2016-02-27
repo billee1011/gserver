@@ -60,6 +60,8 @@ public class RegisterServerInfoMap {
 		} else {
 			serverInfoMap.get(serviceId).add(address);
 		}
+		
+		System.out.println("====================" + serverInfoMap.toString());
 	}
 	
 	public static void remove(String address) {

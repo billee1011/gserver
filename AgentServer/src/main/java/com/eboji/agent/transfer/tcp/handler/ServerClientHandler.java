@@ -1,8 +1,5 @@
 package com.eboji.agent.transfer.tcp.handler;
 
-import java.util.Map;
-import java.util.Set;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -10,9 +7,13 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
+import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSONObject;
 import com.eboji.agent.handler.AgentServerClientMap;
 import com.eboji.agent.transfer.tcp.ServerClientTransfer;
 import com.eboji.agent.util.ConfigUtil;
@@ -93,7 +94,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		default:
 			//进行游戏服务信息的解析，获取需要转发的数据
 			String uId = msg.getUid();
-			AgentServerClientMap.get(uId).writeAndFlush(msg);
+			AgentServerClientMap.get(uId).writeAndFlush(JSONObject.toJSON(msg).toString());
 			break;
 		}
 		

@@ -58,6 +58,9 @@ public class ServerClientTransfer {
 				ServerClientTransfer.getServiceMap().put(entry.getKey(), sets);
 			}
 		}
+		
+		System.out.println("+++++++++++++" + ServerClientTransfer.getServiceMap().toString());
+		System.out.println("+++++++++++++" + ServerClientTransfer.getSocketChannelMap().toString());
 	}
 	
 	protected static Map<Integer, Set<String>> findNeedInitial(Map<Integer, Set<String>> _serviceMap) {
