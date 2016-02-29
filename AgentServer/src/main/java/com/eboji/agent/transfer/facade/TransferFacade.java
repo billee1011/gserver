@@ -3,6 +3,7 @@ package com.eboji.agent.transfer.facade;
 import com.eboji.agent.transfer.tcp.ServerClientTransfer;
 import com.eboji.model.message.LoginMsg;
 import com.eboji.model.message.mj.MjCreateMsg;
+import com.eboji.model.message.mj.MjJoinMsg;
 import com.eboji.model.message.mj.MjStartMsg;
 
 public class TransferFacade {
@@ -13,6 +14,8 @@ public class TransferFacade {
 		} else if(obj instanceof MjStartMsg) {
 			ServerClientTransfer.processMj(obj);
 		} else if(obj instanceof MjCreateMsg) {
+			ServerClientTransfer.processMj(obj);
+		} else if(obj instanceof MjJoinMsg) {
 			ServerClientTransfer.processMj(obj);
 		}
 	}

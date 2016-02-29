@@ -10,17 +10,43 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.eboji.model.message.RegisterResMsg;
 
+/**
+ * 存储TCP连接至中心服务的客户端信息类
+ * @author zhoucl 2016-02-29
+ *
+ */
 public class CenterServerClientMap {
+	/**
+	 * 存储client的map变量
+	 */
 	private static Map<String, SocketChannel> clientMap = new ConcurrentHashMap<String, SocketChannel>();
 	
+	public static Map<String, SocketChannel> getClientMap() {
+		return clientMap;
+	}
+
+	/**
+	 * 将socket客户端信息添加进map
+	 * @param clientId		使用客户端连接的ip和port(客户端作为服务指定的监听端口)
+	 * @param socketChannel	{@link SocketChannel}
+	 */
 	public static void put(String clientId, SocketChannel socketChannel) {
 		clientMap.put(clientId, socketChannel);
 	}
 	
+	/**
+	 * 通过clientId获取socketChannel
+	 * @param clientId 使用客户端连接的ip和port(客户端作为服务指定的监听端口)
+	 * @return {@link SocketChannel}
+	 */
 	public static Channel get(String clientId) {
 		return clientMap.get(clientId);
 	}
 	
+	/**
+	 * 移除Map中的SocketChannel信息
+	 * @param socketChannel
+	 */
 	public static void remove(SocketChannel socketChannel) {
 		for(Map.Entry<String, SocketChannel> entry : clientMap.entrySet()) {
 			if(entry.getValue() == socketChannel) {
@@ -31,8 +57,13 @@ public class CenterServerClientMap {
 		}
 	}
 	
+	/**
+	 * 将obj信息广播至连接至中心服务的客户端信息
+	 * @param obj
+	 */
 	public static void broadcast(Object obj) {
-		Map<Integer, Set<String>> serverInfoMap = RegisterServerInfoMap.getServerInfoMap();
+		Map<Integer, Set<String>> serverInfoMap = RegisterServerInfoMap
+				.getServerInfoMap();
 		for(Map.Entry<Integer, Set<String>> entry : serverInfoMap.entrySet()) {
 			Set<String> addressSet = entry.getValue();
 			for(String address : addressSet) {
@@ -42,6 +73,13 @@ public class CenterServerClientMap {
 		}
 	}
 	
+	/**
+	 * 过滤不需要广播的信息，比如客户端为127.0.0.1:9090的客户端,<br />
+	 * 不需要广播他自己的信息过去
+	 * @param address	广播的客户端ip和端口
+	 * @param obj		需要广播的注册返回信息
+	 * @return	{@link RegisterResMsg}
+	 */
 	private static Object filter(String address, Object obj) {
 		RegisterResMsg retMsg = null;
 		if(obj instanceof RegisterResMsg) {
@@ -54,7 +92,10 @@ public class CenterServerClientMap {
 			retMsg.setStatus(msg.getStatus());
 			
 			Map<Integer, Set<String>> serverInfoMap = msg.getServiceMap();
-			Map<Integer, Set<String>> dynamicServerInfoMap = new ConcurrentHashMap<Integer, Set<String>>();
+			Map<Integer, Set<String>> dynamicServerInfoMap = new 
+					ConcurrentHashMap<Integer, Set<String>>();
+			
+			//serverInfoMap拷贝至dynamicServerInfoMap
 			Set<Integer> keys = serverInfoMap.keySet();
 			for(Integer key : keys) {
 				Set<String> value = serverInfoMap.get(key);

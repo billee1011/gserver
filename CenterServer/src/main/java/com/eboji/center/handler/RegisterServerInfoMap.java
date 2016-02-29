@@ -5,7 +5,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * 客户端注册信息存储类
+ * @author zhoucl 2016-02-29
+ *
+ */
 public class RegisterServerInfoMap {
+	private static final Logger logger = LoggerFactory.getLogger(RegisterServerInfoMap.class);
+	
 	private static Map<Integer, Set<String>> serverInfoMap = 
 			new ConcurrentHashMap<Integer, Set<String>>();
 	
@@ -13,45 +23,6 @@ public class RegisterServerInfoMap {
 		return serverInfoMap;
 	}
 	
-	public static Map<Integer, Set<String>> getTransferServerInfoMap(String address) {
-		Map<Integer, Set<String>> retMap = new ConcurrentHashMap<Integer, Set<String>>();
-		Set<Integer> keys = serverInfoMap.keySet();
-		for(Integer key : keys) {
-			Set<String> value = serverInfoMap.get(key);
-			Set<String> reVal = new HashSet<String>();
-			
-			for(String v : value) {
-				reVal.add(v);
-			}
-			
-			retMap.put(key, reVal);
-		}
-		
-		Integer serviceId = null;
-		boolean find = false;
-		for(Map.Entry<Integer, Set<String>> entry : 
-			retMap.entrySet()) {
-			Set<String> addressSet = entry.getValue();
-			for(String addr : addressSet) {
-				if(addr.equals(address)) {
-					find = true;
-					serviceId = entry.getKey();
-					break;
-				}
-			}
-			
-			if(find) {
-				break;
-			}
-		}
-		
-		if(serviceId != null) {
-			retMap.get(serviceId).remove(address);
-		}
-		
-		return retMap;
-	}
-
 	public static void put(Integer serviceId, String address) {
 		if(serverInfoMap.get(serviceId) == null) {
 			Set<String> addressSet = new HashSet<String>();
@@ -61,7 +32,7 @@ public class RegisterServerInfoMap {
 			serverInfoMap.get(serviceId).add(address);
 		}
 		
-		System.out.println("====================" + serverInfoMap.toString());
+		logger.info("====================" + serverInfoMap.toString());
 	}
 	
 	public static void remove(String address) {

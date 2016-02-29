@@ -1,8 +1,14 @@
 package com.eboji.center.bootstrap;
 
-import org.slf4j.LoggerFactory;
+import io.netty.channel.socket.SocketChannel;
 
+import java.util.Iterator;
+import java.util.Map.Entry;
+
+import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
+import com.eboji.center.handler.CenterServerClientMap;
 
 public class ShutdownHook {
 	private static final Logger logger = LoggerFactory.getLogger(ShutdownHook.class);
@@ -21,6 +27,13 @@ public class ShutdownHook {
 	}
 	
 	private static void dofinish() {
+		Iterator<Entry<String, SocketChannel>> iter = 
+				CenterServerClientMap.getClientMap().entrySet().iterator();
+		while(iter.hasNext()) {
+			Entry<String, SocketChannel> entry = iter.next();
+			entry.getValue().close();
+		}
+		
 		logger.info("finish closing all work!");
 	}
 }

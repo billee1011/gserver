@@ -6,9 +6,10 @@
 	<parent>
 		<groupId>com.eboji</groupId>
 		<artifactId>RootProject</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>ServerModel</artifactId>
+	<version>0.0.1</version>
 	<name>ServerModel</name>
 	<url>http://www.e-boji.com</url>
 

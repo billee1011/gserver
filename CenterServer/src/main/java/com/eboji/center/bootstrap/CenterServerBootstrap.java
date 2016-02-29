@@ -14,7 +14,7 @@ import ch.qos.logback.core.joran.spi.JoranException;
 import com.eboji.center.util.ConfigUtil;
 
 /**
- * 代理服务启动的入口类
+ * 中心服务启动的入口类
  * @author zhoucl 2016-02-19
  */
 public class CenterServerBootstrap {
@@ -79,7 +79,7 @@ public class CenterServerBootstrap {
 				} else if(command.equals("stop")) {
 					daemon.stop();
 				} else {
-					logger.warn("Bootstrap: command \"" + command + "\" does not exist.");
+					logger.warn("CenterServerBootstrap: command \"" + command + "\" does not exist.");
 				}
 			}
 		} catch (Exception e) {
@@ -101,10 +101,6 @@ public class CenterServerBootstrap {
 					System.out.println("Allowed options:");
 					System.out.println("  --help\t\t\tProduce help message");
 					System.out.println("  --port=arg (=" + daemon.getPort() + ")\t\tPort number to connect");
-//					System.out.println("  --transport=arg (=" + daemon.getTransport_type() + ")\tTransport: buffered, framed, fastframed, http");
-//					System.out.println("  --protocol=arg (=" + daemon.getProtocol_type() + ")\tProtocol: binary, json, compact");
-//					System.out.println("  --ssl\t\t\t\tEncrypted Transport using SSL");
-//					System.out.println("  --server-type=arg (=" + daemon.getServer_type() +")\n\t\t\t\tType of server: simple, nonblocking, hsha, threaded-selector, thread-pool");
 					System.exit(0);
 				}
 			}

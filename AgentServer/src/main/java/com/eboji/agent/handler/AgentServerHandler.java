@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.eboji.agent.transfer.facade.TransferFacade;
+import com.eboji.agent.util.JSONUtil;
 import com.eboji.agent.util.RandomUtil;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.constant.Constant;
@@ -55,9 +56,7 @@ public class AgentServerHandler extends SimpleChannelInboundHandler<String> {
 				//1、进行用户验证(通过LoginServer服务进行验证)
 				if(uID != null) {
 					//游戏逻辑请求，转换成相应的消息类实例，转发至游戏服务进行业务处理
-					String clazzName = MsgType.valueOf(type).getClazz();
-					Class<?> clazz = Class.forName(clazzName).newInstance().getClass();
-					Object o = JSON.toJavaObject(obj, clazz);
+					Object o = JSONUtil.JSONObject2Object(obj, type);
 					TransferFacade.facade(o);
 				} else {
 					//用户重新登录消息
