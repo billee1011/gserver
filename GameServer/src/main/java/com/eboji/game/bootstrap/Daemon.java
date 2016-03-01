@@ -7,7 +7,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.eboji.game.bootstrap.config.SpringConfiguration;
 import com.eboji.game.server.GameServerListener;
-import com.eboji.game.util.ConfigUtil;
 
 public class Daemon {
 	private static final Logger logger = LoggerFactory.getLogger(Daemon.class);
@@ -42,8 +41,8 @@ public class Daemon {
 	 */
 	public void start() throws Exception {
 		logger.info("GameServer is starting.");
-		
-		new GameServerListener(getPort(), ConfigUtil.getClient());
+
+		new GameServerListener(getPort());
 	}
 
 	/**

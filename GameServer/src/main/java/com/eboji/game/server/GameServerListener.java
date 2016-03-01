@@ -13,10 +13,10 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eboji.commons.util.memcached.MemCacheClient;
 import com.eboji.game.codec.MsgDecoder;
 import com.eboji.game.codec.MsgEncoder;
 import com.eboji.game.handler.GameServerHandler;
+import com.eboji.game.util.ConfigUtil;
 import com.eboji.game.util.RegisterCenterServerUtil;
 
 public class GameServerListener {
@@ -24,12 +24,8 @@ public class GameServerListener {
 	
 	private int port;
 	
-	private MemCacheClient memCacheClient;
-	
-	public GameServerListener(int port, MemCacheClient memCacheClient) throws Exception {
+	public GameServerListener(int port) throws Exception {
 		this.port = port;
-		this.memCacheClient = memCacheClient;
-		
 		bind();
 	}
 	
@@ -51,7 +47,7 @@ public class GameServerListener {
 					ChannelPipeline pipe = ch.pipeline();
 					pipe.addLast(new MsgEncoder());
 					pipe.addLast(new MsgDecoder());
-					pipe.addLast(new GameServerHandler(memCacheClient));
+					pipe.addLast(new GameServerHandler(ConfigUtil.getClient()));
 				}
 			});
 			

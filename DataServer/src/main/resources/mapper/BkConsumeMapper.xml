@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eboji.data.dao.BkConsumeMapper" >
+  <resultMap id="BaseResultMap" type="com.eboji.data.pojo.BkConsume" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="deskId" property="deskid" jdbcType="INTEGER" />
+    <result column="gid" property="gid" jdbcType="INTEGER" />
+    <result column="account" property="account" jdbcType="BIGINT" />
+    <result column="lastdate" property="lastdate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uid, deskId, gid, account, lastdate, remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.eboji.data.pojo.BkConsumeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bk_consume
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bk_consume
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bk_consume
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.eboji.data.pojo.BkConsumeExample" >
+    delete from bk_consume
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.eboji.data.pojo.BkConsume" >
+    insert into bk_consume (id, uid, deskId, 
+      gid, account, lastdate, 
+      remark)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{deskid,jdbcType=INTEGER}, 
+      #{gid,jdbcType=INTEGER}, #{account,jdbcType=BIGINT}, #{lastdate,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eboji.data.pojo.BkConsume" >
+    insert into bk_consume
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="deskid != null" >
+        deskId,
+      </if>
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="lastdate != null" >
+        lastdate,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="deskid != null" >
+        #{deskid,jdbcType=INTEGER},
+      </if>
+      <if test="gid != null" >
+        #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=BIGINT},
+      </if>
+      <if test="lastdate != null" >
+        #{lastdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.eboji.data.pojo.BkConsumeExample" resultType="java.lang.Integer" >
+    select count(*) from bk_consume
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bk_consume
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=INTEGER},
+      </if>
+      <if test="record.deskid != null" >
+        deskId = #{record.deskid,jdbcType=INTEGER},
+      </if>
+      <if test="record.gid != null" >
+        gid = #{record.gid,jdbcType=INTEGER},
+      </if>
+      <if test="record.account != null" >
+        account = #{record.account,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastdate != null" >
+        lastdate = #{record.lastdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bk_consume
+    set id = #{record.id,jdbcType=INTEGER},
+      uid = #{record.uid,jdbcType=INTEGER},
+      deskId = #{record.deskid,jdbcType=INTEGER},
+      gid = #{record.gid,jdbcType=INTEGER},
+      account = #{record.account,jdbcType=BIGINT},
+      lastdate = #{record.lastdate,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eboji.data.pojo.BkConsume" >
+    update bk_consume
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="deskid != null" >
+        deskId = #{deskid,jdbcType=INTEGER},
+      </if>
+      <if test="gid != null" >
+        gid = #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=BIGINT},
+      </if>
+      <if test="lastdate != null" >
+        lastdate = #{lastdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eboji.data.pojo.BkConsume" >
+    update bk_consume
+    set uid = #{uid,jdbcType=INTEGER},
+      deskId = #{deskid,jdbcType=INTEGER},
+      gid = #{gid,jdbcType=INTEGER},
+      account = #{account,jdbcType=BIGINT},
+      lastdate = #{lastdate,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -16,8 +16,16 @@ public class GameServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	
 	protected MemCacheClient memCacheClient = null;
 	
+	protected GameServerProcessor processor = null;
+	
 	public GameServerHandler(MemCacheClient memCacheClient) {
 		this.memCacheClient = memCacheClient;
+		if(this.memCacheClient == null) {
+			logger.error("memCacheClient is null, server will be stopped.");
+			System.exit(-1);
+		}
+		
+		processor = new GameServerProcessor();
 	}
 	
 	@Override
@@ -44,7 +52,7 @@ public class GameServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				break;
 			default:
 				//处理游戏逻辑
-				GameServerProcess.process(memCacheClient, msg, 
+				processor.process(memCacheClient, msg, 
 					ctx.channel().remoteAddress().toString());
 				break;
 			}
