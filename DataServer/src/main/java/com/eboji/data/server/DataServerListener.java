@@ -17,6 +17,7 @@ import com.eboji.commons.util.memcached.MemCacheClient;
 import com.eboji.data.codec.MsgDecoder;
 import com.eboji.data.codec.MsgEncoder;
 import com.eboji.data.handler.DataServerHandler;
+import com.eboji.data.handler.DataServerProcessor;
 import com.eboji.data.util.RegisterCenterServerUtil;
 
 public class DataServerListener {
@@ -24,11 +25,15 @@ public class DataServerListener {
 	
 	private int port;
 	
-	private MemCacheClient memCacheClient;
+	private MemCacheClient memCacheClient = null;
 	
-	public DataServerListener(int port, MemCacheClient memCacheClient) throws Exception {
+	private DataServerProcessor dataProcessor = null;
+	
+	public DataServerListener(int port, MemCacheClient memCacheClient, 
+			DataServerProcessor dataProcessor) throws Exception {
 		this.port = port;
 		this.memCacheClient = memCacheClient;
+		this.dataProcessor = dataProcessor;
 		
 		bind();
 	}
@@ -51,7 +56,7 @@ public class DataServerListener {
 					ChannelPipeline pipe = ch.pipeline();
 					pipe.addLast(new MsgEncoder());
 					pipe.addLast(new MsgDecoder());
-					pipe.addLast(new DataServerHandler(memCacheClient));
+					pipe.addLast(new DataServerHandler(memCacheClient, dataProcessor));
 				}
 			});
 			

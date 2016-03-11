@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class GGTableExample {
+public class GameTableExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public GGTableExample() {
+    public GameTableExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

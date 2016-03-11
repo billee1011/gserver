@@ -2,7 +2,7 @@ package com.eboji.data.pojo;
 
 import java.util.Date;
 
-public class GGTable {
+public class GameTable {
     private Integer id;
 
     private Integer euid;

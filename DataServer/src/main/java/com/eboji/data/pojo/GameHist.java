@@ -1,6 +1,6 @@
 package com.eboji.data.pojo;
 
-public class GGHist {
+public class GameHist {
     private Integer id;
 
     private Integer tid;

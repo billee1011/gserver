@@ -1,0 +1,17 @@
+-- 函数作用：定义test函数
+-- 参数id：int
+-- 函数说明：
+-- 创建者：
+-- 创建时间：
+USE `configuration`;
+DROP function IF EXISTS `test`;
+
+DELIMITER $$
+USE `configuration`$$
+CREATE FUNCTION `test` (id int)
+RETURNS INTEGER
+BEGIN
+  RETURN id*10;
+END$$
+
+DELIMITER ;

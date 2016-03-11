@@ -1,0 +1,16 @@
+-- 函数作用：定义test存储过程
+-- 参数id：int
+-- 函数说明：
+-- 创建者：
+-- 创建时间：
+USE `configuration`;
+DROP procedure IF EXISTS `test`;
+
+DELIMITER $$
+USE `configuration`$$
+CREATE PROCEDURE `test` (id int)
+BEGIN
+  select * from configuration.cfg_app;
+END$$
+
+DELIMITER ;

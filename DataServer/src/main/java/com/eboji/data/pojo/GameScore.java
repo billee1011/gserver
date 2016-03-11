@@ -2,7 +2,7 @@ package com.eboji.data.pojo;
 
 import java.util.Date;
 
-public class GGScore {
+public class GameScore {
     private Integer id;
 
     private Integer tid;

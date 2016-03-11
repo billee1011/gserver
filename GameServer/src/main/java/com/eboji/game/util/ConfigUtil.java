@@ -7,11 +7,13 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import com.eboji.commons.util.memcached.MemCacheClient;
+import com.eboji.commons.util.redis.RedisClient;
 import com.eboji.model.constant.Constant;
 
 public class ConfigUtil {
 	private static Properties props = null;
 	private static MemCacheClient client = null;
+	private static RedisClient redisClient = null;
 	
 	protected static Properties getProps() {
 		return props;
@@ -50,5 +52,13 @@ public class ConfigUtil {
 
 	public static void setClient(MemCacheClient client) {
 		ConfigUtil.client = client;
+	}
+
+	public static RedisClient getRedisClient() {
+		return redisClient;
+	}
+
+	public static void setRedisClient(RedisClient redisClient) {
+		ConfigUtil.redisClient = redisClient;
 	}
 }

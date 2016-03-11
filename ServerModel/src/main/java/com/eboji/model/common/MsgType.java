@@ -34,9 +34,15 @@ public enum MsgType {
 	MJ_GANG("MjGangMsg"),					//杠牌
 	MJ_GUO("MjGuoMsg"),						//过牌
 	MJ_GET("MjGetMsg"),						//摸牌
-	MJ_END_EMPTY("MjEndEmptyMsg"),			//流局
+	MJ_ENDEMPTY("MjEndEmptyMsg"),			//流局
 	MJ_END("MjEndMsg"),						//游戏结束
 	/** 麻将类消息定义结束 **/
+	
+	/**
+	 * 数据服务类消息定义
+	 */
+	DT_INSGGTABLE("DtInsGGTableMsg"),		//存储开房信息
+	DT_INSGGTABLERS("DtInsGGTableRsMsg"),	//存储开房信息响应返回
 	
 	ASK("AskMsg"),
 	 

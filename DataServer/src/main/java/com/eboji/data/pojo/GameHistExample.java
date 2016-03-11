@@ -3,14 +3,14 @@ package com.eboji.data.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GGHistExample {
+public class GameHistExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public GGHistExample() {
+    public GameHistExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

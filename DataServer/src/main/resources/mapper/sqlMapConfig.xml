@@ -20,5 +20,12 @@
 	</plugins>
 	
 	<mappers>
+		<mapper resource="mapper/BkAccountMapper.xml "/>
+		<mapper resource="mapper/BkConsumeMapper.xml "/>
+		<mapper resource="mapper/BkRechargeMapper.xml "/>
+		<mapper resource="mapper/BkGGHistMapper.xml "/>
+		<mapper resource="mapper/BkGGScoreMapper.xml "/>
+		<mapper resource="mapper/BkGGTableMapper.xml "/>
+		<mapper resource="mapper/WxUserMapper.xml "/>
 	</mappers>
 </configuration>

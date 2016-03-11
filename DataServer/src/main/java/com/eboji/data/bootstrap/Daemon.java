@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.eboji.data.bootstrap.config.SpringConfiguration;
+import com.eboji.data.handler.DataServerProcessor;
 import com.eboji.data.server.DataServerListener;
 import com.eboji.data.util.ConfigUtil;
 
@@ -42,8 +43,8 @@ public class Daemon {
 	 */
 	public void start() throws Exception {
 		logger.info("DataServer is starting.");
-		
-		new DataServerListener(getPort(), ConfigUtil.getClient());
+		DataServerProcessor dataProcessor = (DataServerProcessor)context.getBean("dataProcessor");
+		new DataServerListener(getPort(), ConfigUtil.getClient(), dataProcessor);
 	}
 
 	/**

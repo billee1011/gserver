@@ -5,13 +5,16 @@ import org.springframework.stereotype.Component;
 
 import com.eboji.commons.util.memcached.MemCacheClient;
 import com.eboji.commons.util.memcached.MemcachedConfiguration;
+import com.eboji.commons.util.redis.RedisClient;
 import com.eboji.game.util.ConfigUtil;
+import com.eboji.model.constant.Constant;
 
 @Component("serverInitializingBean")
 public class ServerInitializingBean implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		createMemCacheClient();
+		createRedisClient();
 	}
 	
 	/**
@@ -28,5 +31,15 @@ public class ServerInitializingBean implements InitializingBean {
 			MemCacheClient client = new MemCacheClient(new MemcachedConfiguration(), memcacheservers, weights, "gameServer");
 			ConfigUtil.setClient(client);
 		}
+	}
+	
+	/**
+	 * 初始化Redis缓存服务器的连接
+	 */
+	protected void createRedisClient() {
+		String redisserversp = ConfigUtil.getProps("redisserver");
+		String[] redisservers = redisserversp.split(Constant.STR_COLON);
+		RedisClient client = new RedisClient(redisservers[0], Integer.parseInt(redisservers[1]), null);
+		ConfigUtil.setRedisClient(client);
 	}
 }
