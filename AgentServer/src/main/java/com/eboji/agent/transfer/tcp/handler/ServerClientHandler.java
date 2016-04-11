@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.eboji.agent.handler.AgentServerClientMap;
 import com.eboji.agent.transfer.tcp.ServerClientTransfer;
 import com.eboji.model.common.MsgType;
+import com.eboji.model.constant.Constant;
 import com.eboji.model.message.BaseMsg;
 import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.LoginResMsg;
@@ -68,8 +69,8 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			LoginResMsg loginRes = (LoginResMsg)msg;
 			Channel channel = AgentServerClientMap.get(loginRes.getCid());
 			JSONObject obj = new JSONObject();
-			obj.put("uid", loginRes.getUid());
-			obj.put("t", MsgType.LOGINRES.toString());
+			obj.put(Constant.KEY_UID, loginRes.getUid());
+			obj.put(Constant.KEY_TYPE, MsgType.LOGINRES.toString());
 			if(loginRes.getStatus().equals("OK")) {
 				AgentServerClientMap.put(loginRes.getUid(), (SocketChannel)channel);
 				AgentServerClientMap.remove(loginRes.getCid());
@@ -97,7 +98,9 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			//进行游戏服务信息的解析，获取需要转发的数据
 			String uId = msg.getUid();
 			logger.info(JSONObject.toJSONString(msg));
-			AgentServerClientMap.get(uId).writeAndFlush(JSONObject.toJSONString(msg));
+			Channel channelU = AgentServerClientMap.get(uId);
+			if(channelU != null)
+				channelU.writeAndFlush(JSONObject.toJSONString(msg));
 			break;
 		}
 		

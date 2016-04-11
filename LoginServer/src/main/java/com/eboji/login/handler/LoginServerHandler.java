@@ -41,7 +41,6 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				LoginResMsg loginResMsg = new LoginResMsg();
 				loginResMsg.setCid(loginMsg.getCid());
 				if("robin".equals(loginMsg.getUsername()) && "robin".equals(loginMsg.getPassword())) {
-					logger.info("client " + loginMsg.getCid() + " Login SUCCESS!");
 					loginResMsg.setUid(loginMsg.getUid());
 					loginResMsg.setUid(String.valueOf(new Random(System.currentTimeMillis()).nextInt(9999)));
 					loginResMsg.setStatus("OK");

@@ -34,12 +34,14 @@ public class DataServerProcessor {
 		MjCreateResMsg retObj = new MjCreateResMsg();
 		retObj.setRemoteAddress(msg.getRemoteAddress());
 		retObj.setRoomNo(room.getRoomno());
+		retObj.setGid(msg.getGid());
+		retObj.setUid(msg.getUid());
 		ret = retObj;
 		
 		return ret;
 	}
 	
 	protected void login(DtLoginMsg msg) {
-		dataService.addLogin(Integer.parseInt(msg.getUid()), msg.getCid());
+		dataService.addLogin(Integer.parseInt(msg.getUid()), msg.getIp());
 	}
 }
