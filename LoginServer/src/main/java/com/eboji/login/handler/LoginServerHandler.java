@@ -10,11 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.eboji.commons.util.memcached.MemCacheClient;
+import com.eboji.login.server.transfer.facade.TransferFacade;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.message.BaseMsg;
 import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.LoginMsg;
 import com.eboji.model.message.LoginResMsg;
+import com.eboji.model.message.dt.DtLoginMsg;
 
 public class LoginServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(LoginServerHandler.class);
@@ -40,9 +42,17 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				loginResMsg.setCid(loginMsg.getCid());
 				if("robin".equals(loginMsg.getUsername()) && "robin".equals(loginMsg.getPassword())) {
 					logger.info("client " + loginMsg.getCid() + " Login SUCCESS!");
-					loginResMsg.setUid(String.valueOf(new Random(System.currentTimeMillis()).nextInt(9999)));
 					loginResMsg.setUid(loginMsg.getUid());
+					loginResMsg.setUid(String.valueOf(new Random(System.currentTimeMillis()).nextInt(9999)));
 					loginResMsg.setStatus("OK");
+					
+					//调用DataServer保存登录信息
+					DtLoginMsg dMsg = new DtLoginMsg();
+					dMsg.setCid(loginMsg.getCid());
+					dMsg.setGid(loginMsg.getGid());
+					dMsg.setUid(loginResMsg.getUid());
+					dMsg.setIp(loginMsg.getIp());
+					TransferFacade.facade(dMsg);
 				} else {
 					loginResMsg.setStatus("FAIL");
 				}
@@ -55,7 +65,7 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				ctx.channel().writeAndFlush(connResMsg);
 				
 			} else if(MsgType.PING.equals(msg.getT())) {
-				logger.info("client " + msg.getT() + " SUCCESS!");
+				logger.debug("client " + msg.getT() + " SUCCESS!");
 				
 				ConnResMsg connResMsg = new ConnResMsg();
 				connResMsg.setStatus("OK");

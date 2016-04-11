@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eboji.persist.dao.GfRewardMapper" >
+  <resultMap id="BaseResultMap" type="com.eboji.persist.pojo.GfReward" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="rewardmoney" property="rewardmoney" jdbcType="DECIMAL" />
+    <result column="rewardmoneytax" property="rewardmoneytax" jdbcType="DECIMAL" />
+    <result column="rewardcoin" property="rewardcoin" jdbcType="INTEGER" />
+    <result column="rewardcointax" property="rewardcointax" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uid, type, rewardmoney, rewardmoneytax, rewardcoin, rewardcointax, status, remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.eboji.persist.pojo.GfRewardExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from gf_reward
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from gf_reward
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from gf_reward
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.eboji.persist.pojo.GfRewardExample" >
+    delete from gf_reward
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GfReward" >
+    insert into gf_reward (id, uid, type, 
+      rewardmoney, rewardmoneytax, rewardcoin, 
+      rewardcointax, status, remark
+      )
+    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{rewardmoney,jdbcType=DECIMAL}, #{rewardmoneytax,jdbcType=DECIMAL}, #{rewardcoin,jdbcType=INTEGER}, 
+      #{rewardcointax,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GfReward" >
+    insert into gf_reward
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="rewardmoney != null" >
+        rewardmoney,
+      </if>
+      <if test="rewardmoneytax != null" >
+        rewardmoneytax,
+      </if>
+      <if test="rewardcoin != null" >
+        rewardcoin,
+      </if>
+      <if test="rewardcointax != null" >
+        rewardcointax,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="rewardmoney != null" >
+        #{rewardmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardmoneytax != null" >
+        #{rewardmoneytax,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardcoin != null" >
+        #{rewardcoin,jdbcType=INTEGER},
+      </if>
+      <if test="rewardcointax != null" >
+        #{rewardcointax,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.eboji.persist.pojo.GfRewardExample" resultType="java.lang.Integer" >
+    select count(*) from gf_reward
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update gf_reward
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.rewardmoney != null" >
+        rewardmoney = #{record.rewardmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.rewardmoneytax != null" >
+        rewardmoneytax = #{record.rewardmoneytax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.rewardcoin != null" >
+        rewardcoin = #{record.rewardcoin,jdbcType=INTEGER},
+      </if>
+      <if test="record.rewardcointax != null" >
+        rewardcointax = #{record.rewardcointax,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update gf_reward
+    set id = #{record.id,jdbcType=BIGINT},
+      uid = #{record.uid,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      rewardmoney = #{record.rewardmoney,jdbcType=DECIMAL},
+      rewardmoneytax = #{record.rewardmoneytax,jdbcType=DECIMAL},
+      rewardcoin = #{record.rewardcoin,jdbcType=INTEGER},
+      rewardcointax = #{record.rewardcointax,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eboji.persist.pojo.GfReward" >
+    update gf_reward
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="rewardmoney != null" >
+        rewardmoney = #{rewardmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardmoneytax != null" >
+        rewardmoneytax = #{rewardmoneytax,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardcoin != null" >
+        rewardcoin = #{rewardcoin,jdbcType=INTEGER},
+      </if>
+      <if test="rewardcointax != null" >
+        rewardcointax = #{rewardcointax,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eboji.persist.pojo.GfReward" >
+    update gf_reward
+    set uid = #{uid,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      rewardmoney = #{rewardmoney,jdbcType=DECIMAL},
+      rewardmoneytax = #{rewardmoneytax,jdbcType=DECIMAL},
+      rewardcoin = #{rewardcoin,jdbcType=INTEGER},
+      rewardcointax = #{rewardcointax,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

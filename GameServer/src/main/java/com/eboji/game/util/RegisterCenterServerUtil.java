@@ -18,15 +18,14 @@ public class RegisterCenterServerUtil {
 			String host = components[0];
 			int port = Integer.parseInt(components[1]);
 			
-			String serviceaddress = host + Constant.STR_COLON + port;
 			ServerClientConnection client = new ServerClientConnection(port, host);
-			ServerClientTransfer.getSocketChannelMap().put(serviceaddress, client.getSocketChannel());
+			ServerClientTransfer.getSocketChannelMap().put(service, client.getSocketChannel());
 			Set<String> sets = ServerClientTransfer.getServiceMap().get(Constant.SRV_CENTER);
 			if(sets == null) {
 				sets = new HashSet<String>();
 			}
 			
-			sets.add(serviceaddress);
+			sets.add(service);
 			ServerClientTransfer.getServiceMap().put(Constant.SRV_CENTER, sets);
 		}
 		

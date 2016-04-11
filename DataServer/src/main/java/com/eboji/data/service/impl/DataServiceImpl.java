@@ -1,48 +1,111 @@
 package com.eboji.data.service.impl;
 
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.eboji.data.dao.BkAccountMapper;
-import com.eboji.data.dao.BkConsumeMapper;
-import com.eboji.data.dao.BkRechargeMapper;
-import com.eboji.data.dao.GameHistMapper;
-import com.eboji.data.dao.GameScoreMapper;
-import com.eboji.data.dao.GameTableMapper;
-import com.eboji.data.dao.WxUserMapper;
-import com.eboji.data.pojo.GameTable;
 import com.eboji.data.service.DataService;
+import com.eboji.model.util.RandomUtil;
+import com.eboji.persist.dao.GcOffDepositMapper;
+import com.eboji.persist.dao.GcRatioCoinMapper;
+import com.eboji.persist.dao.GcRatioTaxMapper;
+import com.eboji.persist.dao.GfRankMapper;
+import com.eboji.persist.dao.GfRewardMapper;
+import com.eboji.persist.dao.GfScoreMapper;
+import com.eboji.persist.dao.GgHistMapper;
+import com.eboji.persist.dao.GgRoomMapper;
+import com.eboji.persist.dao.GgRoomPlayerMapper;
+import com.eboji.persist.dao.GuLoginMapper;
+import com.eboji.persist.dao.GuUserMapper;
+import com.eboji.persist.pojo.GgRoom;
+import com.eboji.persist.pojo.GgRoomPlayer;
+import com.eboji.persist.pojo.GuLogin;
 
 @Service("dataService")
 public class DataServiceImpl implements DataService {
-	@Autowired
-	private BkAccountMapper bkAccountMapper;
+	private static final Logger logger = LoggerFactory.getLogger(DataServiceImpl.class);
 	
 	@Autowired
-	private BkConsumeMapper bkConsumeMapper;
+	GcOffDepositMapper gcOffDepositMapper;
 	
 	@Autowired
-	private BkRechargeMapper bkRechargeMapper;
+	GcRatioCoinMapper gcRatioCoinMapper;
 	
 	@Autowired
-	private GameHistMapper gameHistMapper;
+	GcRatioTaxMapper gcRatioTaxMapper;
 	
 	@Autowired
-	private GameScoreMapper gameScoreMapper;
+	GfRankMapper gfRankMapper;
 	
 	@Autowired
-	private GameTableMapper gameTableMapper;
+	GfRewardMapper gfRewardMapper;
 	
 	@Autowired
-	private WxUserMapper wxUserMapper;
+	GfScoreMapper gfScoreMapper;
+	
+	@Autowired
+	GgHistMapper ggHistMapper;
+	
+	@Autowired
+	GgRoomMapper ggRoomMapper;
+	
+	@Autowired
+	GgRoomPlayerMapper ggRoomPlayerMapper;
+	
+	@Autowired
+	GuLoginMapper guLoginMapper;
+
+	@Autowired
+	GuUserMapper guUserMapper;
+	
+	@Override
+	@Transactional
+	public GgRoom createRoom(int gameId, int gameType, long gamePrice, int uId) {
+		GgRoom room = null;
+		int count = 1;
+		int row = 0;
+		long start = System.currentTimeMillis();
+		while(true) {
+			try {
+				int roomNo = RandomUtil.getRandomRoomNo(10000, 99999);
+				room = new GgRoom();
+				room.setGameid(gameId);
+				room.setGametype(gameType);
+				room.setGameprice(gamePrice);
+				room.setRoomno(roomNo);
+				row = ggRoomMapper.insertSelective(room);
+				if(row > 0) 
+					break;
+			} catch (Exception e) {
+				count++;
+				
+				if(System.currentTimeMillis() - start >= 2000) {
+					break;
+				}
+			}
+		}
+		
+		logger.debug("生成房间号的次数:" + count);
+		
+		GgRoomPlayer roomPlayer = new GgRoomPlayer();
+		roomPlayer.setRoomid(room.getId());
+		roomPlayer.setEuid(uId);
+		roomPlayer.setCreatetime(new Date(System.currentTimeMillis()));
+		ggRoomPlayerMapper.insertSelective(roomPlayer);
+		
+		return room;
+	}
 
 	@Override
-	public int insGGTable(GameTable gt) {
-		int row = gameTableMapper.insertSelective(gt);
-		if(row > 0) {
-			return gt.getId();
-		} else {
-			return 0;
-		}
+	@Transactional
+	public void addLogin(int uId, String ip) {
+		GuLogin login = new GuLogin();
+		login.setUid(uId);
+		login.setIp(ip);
+		guLoginMapper.insertSelective(login);
 	}
 }

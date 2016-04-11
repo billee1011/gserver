@@ -17,8 +17,8 @@
 	</bean>
 	-->
 	
-	<!-- <context:property-placeholder location="classpath:jdbc.properties"/> -->
-	<context:property-placeholder location="file:${user.dir}/../conf/jdbc.properties"/>
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	<!-- <context:property-placeholder location="file:${user.dir}/../conf/jdbc.properties"/>-->
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
@@ -38,7 +38,7 @@
 	<tx:annotation-driven />
 
 	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.shijie99.scanner.dao" />
+		<property name="basePackage" value="com.eboji.persist.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
 </beans>

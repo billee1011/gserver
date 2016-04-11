@@ -54,7 +54,7 @@ public class ServerClientConnection {
 			ChannelFuture future =bootstrap.connect(host,port).sync();
 	        if (future.isSuccess()) {
 	            socketChannel = (SocketChannel)future.channel();
-	            logger.info("Connect login server [" + host + ":" + port + "] success");
+	            logger.info("Connect CenterServer [" + host + ":" + port + "] Success.");
 	        }
 	        
 //	        future.channel().closeFuture().sync();

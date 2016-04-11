@@ -109,7 +109,7 @@
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>../lib/</classpathPrefix>
 							<!-- 啟動類配置 -->
-							<mainClass>com.eboji.agent.bootstrap.Bootstrap</mainClass>
+							<mainClass>com.eboji.data.bootstrap.DataServerBootstrap</mainClass>
 						</manifest>
 					</archive>
 					<outputDirectory>${project.build.directory}/bin</outputDirectory>

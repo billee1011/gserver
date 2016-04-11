@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eboji.persist.dao.GgHistMapper" >
+  <resultMap id="BaseResultMap" type="com.eboji.persist.pojo.GgHist" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="roomid" property="roomid" jdbcType="BIGINT" />
+    <result column="playerid" property="playerid" jdbcType="INTEGER" />
+    <result column="optype" property="optype" jdbcType="INTEGER" />
+    <result column="opcard" property="opcard" jdbcType="VARCHAR" />
+    <result column="incard" property="incard" jdbcType="VARCHAR" />
+    <result column="outcard" property="outcard" jdbcType="VARCHAR" />
+    <result column="round" property="round" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, roomid, playerid, optype, opcard, incard, outcard, round, createtime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.eboji.persist.pojo.GgHistExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from gg_hist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from gg_hist
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from gg_hist
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.eboji.persist.pojo.GgHistExample" >
+    delete from gg_hist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GgHist" >
+    insert into gg_hist (id, roomid, playerid, 
+      optype, opcard, incard, 
+      outcard, round, createtime
+      )
+    values (#{id,jdbcType=BIGINT}, #{roomid,jdbcType=BIGINT}, #{playerid,jdbcType=INTEGER}, 
+      #{optype,jdbcType=INTEGER}, #{opcard,jdbcType=VARCHAR}, #{incard,jdbcType=VARCHAR}, 
+      #{outcard,jdbcType=VARCHAR}, #{round,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GgHist" >
+    insert into gg_hist
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="roomid != null" >
+        roomid,
+      </if>
+      <if test="playerid != null" >
+        playerid,
+      </if>
+      <if test="optype != null" >
+        optype,
+      </if>
+      <if test="opcard != null" >
+        opcard,
+      </if>
+      <if test="incard != null" >
+        incard,
+      </if>
+      <if test="outcard != null" >
+        outcard,
+      </if>
+      <if test="round != null" >
+        round,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="roomid != null" >
+        #{roomid,jdbcType=BIGINT},
+      </if>
+      <if test="playerid != null" >
+        #{playerid,jdbcType=INTEGER},
+      </if>
+      <if test="optype != null" >
+        #{optype,jdbcType=INTEGER},
+      </if>
+      <if test="opcard != null" >
+        #{opcard,jdbcType=VARCHAR},
+      </if>
+      <if test="incard != null" >
+        #{incard,jdbcType=VARCHAR},
+      </if>
+      <if test="outcard != null" >
+        #{outcard,jdbcType=VARCHAR},
+      </if>
+      <if test="round != null" >
+        #{round,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.eboji.persist.pojo.GgHistExample" resultType="java.lang.Integer" >
+    select count(*) from gg_hist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update gg_hist
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.roomid != null" >
+        roomid = #{record.roomid,jdbcType=BIGINT},
+      </if>
+      <if test="record.playerid != null" >
+        playerid = #{record.playerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.optype != null" >
+        optype = #{record.optype,jdbcType=INTEGER},
+      </if>
+      <if test="record.opcard != null" >
+        opcard = #{record.opcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.incard != null" >
+        incard = #{record.incard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outcard != null" >
+        outcard = #{record.outcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.round != null" >
+        round = #{record.round,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update gg_hist
+    set id = #{record.id,jdbcType=BIGINT},
+      roomid = #{record.roomid,jdbcType=BIGINT},
+      playerid = #{record.playerid,jdbcType=INTEGER},
+      optype = #{record.optype,jdbcType=INTEGER},
+      opcard = #{record.opcard,jdbcType=VARCHAR},
+      incard = #{record.incard,jdbcType=VARCHAR},
+      outcard = #{record.outcard,jdbcType=VARCHAR},
+      round = #{record.round,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eboji.persist.pojo.GgHist" >
+    update gg_hist
+    <set >
+      <if test="roomid != null" >
+        roomid = #{roomid,jdbcType=BIGINT},
+      </if>
+      <if test="playerid != null" >
+        playerid = #{playerid,jdbcType=INTEGER},
+      </if>
+      <if test="optype != null" >
+        optype = #{optype,jdbcType=INTEGER},
+      </if>
+      <if test="opcard != null" >
+        opcard = #{opcard,jdbcType=VARCHAR},
+      </if>
+      <if test="incard != null" >
+        incard = #{incard,jdbcType=VARCHAR},
+      </if>
+      <if test="outcard != null" >
+        outcard = #{outcard,jdbcType=VARCHAR},
+      </if>
+      <if test="round != null" >
+        round = #{round,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eboji.persist.pojo.GgHist" >
+    update gg_hist
+    set roomid = #{roomid,jdbcType=BIGINT},
+      playerid = #{playerid,jdbcType=INTEGER},
+      optype = #{optype,jdbcType=INTEGER},
+      opcard = #{opcard,jdbcType=VARCHAR},
+      incard = #{incard,jdbcType=VARCHAR},
+      outcard = #{outcard,jdbcType=VARCHAR},
+      round = #{round,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

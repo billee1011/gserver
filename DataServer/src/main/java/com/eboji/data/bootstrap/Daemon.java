@@ -6,8 +6,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.eboji.data.bootstrap.config.SpringConfiguration;
-import com.eboji.data.handler.DataServerProcessor;
 import com.eboji.data.server.DataServerListener;
+import com.eboji.data.service.DataService;
 import com.eboji.data.util.ConfigUtil;
 
 public class Daemon {
@@ -15,7 +15,7 @@ public class Daemon {
 	
 	private static final Daemon daemon = new Daemon();
 	
-	private int port = 9091;
+	private int port = 9093;
 	
 	private ApplicationContext context = null;
 
@@ -39,23 +39,23 @@ public class Daemon {
 	}
 
 	/**
-	 * AgentServer启动
+	 * DataServer启动
 	 */
 	public void start() throws Exception {
 		logger.info("DataServer is starting.");
-		DataServerProcessor dataProcessor = (DataServerProcessor)context.getBean("dataProcessor");
-		new DataServerListener(getPort(), ConfigUtil.getClient(), dataProcessor);
+		DataService dataService = (DataService)context.getBean("dataService");
+		new DataServerListener(getPort(), ConfigUtil.getClient(), dataService);
 	}
 
 	/**
-	 * AgentServer重新启动
+	 * DataServer重新启动
 	 */
 	public void restart() {
 
 	}
 
 	/**
-	 * AgentServer停止
+	 * DataServer停止
 	 */
 	public void stop() {
 		

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eboji.persist.dao.GgRoomPlayerMapper" >
+  <resultMap id="BaseResultMap" type="com.eboji.persist.pojo.GgRoomPlayer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="euid" property="euid" jdbcType="INTEGER" />
+    <result column="suid" property="suid" jdbcType="INTEGER" />
+    <result column="wuid" property="wuid" jdbcType="INTEGER" />
+    <result column="nuid" property="nuid" jdbcType="INTEGER" />
+    <result column="roomid" property="roomid" jdbcType="BIGINT" />
+    <result column="round" property="round" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="lastdate" property="lastdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, euid, suid, wuid, nuid, roomid, round, createtime, lastdate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.eboji.persist.pojo.GgRoomPlayerExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from gg_room_player
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from gg_room_player
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gg_room_player
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.eboji.persist.pojo.GgRoomPlayerExample" >
+    delete from gg_room_player
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GgRoomPlayer" >
+    insert into gg_room_player (id, euid, suid, 
+      wuid, nuid, roomid, 
+      round, createtime, lastdate
+      )
+    values (#{id,jdbcType=INTEGER}, #{euid,jdbcType=INTEGER}, #{suid,jdbcType=INTEGER}, 
+      #{wuid,jdbcType=INTEGER}, #{nuid,jdbcType=INTEGER}, #{roomid,jdbcType=BIGINT}, 
+      #{round,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{lastdate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GgRoomPlayer" >
+    insert into gg_room_player
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="euid != null" >
+        euid,
+      </if>
+      <if test="suid != null" >
+        suid,
+      </if>
+      <if test="wuid != null" >
+        wuid,
+      </if>
+      <if test="nuid != null" >
+        nuid,
+      </if>
+      <if test="roomid != null" >
+        roomid,
+      </if>
+      <if test="round != null" >
+        round,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="lastdate != null" >
+        lastdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="euid != null" >
+        #{euid,jdbcType=INTEGER},
+      </if>
+      <if test="suid != null" >
+        #{suid,jdbcType=INTEGER},
+      </if>
+      <if test="wuid != null" >
+        #{wuid,jdbcType=INTEGER},
+      </if>
+      <if test="nuid != null" >
+        #{nuid,jdbcType=INTEGER},
+      </if>
+      <if test="roomid != null" >
+        #{roomid,jdbcType=BIGINT},
+      </if>
+      <if test="round != null" >
+        #{round,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastdate != null" >
+        #{lastdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.eboji.persist.pojo.GgRoomPlayerExample" resultType="java.lang.Integer" >
+    select count(*) from gg_room_player
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update gg_room_player
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.euid != null" >
+        euid = #{record.euid,jdbcType=INTEGER},
+      </if>
+      <if test="record.suid != null" >
+        suid = #{record.suid,jdbcType=INTEGER},
+      </if>
+      <if test="record.wuid != null" >
+        wuid = #{record.wuid,jdbcType=INTEGER},
+      </if>
+      <if test="record.nuid != null" >
+        nuid = #{record.nuid,jdbcType=INTEGER},
+      </if>
+      <if test="record.roomid != null" >
+        roomid = #{record.roomid,jdbcType=BIGINT},
+      </if>
+      <if test="record.round != null" >
+        round = #{record.round,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastdate != null" >
+        lastdate = #{record.lastdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update gg_room_player
+    set id = #{record.id,jdbcType=INTEGER},
+      euid = #{record.euid,jdbcType=INTEGER},
+      suid = #{record.suid,jdbcType=INTEGER},
+      wuid = #{record.wuid,jdbcType=INTEGER},
+      nuid = #{record.nuid,jdbcType=INTEGER},
+      roomid = #{record.roomid,jdbcType=BIGINT},
+      round = #{record.round,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      lastdate = #{record.lastdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eboji.persist.pojo.GgRoomPlayer" >
+    update gg_room_player
+    <set >
+      <if test="euid != null" >
+        euid = #{euid,jdbcType=INTEGER},
+      </if>
+      <if test="suid != null" >
+        suid = #{suid,jdbcType=INTEGER},
+      </if>
+      <if test="wuid != null" >
+        wuid = #{wuid,jdbcType=INTEGER},
+      </if>
+      <if test="nuid != null" >
+        nuid = #{nuid,jdbcType=INTEGER},
+      </if>
+      <if test="roomid != null" >
+        roomid = #{roomid,jdbcType=BIGINT},
+      </if>
+      <if test="round != null" >
+        round = #{round,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastdate != null" >
+        lastdate = #{lastdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eboji.persist.pojo.GgRoomPlayer" >
+    update gg_room_player
+    set euid = #{euid,jdbcType=INTEGER},
+      suid = #{suid,jdbcType=INTEGER},
+      wuid = #{wuid,jdbcType=INTEGER},
+      nuid = #{nuid,jdbcType=INTEGER},
+      roomid = #{roomid,jdbcType=BIGINT},
+      round = #{round,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      lastdate = #{lastdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

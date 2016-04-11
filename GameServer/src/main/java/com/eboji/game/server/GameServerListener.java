@@ -53,7 +53,7 @@ public class GameServerListener {
 			
 			ChannelFuture f = bootstrap.bind(port).sync();
 			if(f.isSuccess()) {
-				logger.info("Login Server listened in port " + this.port + " started.");
+				logger.info("Game Server listened in port: " + this.port + " started.");
 				
 				RegisterCenterServerUtil.registerService();
 			}

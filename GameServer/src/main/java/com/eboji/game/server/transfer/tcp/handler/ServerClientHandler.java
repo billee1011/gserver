@@ -11,6 +11,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.eboji.game.handler.GameServerClientMap;
 import com.eboji.game.server.transfer.tcp.ServerClientTransfer;
 import com.eboji.game.util.ConfigUtil;
 import com.eboji.model.common.MsgType;
@@ -19,6 +20,7 @@ import com.eboji.model.message.ConnMsg;
 import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.PingMsg;
 import com.eboji.model.message.RegisterResMsg;
+import com.eboji.model.message.mj.MjCreateResMsg;
 
 public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(ServerClientHandler.class);
@@ -71,6 +73,11 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			
 			logger.info("接收中心注册信息成功!");
 			break;
+			
+		case MJ_CREATERES:
+			MjCreateResMsg mjMsg = (MjCreateResMsg)msg;
+			GameServerClientMap.get(mjMsg.getRemoteAddress()).writeAndFlush(mjMsg);
+			break;
 		default:
 			break;
 		}
@@ -81,6 +88,10 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
-		logger.info("remote address: " + ctx.channel().remoteAddress() + ", " + cause.getMessage());
+		//删除相应的连接
+		String remote = ctx.channel().remoteAddress().toString();
+		String remoteAddress = remote.substring(1);
+		ServerClientTransfer.remove(remoteAddress);
+		logger.error("remote address: " + ctx.channel().remoteAddress() + ", " + cause.getMessage());
 	}
 }

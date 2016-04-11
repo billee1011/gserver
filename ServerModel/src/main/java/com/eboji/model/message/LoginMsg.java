@@ -9,6 +9,8 @@ public class LoginMsg extends BaseMsg {
 	
 	private String password;
 	
+	private String ip;
+	
 	public LoginMsg() {
 		super();
 		setT(MsgType.LOGIN);
@@ -28,5 +30,13 @@ public class LoginMsg extends BaseMsg {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 }

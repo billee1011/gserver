@@ -9,4 +9,34 @@ public class MjCreateMsg extends MjBaseMsg {
 		super();
 		setT(MsgType.MJ_CREATE);
 	}
+	
+	public int gameType;
+	
+	public long gamePrice;
+	
+	public String remoteAddress;
+
+	public int getGameType() {
+		return gameType;
+	}
+
+	public void setGameType(int gameType) {
+		this.gameType = gameType;
+	}
+
+	public long getGamePrice() {
+		return gamePrice;
+	}
+
+	public void setGamePrice(long gamePrice) {
+		this.gamePrice = gamePrice;
+	}
+
+	public String getRemoteAddress() {
+		return remoteAddress;
+	}
+
+	public void setRemoteAddress(String remoteAddress) {
+		this.remoteAddress = remoteAddress;
+	}
 }

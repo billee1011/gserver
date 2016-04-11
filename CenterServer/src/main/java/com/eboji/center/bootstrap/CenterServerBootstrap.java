@@ -79,11 +79,11 @@ public class CenterServerBootstrap {
 				} else if(command.equals("stop")) {
 					daemon.stop();
 				} else {
-					logger.warn("CenterServerBootstrap: command \"" + command + "\" does not exist.");
+					logger.warn("CenterServer Bootstrap: command \"" + command + "\" does not exist.");
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Center Server started fail!", e);
+			logger.error("CenterServer started fail!", e);
 			System.exit(-1);
 		}
 	}

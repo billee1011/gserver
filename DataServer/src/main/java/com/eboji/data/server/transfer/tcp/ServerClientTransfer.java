@@ -3,6 +3,7 @@ package com.eboji.data.server.transfer.tcp;
 import io.netty.channel.socket.SocketChannel;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,6 +38,18 @@ public class ServerClientTransfer {
 		ServerClientTransfer.serviceMap = serviceMap;
 	}
 	
+	public static void remove(String remoteAddress) {
+		socketChannelMap.remove(remoteAddress);
+		Iterator<Integer> iter = serviceMap.keySet().iterator();
+		while(iter.hasNext()) {
+			int key = iter.next();
+			if(serviceMap.get(key).contains(remoteAddress)) {
+				serviceMap.get(key).remove(remoteAddress);
+				break;
+			}
+		}
+	}
+	
 	public static void parse(Map<Integer, Set<String>> _serviceMap) {
 		Map<Integer, Set<String>> needSets = findNeedInitial(_serviceMap);
 		
@@ -55,6 +68,31 @@ public class ServerClientTransfer {
 				
 				sets.add(serviceaddress);
 				ServerClientTransfer.getServiceMap().put(entry.getKey(), sets);
+			}
+		}
+		printConnections();
+	}
+	
+	protected static void printConnections() {
+		if(serviceMap.size() > 0)
+			logger.info("建立的TCP连接:");
+		
+		Map<Integer, Set<String>> serviceMap = ServerClientTransfer.getServiceMap();
+		Iterator<Integer> iter = serviceMap.keySet().iterator();
+		while(iter.hasNext()) {
+			int key = iter.next();
+			if(key == Constant.SRV_AGENT) {
+				logger.info("--->代理服务:" + serviceMap.get(key).toString());
+			} else if(key == Constant.SRV_LOGIN) {
+				logger.info("--->登录服务:" + serviceMap.get(key).toString());
+			} else if(key == Constant.SRV_GAME) {
+				logger.info("--->游戏服务:" + serviceMap.get(key).toString());
+			} else if(key == Constant.SRV_DATA) {
+				logger.info("--->数据服务:" + serviceMap.get(key).toString());
+			} else if(key == Constant.SRV_IM) {
+				logger.info("--->消息服务:" + serviceMap.get(key).toString());
+			} else if(key == Constant.SRV_CENTER) {
+				logger.info("--->中心服务:" + serviceMap.get(key).toString());
 			}
 		}
 	}
@@ -112,10 +150,6 @@ public class ServerClientTransfer {
 
 	public static void write(Object obj) {
 		for(Map.Entry<String, SocketChannel> entry : socketChannelMap.entrySet()) {
-			String key = entry.getKey();
-			
-			logger.info("send request to [" + key +  "]");
-			
 			entry.getValue().writeAndFlush(obj);
 		}
 	}

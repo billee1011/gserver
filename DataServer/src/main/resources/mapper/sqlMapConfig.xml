@@ -20,12 +20,17 @@
 	</plugins>
 	
 	<mappers>
-		<mapper resource="mapper/BkAccountMapper.xml "/>
-		<mapper resource="mapper/BkConsumeMapper.xml "/>
-		<mapper resource="mapper/BkRechargeMapper.xml "/>
-		<mapper resource="mapper/BkGGHistMapper.xml "/>
-		<mapper resource="mapper/BkGGScoreMapper.xml "/>
-		<mapper resource="mapper/BkGGTableMapper.xml "/>
-		<mapper resource="mapper/WxUserMapper.xml "/>
+		<mapper resource="mapper/GcOffDepositMapper.xml "/>
+		<mapper resource="mapper/GcRatioCoinMapper.xml "/>
+		<mapper resource="mapper/GcRatioTaxMapper.xml "/>
+		<mapper resource="mapper/GfRankMapper.xml "/>
+		<mapper resource="mapper/GfRewardMapper.xml "/>
+		<mapper resource="mapper/GfScoreMapper.xml "/>
+		<mapper resource="mapper/GgHistMapper.xml "/>
+		<mapper resource="mapper/GgRoomMapper.xml "/>
+		<mapper resource="mapper/GgRoomPlayerMapper.xml "/>
+		<mapper resource="mapper/GuDepositMapper.xml "/>
+		<mapper resource="mapper/GuLoginMapper.xml "/>
+		<mapper resource="mapper/GuUserMapper.xml "/>
 	</mappers>
 </configuration>

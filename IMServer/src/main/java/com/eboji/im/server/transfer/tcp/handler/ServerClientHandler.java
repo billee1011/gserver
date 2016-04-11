@@ -81,6 +81,10 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
+		//删除相应的连接
+		String remote = ctx.channel().remoteAddress().toString();
+		String remoteAddress = remote.substring(1);
+		ServerClientTransfer.remove(remoteAddress);
 		logger.info("remote address: " + ctx.channel().remoteAddress() + ", " + cause.getMessage());
 	}
 }

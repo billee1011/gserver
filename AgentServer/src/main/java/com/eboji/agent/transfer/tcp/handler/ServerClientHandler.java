@@ -16,10 +16,8 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.eboji.agent.handler.AgentServerClientMap;
 import com.eboji.agent.transfer.tcp.ServerClientTransfer;
-import com.eboji.agent.util.ConfigUtil;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.message.BaseMsg;
-import com.eboji.model.message.ConnMsg;
 import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.LoginResMsg;
 import com.eboji.model.message.PingMsg;
@@ -49,10 +47,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		ConnMsg conn = new ConnMsg();
-		conn.setCid(ConfigUtil.getProps("serverid"));
-		
-		//ctx.writeAndFlush(conn);
+		logger.debug("channel active.");
 	}
 
 	@Override
@@ -66,21 +61,28 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			
 		case CONNRES:
 			ConnResMsg connResMsg = (ConnResMsg)msg;
-			logger.info("receive server msg: " + connResMsg.getStatus());
+			logger.debug("receive server msg: " + connResMsg.getStatus());
 			break;
 			
 		case LOGINRES:
 			LoginResMsg loginRes = (LoginResMsg)msg;
 			Channel channel = AgentServerClientMap.get(loginRes.getCid());
+			JSONObject obj = new JSONObject();
+			obj.put("uid", loginRes.getUid());
+			obj.put("t", MsgType.LOGINRES.toString());
 			if(loginRes.getStatus().equals("OK")) {
 				AgentServerClientMap.put(loginRes.getUid(), (SocketChannel)channel);
 				AgentServerClientMap.remove(loginRes.getCid());
 				AgentServerClientMap.printCount();
 				
-				logger.info("用户[" + loginRes.getUid() +"]登陆成功!"); 
-				channel.writeAndFlush("{\"status\": \"1\", \"message\": \"Login Success\", \"uid\": \"UID\"}");
+				logger.info("用户[" + loginRes.getUid() +"]登陆成功!");
+				obj.put("status", "1");
+				obj.put("message", "Login Success");
+				channel.writeAndFlush(obj.toJSONString());
 			} else {
-				channel.writeAndFlush("{\"status\": \"-1\", \"message\": \"Login Failed\", \"uid\": \"FAILE UID\"}");
+				obj.put("status", "-1");
+				obj.put("message", "Login Failed");
+				channel.writeAndFlush(obj.toJSONString());
 			}
 			break;
 			
@@ -94,7 +96,8 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		default:
 			//进行游戏服务信息的解析，获取需要转发的数据
 			String uId = msg.getUid();
-			AgentServerClientMap.get(uId).writeAndFlush(JSONObject.toJSON(msg).toString());
+			logger.info(JSONObject.toJSONString(msg));
+			AgentServerClientMap.get(uId).writeAndFlush(JSONObject.toJSONString(msg));
 			break;
 		}
 		
@@ -104,6 +107,10 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
-		logger.info("remote address: " + ctx.channel().remoteAddress() + ", " + cause.getMessage());
+		//删除相应的连接
+		String remote = ctx.channel().remoteAddress().toString();
+		String remoteAddress = remote.substring(1);
+		ServerClientTransfer.remove(remoteAddress);
+		logger.error("remote address: " + ctx.channel().remoteAddress() + "," + cause.getMessage());
 	}
 }

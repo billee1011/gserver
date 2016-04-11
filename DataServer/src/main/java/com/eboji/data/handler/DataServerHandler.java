@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.eboji.commons.util.memcached.MemCacheClient;
+import com.eboji.data.service.DataService;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.message.BaseMsg;
 
@@ -18,9 +19,9 @@ public class DataServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	
 	protected DataServerProcessor dataProcessor = null;
 	
-	public DataServerHandler(MemCacheClient memCacheClient, DataServerProcessor dataProcessor) {
+	public DataServerHandler(MemCacheClient memCacheClient, DataService dataService) {
 		this.memCacheClient = memCacheClient;
-		this.dataProcessor = dataProcessor;
+		this.dataProcessor = new DataServerProcessor(dataService);
 	}
 	
 	@Override
@@ -45,18 +46,17 @@ public class DataServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			case PING:
 				break;
 
-			case DT_INSGGTABLE:
+			case DT_CREGGROOM:
+			case DT_LOGIN:
 				dataProcessor.process(msg, ctx.channel().remoteAddress().toString());
 				break;
 				
-			case DT_INSGGTABLERS:
-				break;
 			default:
 				break;
 			}
 			
 		} catch (Exception e) {
-			logger.error("request param is not json object, request msg is:\n" + msg);
+			logger.error("request param is not json object, request msg is:\n" + msg, e);
 		}
 	}
 	

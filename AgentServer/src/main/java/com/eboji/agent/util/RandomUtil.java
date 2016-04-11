@@ -50,17 +50,25 @@ public class RandomUtil {
 		return getRandomChars(4) + getGUID();
 	}
 	
+	public static int getRandomRoomNo(int start, int end) {
+		return (int)(Math.random() * (end - start) + start);
+	}
+	
 	public static void main(String[] args) {
 		long start = System.currentTimeMillis();
 		String str = getRandomChars(4) + getGUID();
 		System.out.println("产生" + str + "耗时:" + (System.currentTimeMillis() - start) + "ms");
 		
 		Set<String> sets = new HashSet<String>();
-		int size = 10000000;
+		int size = 10;
 		for(int i = 0; i < size; i++) {
 			sets.add(getRandomChars(4) + getGUID());
 		}
 		
 		System.out.println("重复的串个数为:" + (size - sets.size()));
+		
+		for(int i = 0; i < 100; i++) {
+			System.out.println(getRandomRoomNo(10000, 99999));
+		}
 	}
 }

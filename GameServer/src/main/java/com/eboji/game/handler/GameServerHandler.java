@@ -48,7 +48,7 @@ public class GameServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			case CONN:
 			case PING:
 			case REG:
-				logger.info("client " + msg.getT() + " SUCCESS!");
+				logger.debug("client " + msg.getT() + " SUCCESS!");
 				break;
 			default:
 				//处理游戏逻辑

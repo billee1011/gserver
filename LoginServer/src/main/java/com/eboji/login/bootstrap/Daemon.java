@@ -14,7 +14,7 @@ public class Daemon {
 	
 	private static final Daemon daemon = new Daemon();
 	
-	private int port = 9094;
+	private int port = 9091;
 	
 	private ApplicationContext context = null;
 

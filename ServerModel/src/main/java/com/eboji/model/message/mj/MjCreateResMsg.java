@@ -9,4 +9,14 @@ public class MjCreateResMsg extends MjBaseMsg {
 		super();
 		setT(MsgType.MJ_CREATERES);
 	}
+	
+	private String remoteAddress;
+
+	public String getRemoteAddress() {
+		return remoteAddress;
+	}
+
+	public void setRemoteAddress(String remoteAddress) {
+		this.remoteAddress = remoteAddress;
+	}
 }

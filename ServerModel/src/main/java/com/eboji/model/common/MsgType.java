@@ -41,8 +41,11 @@ public enum MsgType {
 	/**
 	 * 数据服务类消息定义
 	 */
-	DT_INSGGTABLE("DtInsGGTableMsg"),		//存储开房信息
-	DT_INSGGTABLERS("DtInsGGTableRsMsg"),	//存储开房信息响应返回
+	DT_CREGGROOM("DtCreGGRoomMsg"),		//存储开房信息
+	DT_CREGGROOMRS("DtCreGGRoomRsMsg"),	//存储开房信息响应返回
+	
+	DT_LOGIN("DtLoginMsg"),					//存储登录信息
+	DT_LOGOUT("DtLogoutMsg"),				//存储登出消息
 	
 	ASK("AskMsg"),
 	 

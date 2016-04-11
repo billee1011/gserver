@@ -1,7 +1,10 @@
 package com.eboji.data.service;
 
-import com.eboji.data.pojo.GameTable;
+import com.eboji.persist.pojo.GgRoom;
+
 
 public interface DataService {
-	public int insGGTable(GameTable gt);
+	GgRoom createRoom(int gameId, int gameType, long gamePrice, int uId);
+	
+	void addLogin(int uId, String ip);
 }

@@ -9,13 +9,13 @@ public class MjBaseMsg extends BaseMsg {
 		super();
 	}
 	
-	public String deskId;
+	private int roomNo;
 
-	public String getDeskId() {
-		return deskId;
+	public int getRoomNo() {
+		return roomNo;
 	}
 
-	public void setDeskId(String deskId) {
-		this.deskId = deskId;
+	public void setRoomNo(int roomNo) {
+		this.roomNo = roomNo;
 	}
 }

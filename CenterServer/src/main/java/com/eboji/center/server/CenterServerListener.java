@@ -51,7 +51,7 @@ public class CenterServerListener {
 			
 			ChannelFuture f = bootstrap.bind(port).sync();
 			if(f.isSuccess()) {
-				logger.info("Center Server listened in port " + this.port + " started.");
+				logger.info("CenterServer listened in port " + this.port + " started.");
 				
 				//RegisterServiceUtil.registerService();
 			}
