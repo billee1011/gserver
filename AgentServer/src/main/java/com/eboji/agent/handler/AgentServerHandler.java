@@ -78,6 +78,7 @@ public class AgentServerHandler extends SimpleChannelInboundHandler<String> {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
-		logger.error("remote address: " + ctx.channel().remoteAddress(), cause); 
+		AgentServerClientMap.remove((SocketChannel)ctx.channel());
+		logger.error("remote address: " + ctx.channel().remoteAddress() + "," + cause.getMessage()); 
 	}
 }
