@@ -90,6 +90,8 @@
 			                		token="project-version" value="${pkg-version}" />
 			                	<copy file="${project.build.directory}/classes/config.properties" 
 			                	 	tofile="${project.build.directory}/conf/config.properties"/>
+			                	<copy file="${project.build.directory}/classes/jdbc.properties" 
+			                	 	tofile="${project.build.directory}/conf/jdbc.properties"/>
 			                	<copy file="${project.build.directory}/classes/logback.xml"
 			                		tofile="${project.build.directory}/conf/logback.xml" />
 			                </tasks>  

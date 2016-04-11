@@ -10,7 +10,7 @@
 -->
 <configuration scan="true" scanPeriod="60" debug="true">
 	<!-- 属性设置 -->
-	<property name="APP_NAME" value="CenterServer" />
+	<property name="APP_NAME" value="DataServer" />
 	
 	<!-- 上下文名称,用于区分不同应用程序的记录,默认为"default" -->
 	<contextName>${APP_NAME}</contextName>
@@ -26,7 +26,7 @@
  
     <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>../logs/agentserver-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>../logs/dataserver-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
  
