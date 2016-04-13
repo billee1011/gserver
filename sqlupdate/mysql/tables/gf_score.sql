@@ -10,24 +10,22 @@ Target Server Type    : MYSQL
 Target Server Version : 50626
 File Encoding         : 65001
 
-Date: 2016-04-13 13:20:34
+Date: 2016-04-13 13:20:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for gg_hist
+-- Table structure for gf_score
 -- ----------------------------
-DROP TABLE IF EXISTS `gg_hist`;
-CREATE TABLE `gg_hist` (
+DROP TABLE IF EXISTS `gf_score`;
+CREATE TABLE `gf_score` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `roomid` bigint(20) DEFAULT NULL,
-  `playerid` int(11) DEFAULT NULL COMMENT '玩家id',
-  `optype` int(11) DEFAULT NULL COMMENT '玩家操作类型(0:起手牌,1:摸牌,2:碰牌,3:暗杠,4:明杠,5:胡牌,6:抢杠胡,等...)',
-  `opcard` varchar(20) DEFAULT NULL COMMENT '起手牌或上个玩家的出牌',
-  `incard` varchar(2) DEFAULT NULL COMMENT '摸牌,杠牌,碰牌的牌',
-  `outcard` varchar(2) DEFAULT NULL COMMENT '出牌',
+  `roomid` bigint(20) NOT NULL COMMENT '房间id',
   `round` int(11) DEFAULT NULL COMMENT '第几局',
+  `uid` int(11) DEFAULT NULL COMMENT '用户id',
+  `score` int(11) DEFAULT NULL COMMENT '用户本局分数',
   `createtime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注说明',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

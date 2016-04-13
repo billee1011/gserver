@@ -1,5 +1,6 @@
 package com.eboji.data.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -75,6 +76,8 @@ public class DataServiceImpl implements DataService {
 		int count = 1;
 		int row = 0;
 		long start = System.currentTimeMillis();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String remark = sdf.format(new Date(start));
 		while(true) {
 			try {
 				int roomNo = RandomUtil.getRandomRoomNo(10000, 99999);
@@ -85,6 +88,7 @@ public class DataServiceImpl implements DataService {
 				room.setRoomno(roomNo);
 				room.setRound(1);
 				room.setPlayers(1);
+				room.setRemark(remark);
 				row = ggRoomMapper.insertSelective(room);
 				if(row > 0) 
 					break;
