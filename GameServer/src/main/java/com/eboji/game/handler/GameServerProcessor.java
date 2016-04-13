@@ -43,12 +43,12 @@ public class GameServerProcessor {
 		if(obj instanceof MjCreateMsg) {
 			//创建房间处理逻辑
 			MjCreateMsg createMsg = (MjCreateMsg)obj;
-			createMsg.setRemoteAddress(remoteAddress);
+			createMsg.setRas(remoteAddress);
 			createRoom(client, createMsg);
 		} else if(obj instanceof MjJoinMsg) {
 			//加入房间处理逻辑
 			MjJoinMsg joinMsg = (MjJoinMsg)obj;
-			joinMsg.setRemoteAddress(remoteAddress);
+			joinMsg.setRas(remoteAddress);
 			joinRoom(client, joinMsg);
 		} else {
 			//游戏处理逻辑总开关
@@ -63,11 +63,10 @@ public class GameServerProcessor {
 			DtCreGGRoomMsg msg = new DtCreGGRoomMsg();
 			msg.setCid(mjMsg.getCid());
 			msg.setGid(mjMsg.getGid());
-			msg.setPosition(0);
 			msg.setUid(mjMsg.getUid());
 			msg.setGamePrice(mjMsg.getGamePrice());
 			msg.setGameType(mjMsg.getGameType());
-			msg.setRemoteAddress(mjMsg.getRemoteAddress());
+			msg.setRas(mjMsg.getRas());
 			TransferFacade.facade(msg);
 		}
 	}

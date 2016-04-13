@@ -11,21 +11,9 @@ public class DtCreGGRoomMsg extends BaseMsg {
 		setT(MsgType.DT_CREGGROOM);
 	}
 	
-	private int position;
-	
 	public int gameType;
 	
 	public long gamePrice;
-	
-	public String remoteAddress;
-
-	public int getPosition() {
-		return position;
-	}
-
-	public void setPosition(int position) {
-		this.position = position;
-	}
 
 	public int getGameType() {
 		return gameType;
@@ -41,13 +29,5 @@ public class DtCreGGRoomMsg extends BaseMsg {
 
 	public void setGamePrice(long gamePrice) {
 		this.gamePrice = gamePrice;
-	}
-
-	public String getRemoteAddress() {
-		return remoteAddress;
-	}
-
-	public void setRemoteAddress(String remoteAddress) {
-		this.remoteAddress = remoteAddress;
 	}
 }

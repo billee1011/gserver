@@ -124,20 +124,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.eboji.persist.pojo.GuUser" >
-    insert into gu_user (id, username, nickname, 
-      iconurl, coin, remark, 
-      icon)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{iconurl,jdbcType=VARCHAR}, #{coin,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, 
-      #{icon,jdbcType=LONGVARBINARY})
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GuUser" useGeneratedKeys="true" keyProperty="id" >
+    insert into gu_user (username, nickname, iconurl, 
+      coin, remark, icon
+      )
+    values (#{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{iconurl,jdbcType=VARCHAR}, 
+      #{coin,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, #{icon,jdbcType=LONGVARBINARY}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GuUser" >
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GuUser" useGeneratedKeys="true" keyProperty="id" >
     insert into gu_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="username != null" >
         username,
       </if>
@@ -158,9 +155,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
       </if>

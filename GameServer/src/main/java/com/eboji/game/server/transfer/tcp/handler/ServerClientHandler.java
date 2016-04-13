@@ -13,14 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import com.eboji.game.handler.GameServerClientMap;
 import com.eboji.game.server.transfer.tcp.ServerClientTransfer;
-import com.eboji.game.util.ConfigUtil;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.message.BaseMsg;
-import com.eboji.model.message.ConnMsg;
 import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.PingMsg;
 import com.eboji.model.message.RegisterResMsg;
-import com.eboji.model.message.mj.MjCreateResMsg;
 
 public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(ServerClientHandler.class);
@@ -46,10 +43,6 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		ConnMsg conn = new ConnMsg();
-		conn.setCid(ConfigUtil.getProps("serverid"));
-		
-		//ctx.writeAndFlush(conn);
 	}
 
 	@Override
@@ -74,11 +67,10 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			logger.info("接收中心注册信息成功!");
 			break;
 			
-		case MJ_CREATERES:
-			MjCreateResMsg mjMsg = (MjCreateResMsg)msg;
-			GameServerClientMap.get(mjMsg.getRemoteAddress()).writeAndFlush(mjMsg);
-			break;
 		default:
+			if(msg.getRas() != null && !msg.getRas().equals("")) {
+				GameServerClientMap.get(msg.getRas()).writeAndFlush(msg);
+			}
 			break;
 		}
 		

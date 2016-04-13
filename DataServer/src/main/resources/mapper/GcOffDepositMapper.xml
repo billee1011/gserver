@@ -99,18 +99,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.eboji.persist.pojo.GcOffDeposit" >
-    insert into gc_off_deposit (id, amount, off, 
-      status, remark)
-    values (#{id,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{off,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GcOffDeposit" useGeneratedKeys="true" keyProperty="id" >
+    insert into gc_off_deposit (amount, off, status, 
+      remark)
+    values (#{amount,jdbcType=DECIMAL}, #{off,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GcOffDeposit" >
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GcOffDeposit" useGeneratedKeys="true" keyProperty="id" >
     insert into gc_off_deposit
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="amount != null" >
         amount,
       </if>
@@ -125,9 +122,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="amount != null" >
         #{amount,jdbcType=DECIMAL},
       </if>

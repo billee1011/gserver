@@ -465,6 +465,66 @@ public class GgRoomExample {
             return (Criteria) this;
         }
 
+        public Criteria andRoundIsNull() {
+            addCriterion("round is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundIsNotNull() {
+            addCriterion("round is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundEqualTo(Integer value) {
+            addCriterion("round =", value, "round");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundNotEqualTo(Integer value) {
+            addCriterion("round <>", value, "round");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundGreaterThan(Integer value) {
+            addCriterion("round >", value, "round");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundGreaterThanOrEqualTo(Integer value) {
+            addCriterion("round >=", value, "round");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundLessThan(Integer value) {
+            addCriterion("round <", value, "round");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundLessThanOrEqualTo(Integer value) {
+            addCriterion("round <=", value, "round");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundIn(List<Integer> values) {
+            addCriterion("round in", values, "round");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundNotIn(List<Integer> values) {
+            addCriterion("round not in", values, "round");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundBetween(Integer value1, Integer value2) {
+            addCriterion("round between", value1, value2, "round");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoundNotBetween(Integer value1, Integer value2) {
+            addCriterion("round not between", value1, value2, "round");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatetimeIsNull() {
             addCriterion("createtime is null");
             return (Criteria) this;
@@ -592,6 +652,66 @@ public class GgRoomExample {
 
         public Criteria andRemarkNotBetween(String value1, String value2) {
             addCriterion("remark not between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersIsNull() {
+            addCriterion("players is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersIsNotNull() {
+            addCriterion("players is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersEqualTo(Integer value) {
+            addCriterion("players =", value, "players");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersNotEqualTo(Integer value) {
+            addCriterion("players <>", value, "players");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersGreaterThan(Integer value) {
+            addCriterion("players >", value, "players");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersGreaterThanOrEqualTo(Integer value) {
+            addCriterion("players >=", value, "players");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersLessThan(Integer value) {
+            addCriterion("players <", value, "players");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersLessThanOrEqualTo(Integer value) {
+            addCriterion("players <=", value, "players");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersIn(List<Integer> values) {
+            addCriterion("players in", values, "players");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersNotIn(List<Integer> values) {
+            addCriterion("players not in", values, "players");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersBetween(Integer value1, Integer value2) {
+            addCriterion("players between", value1, value2, "players");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlayersNotBetween(Integer value1, Integer value2) {
+            addCriterion("players not between", value1, value2, "players");
             return (Criteria) this;
         }
     }

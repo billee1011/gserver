@@ -76,7 +76,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				AgentServerClientMap.remove(loginRes.getCid());
 				AgentServerClientMap.printCount();
 				
-				logger.info("用户[" + loginRes.getUid() +"]登陆成功!");
+				logger.info("用户[" + loginRes.getUsername() + "(" + loginRes.getUid() +")]登陆成功!");
 				obj.put("status", "1");
 				obj.put("message", "Login Success");
 				channel.writeAndFlush(obj.toJSONString());

@@ -13,21 +13,11 @@ public class DtCreGGRoomRsMsg extends BaseMsg {
 	
 	private int roomId;
 	
-	private int position;
-
 	public int getRoomId() {
 		return roomId;
 	}
 
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
-	}
-
-	public int getPosition() {
-		return position;
-	}
-
-	public void setPosition(int position) {
-		this.position = position;
 	}
 }

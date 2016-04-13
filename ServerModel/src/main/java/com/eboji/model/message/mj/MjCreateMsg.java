@@ -14,8 +14,6 @@ public class MjCreateMsg extends MjBaseMsg {
 	
 	public long gamePrice;
 	
-	public String remoteAddress;
-
 	public int getGameType() {
 		return gameType;
 	}
@@ -30,13 +28,5 @@ public class MjCreateMsg extends MjBaseMsg {
 
 	public void setGamePrice(long gamePrice) {
 		this.gamePrice = gamePrice;
-	}
-
-	public String getRemoteAddress() {
-		return remoteAddress;
-	}
-
-	public void setRemoteAddress(String remoteAddress) {
-		this.remoteAddress = remoteAddress;
 	}
 }

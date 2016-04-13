@@ -165,243 +165,63 @@ public class GgRoomPlayerExample {
             return (Criteria) this;
         }
 
-        public Criteria andEuidIsNull() {
-            addCriterion("euid is null");
+        public Criteria andUidIsNull() {
+            addCriterion("uid is null");
             return (Criteria) this;
         }
 
-        public Criteria andEuidIsNotNull() {
-            addCriterion("euid is not null");
+        public Criteria andUidIsNotNull() {
+            addCriterion("uid is not null");
             return (Criteria) this;
         }
 
-        public Criteria andEuidEqualTo(Integer value) {
-            addCriterion("euid =", value, "euid");
+        public Criteria andUidEqualTo(Integer value) {
+            addCriterion("uid =", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andEuidNotEqualTo(Integer value) {
-            addCriterion("euid <>", value, "euid");
+        public Criteria andUidNotEqualTo(Integer value) {
+            addCriterion("uid <>", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andEuidGreaterThan(Integer value) {
-            addCriterion("euid >", value, "euid");
+        public Criteria andUidGreaterThan(Integer value) {
+            addCriterion("uid >", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andEuidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("euid >=", value, "euid");
+        public Criteria andUidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("uid >=", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andEuidLessThan(Integer value) {
-            addCriterion("euid <", value, "euid");
+        public Criteria andUidLessThan(Integer value) {
+            addCriterion("uid <", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andEuidLessThanOrEqualTo(Integer value) {
-            addCriterion("euid <=", value, "euid");
+        public Criteria andUidLessThanOrEqualTo(Integer value) {
+            addCriterion("uid <=", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andEuidIn(List<Integer> values) {
-            addCriterion("euid in", values, "euid");
+        public Criteria andUidIn(List<Integer> values) {
+            addCriterion("uid in", values, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andEuidNotIn(List<Integer> values) {
-            addCriterion("euid not in", values, "euid");
+        public Criteria andUidNotIn(List<Integer> values) {
+            addCriterion("uid not in", values, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andEuidBetween(Integer value1, Integer value2) {
-            addCriterion("euid between", value1, value2, "euid");
+        public Criteria andUidBetween(Integer value1, Integer value2) {
+            addCriterion("uid between", value1, value2, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andEuidNotBetween(Integer value1, Integer value2) {
-            addCriterion("euid not between", value1, value2, "euid");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidIsNull() {
-            addCriterion("suid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidIsNotNull() {
-            addCriterion("suid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidEqualTo(Integer value) {
-            addCriterion("suid =", value, "suid");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidNotEqualTo(Integer value) {
-            addCriterion("suid <>", value, "suid");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidGreaterThan(Integer value) {
-            addCriterion("suid >", value, "suid");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("suid >=", value, "suid");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidLessThan(Integer value) {
-            addCriterion("suid <", value, "suid");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidLessThanOrEqualTo(Integer value) {
-            addCriterion("suid <=", value, "suid");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidIn(List<Integer> values) {
-            addCriterion("suid in", values, "suid");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidNotIn(List<Integer> values) {
-            addCriterion("suid not in", values, "suid");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidBetween(Integer value1, Integer value2) {
-            addCriterion("suid between", value1, value2, "suid");
-            return (Criteria) this;
-        }
-
-        public Criteria andSuidNotBetween(Integer value1, Integer value2) {
-            addCriterion("suid not between", value1, value2, "suid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidIsNull() {
-            addCriterion("wuid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidIsNotNull() {
-            addCriterion("wuid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidEqualTo(Integer value) {
-            addCriterion("wuid =", value, "wuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidNotEqualTo(Integer value) {
-            addCriterion("wuid <>", value, "wuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidGreaterThan(Integer value) {
-            addCriterion("wuid >", value, "wuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("wuid >=", value, "wuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidLessThan(Integer value) {
-            addCriterion("wuid <", value, "wuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidLessThanOrEqualTo(Integer value) {
-            addCriterion("wuid <=", value, "wuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidIn(List<Integer> values) {
-            addCriterion("wuid in", values, "wuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidNotIn(List<Integer> values) {
-            addCriterion("wuid not in", values, "wuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidBetween(Integer value1, Integer value2) {
-            addCriterion("wuid between", value1, value2, "wuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWuidNotBetween(Integer value1, Integer value2) {
-            addCriterion("wuid not between", value1, value2, "wuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidIsNull() {
-            addCriterion("nuid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidIsNotNull() {
-            addCriterion("nuid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidEqualTo(Integer value) {
-            addCriterion("nuid =", value, "nuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidNotEqualTo(Integer value) {
-            addCriterion("nuid <>", value, "nuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidGreaterThan(Integer value) {
-            addCriterion("nuid >", value, "nuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("nuid >=", value, "nuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidLessThan(Integer value) {
-            addCriterion("nuid <", value, "nuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidLessThanOrEqualTo(Integer value) {
-            addCriterion("nuid <=", value, "nuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidIn(List<Integer> values) {
-            addCriterion("nuid in", values, "nuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidNotIn(List<Integer> values) {
-            addCriterion("nuid not in", values, "nuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidBetween(Integer value1, Integer value2) {
-            addCriterion("nuid between", value1, value2, "nuid");
-            return (Criteria) this;
-        }
-
-        public Criteria andNuidNotBetween(Integer value1, Integer value2) {
-            addCriterion("nuid not between", value1, value2, "nuid");
+        public Criteria andUidNotBetween(Integer value1, Integer value2) {
+            addCriterion("uid not between", value1, value2, "uid");
             return (Criteria) this;
         }
 
@@ -465,63 +285,63 @@ public class GgRoomPlayerExample {
             return (Criteria) this;
         }
 
-        public Criteria andRoundIsNull() {
-            addCriterion("round is null");
+        public Criteria andPositionIsNull() {
+            addCriterion("position is null");
             return (Criteria) this;
         }
 
-        public Criteria andRoundIsNotNull() {
-            addCriterion("round is not null");
+        public Criteria andPositionIsNotNull() {
+            addCriterion("position is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRoundEqualTo(Integer value) {
-            addCriterion("round =", value, "round");
+        public Criteria andPositionEqualTo(Integer value) {
+            addCriterion("position =", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andRoundNotEqualTo(Integer value) {
-            addCriterion("round <>", value, "round");
+        public Criteria andPositionNotEqualTo(Integer value) {
+            addCriterion("position <>", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andRoundGreaterThan(Integer value) {
-            addCriterion("round >", value, "round");
+        public Criteria andPositionGreaterThan(Integer value) {
+            addCriterion("position >", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andRoundGreaterThanOrEqualTo(Integer value) {
-            addCriterion("round >=", value, "round");
+        public Criteria andPositionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("position >=", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andRoundLessThan(Integer value) {
-            addCriterion("round <", value, "round");
+        public Criteria andPositionLessThan(Integer value) {
+            addCriterion("position <", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andRoundLessThanOrEqualTo(Integer value) {
-            addCriterion("round <=", value, "round");
+        public Criteria andPositionLessThanOrEqualTo(Integer value) {
+            addCriterion("position <=", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andRoundIn(List<Integer> values) {
-            addCriterion("round in", values, "round");
+        public Criteria andPositionIn(List<Integer> values) {
+            addCriterion("position in", values, "position");
             return (Criteria) this;
         }
 
-        public Criteria andRoundNotIn(List<Integer> values) {
-            addCriterion("round not in", values, "round");
+        public Criteria andPositionNotIn(List<Integer> values) {
+            addCriterion("position not in", values, "position");
             return (Criteria) this;
         }
 
-        public Criteria andRoundBetween(Integer value1, Integer value2) {
-            addCriterion("round between", value1, value2, "round");
+        public Criteria andPositionBetween(Integer value1, Integer value2) {
+            addCriterion("position between", value1, value2, "position");
             return (Criteria) this;
         }
 
-        public Criteria andRoundNotBetween(Integer value1, Integer value2) {
-            addCriterion("round not between", value1, value2, "round");
+        public Criteria andPositionNotBetween(Integer value1, Integer value2) {
+            addCriterion("position not between", value1, value2, "position");
             return (Criteria) this;
         }
 

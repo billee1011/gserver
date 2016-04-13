@@ -98,18 +98,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.eboji.persist.pojo.GcRatioCoin" >
-    insert into gc_ratio_coin (id, ratio, status, 
-      lastdate)
-    values (#{id,jdbcType=INTEGER}, #{ratio,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
-      #{lastdate,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GcRatioCoin" useGeneratedKeys="true" keyProperty="id" >
+    insert into gc_ratio_coin (ratio, status, lastdate
+      )
+    values (#{ratio,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{lastdate,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GcRatioCoin" >
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GcRatioCoin" useGeneratedKeys="true" keyProperty="id" >
     insert into gc_ratio_coin
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="ratio != null" >
         ratio,
       </if>
@@ -121,9 +118,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="ratio != null" >
         #{ratio,jdbcType=INTEGER},
       </if>

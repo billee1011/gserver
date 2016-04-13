@@ -47,7 +47,8 @@ public class DataServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				break;
 
 			case DT_CREGGROOM:
-			case DT_LOGIN:
+			case MJ_JOIN:
+			case LOGIN:
 				dataProcessor.process(msg, ctx.channel().remoteAddress().toString());
 				break;
 				

@@ -103,22 +103,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.eboji.persist.pojo.GgHist" >
-    insert into gg_hist (id, roomid, playerid, 
-      optype, opcard, incard, 
-      outcard, round, createtime
-      )
-    values (#{id,jdbcType=BIGINT}, #{roomid,jdbcType=BIGINT}, #{playerid,jdbcType=INTEGER}, 
-      #{optype,jdbcType=INTEGER}, #{opcard,jdbcType=VARCHAR}, #{incard,jdbcType=VARCHAR}, 
-      #{outcard,jdbcType=VARCHAR}, #{round,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}
-      )
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GgHist" useGeneratedKeys="true" keyProperty="id" >
+    insert into gg_hist (roomid, playerid, optype, 
+      opcard, incard, outcard, 
+      round, createtime)
+    values (#{roomid,jdbcType=BIGINT}, #{playerid,jdbcType=INTEGER}, #{optype,jdbcType=INTEGER}, 
+      #{opcard,jdbcType=VARCHAR}, #{incard,jdbcType=VARCHAR}, #{outcard,jdbcType=VARCHAR}, 
+      #{round,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GgHist" >
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GgHist" useGeneratedKeys="true" keyProperty="id" >
     insert into gg_hist
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="roomid != null" >
         roomid,
       </if>
@@ -145,9 +140,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="roomid != null" >
         #{roomid,jdbcType=BIGINT},
       </if>

@@ -17,6 +17,9 @@ public abstract class BaseMsg implements Serializable {
 	
 	//用户id
 	private String uid;
+	
+	//tcp连接的remoteaddress
+	private String ras;
 
 	public MsgType getT() {
 		return t;
@@ -48,5 +51,13 @@ public abstract class BaseMsg implements Serializable {
 
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+
+	public String getRas() {
+		return ras;
+	}
+
+	public void setRas(String ras) {
+		this.ras = ras;
 	}
 }

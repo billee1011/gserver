@@ -11,12 +11,14 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.eboji.login.handler.LoginServerClientMap;
 import com.eboji.login.server.transfer.tcp.ServerClientTransfer;
 import com.eboji.login.util.ConfigUtil;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.message.BaseMsg;
 import com.eboji.model.message.ConnMsg;
 import com.eboji.model.message.ConnResMsg;
+import com.eboji.model.message.LoginResMsg;
 import com.eboji.model.message.PingMsg;
 import com.eboji.model.message.RegisterResMsg;
 
@@ -64,11 +66,14 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			logger.info("receive server msg: " + connResMsg.getStatus());
 			
 			break;
+		case LOGINRES:
+			LoginResMsg loginResMsg = (LoginResMsg)msg;
+			LoginServerClientMap.get(loginResMsg.getRas()).writeAndFlush(loginResMsg);
+			break;
 		case REGRES:		//中心注册响应
 			RegisterResMsg regResMsg = (RegisterResMsg)msg;
 			Map<Integer, Set<String>> sets = regResMsg.getServiceMap();
 			ServerClientTransfer.parse(sets);
-			
 			logger.info("接收中心注册信息成功!");
 			break;
 		default:

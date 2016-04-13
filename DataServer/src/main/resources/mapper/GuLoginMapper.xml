@@ -101,20 +101,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.eboji.persist.pojo.GuLogin" >
-    insert into gu_login (id, uid, ip, createtime, 
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GuLogin" useGeneratedKeys="true" keyProperty="id" >
+    insert into gu_login (uid, ip, createtime, 
       lastdate, status, remark
       )
-    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+    values (#{uid,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
       #{lastdate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GuLogin" >
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GuLogin" useGeneratedKeys="true" keyProperty="id" >
     insert into gu_login
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="uid != null" >
         uid,
       </if>
@@ -135,9 +132,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="uid != null" >
         #{uid,jdbcType=INTEGER},
       </if>

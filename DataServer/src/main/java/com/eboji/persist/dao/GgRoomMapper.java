@@ -16,6 +16,8 @@ public interface GgRoomMapper {
 
     int insertSelective(GgRoom record);
 
+    List<GgRoom> selectLockByExample(GgRoomExample example);
+    
     List<GgRoom> selectByExample(GgRoomExample example);
 
     GgRoom selectByPrimaryKey(Long id);

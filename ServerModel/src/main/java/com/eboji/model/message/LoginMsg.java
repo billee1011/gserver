@@ -9,6 +9,12 @@ public class LoginMsg extends BaseMsg {
 	
 	private String password;
 	
+	private String nickname;
+	
+	private String iconB64;
+	
+	private String iconurl;
+	
 	private String ip;
 	
 	public LoginMsg() {
@@ -30,6 +36,30 @@ public class LoginMsg extends BaseMsg {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getIconB64() {
+		return iconB64;
+	}
+
+	public void setIconB64(String iconB64) {
+		this.iconB64 = iconB64;
+	}
+
+	public String getIconurl() {
+		return iconurl;
+	}
+
+	public void setIconurl(String iconurl) {
+		this.iconurl = iconurl;
 	}
 
 	public String getIp() {

@@ -99,18 +99,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.eboji.persist.pojo.GcRatioTax" >
-    insert into gc_ratio_tax (id, type, taxratio, 
-      status, remark)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{taxratio,jdbcType=DECIMAL}, 
-      #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GcRatioTax" useGeneratedKeys="true" keyProperty="id" >
+    insert into gc_ratio_tax (type, taxratio, status, 
+      remark)
+    values (#{type,jdbcType=INTEGER}, #{taxratio,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GcRatioTax" >
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GcRatioTax" useGeneratedKeys="true" keyProperty="id" >
     insert into gc_ratio_tax
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="type != null" >
         type,
       </if>
@@ -125,9 +122,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
       </if>

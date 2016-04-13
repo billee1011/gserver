@@ -15,9 +15,13 @@ public class GgRoom {
 
     private Long gameprice;
 
+    private Integer round;
+
     private Date createtime;
 
     private String remark;
+
+    private Integer players;
 
     public Long getId() {
         return id;
@@ -67,6 +71,14 @@ public class GgRoom {
         this.gameprice = gameprice;
     }
 
+    public Integer getRound() {
+        return round;
+    }
+
+    public void setRound(Integer round) {
+        this.round = round;
+    }
+
     public Date getCreatetime() {
         return createtime;
     }
@@ -81,5 +93,13 @@ public class GgRoom {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Integer getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Integer players) {
+        this.players = players;
     }
 }

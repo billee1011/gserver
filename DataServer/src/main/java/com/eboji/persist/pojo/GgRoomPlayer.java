@@ -5,17 +5,11 @@ import java.util.Date;
 public class GgRoomPlayer {
     private Integer id;
 
-    private Integer euid;
-
-    private Integer suid;
-
-    private Integer wuid;
-
-    private Integer nuid;
+    private Integer uid;
 
     private Long roomid;
 
-    private Integer round;
+    private Integer position;
 
     private Date createtime;
 
@@ -29,36 +23,12 @@ public class GgRoomPlayer {
         this.id = id;
     }
 
-    public Integer getEuid() {
-        return euid;
+    public Integer getUid() {
+        return uid;
     }
 
-    public void setEuid(Integer euid) {
-        this.euid = euid;
-    }
-
-    public Integer getSuid() {
-        return suid;
-    }
-
-    public void setSuid(Integer suid) {
-        this.suid = suid;
-    }
-
-    public Integer getWuid() {
-        return wuid;
-    }
-
-    public void setWuid(Integer wuid) {
-        this.wuid = wuid;
-    }
-
-    public Integer getNuid() {
-        return nuid;
-    }
-
-    public void setNuid(Integer nuid) {
-        this.nuid = nuid;
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 
     public Long getRoomid() {
@@ -69,12 +39,12 @@ public class GgRoomPlayer {
         this.roomid = roomid;
     }
 
-    public Integer getRound() {
-        return round;
+    public Integer getPosition() {
+        return position;
     }
 
-    public void setRound(Integer round) {
-        this.round = round;
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public Date getCreatetime() {

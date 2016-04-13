@@ -3,12 +3,9 @@
 <mapper namespace="com.eboji.persist.dao.GgRoomPlayerMapper" >
   <resultMap id="BaseResultMap" type="com.eboji.persist.pojo.GgRoomPlayer" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="euid" property="euid" jdbcType="INTEGER" />
-    <result column="suid" property="suid" jdbcType="INTEGER" />
-    <result column="wuid" property="wuid" jdbcType="INTEGER" />
-    <result column="nuid" property="nuid" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
     <result column="roomid" property="roomid" jdbcType="BIGINT" />
-    <result column="round" property="round" jdbcType="INTEGER" />
+    <result column="position" property="position" jdbcType="INTEGER" />
     <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="lastdate" property="lastdate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -71,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, euid, suid, wuid, nuid, roomid, round, createtime, lastdate
+    id, uid, roomid, position, createtime, lastdate
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.eboji.persist.pojo.GgRoomPlayerExample" >
     select
@@ -103,39 +100,23 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.eboji.persist.pojo.GgRoomPlayer" >
-    insert into gg_room_player (id, euid, suid, 
-      wuid, nuid, roomid, 
-      round, createtime, lastdate
-      )
-    values (#{id,jdbcType=INTEGER}, #{euid,jdbcType=INTEGER}, #{suid,jdbcType=INTEGER}, 
-      #{wuid,jdbcType=INTEGER}, #{nuid,jdbcType=INTEGER}, #{roomid,jdbcType=BIGINT}, 
-      #{round,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{lastdate,jdbcType=TIMESTAMP}
-      )
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GgRoomPlayer" useGeneratedKeys="true" keyProperty="id" >
+    insert into gg_room_player (uid, roomid, position, 
+      createtime, lastdate)
+    values (#{uid,jdbcType=INTEGER}, #{roomid,jdbcType=BIGINT}, #{position,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{lastdate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GgRoomPlayer" >
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GgRoomPlayer" useGeneratedKeys="true" keyProperty="id" >
     insert into gg_room_player
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="euid != null" >
-        euid,
-      </if>
-      <if test="suid != null" >
-        suid,
-      </if>
-      <if test="wuid != null" >
-        wuid,
-      </if>
-      <if test="nuid != null" >
-        nuid,
+      <if test="uid != null" >
+        uid,
       </if>
       <if test="roomid != null" >
         roomid,
       </if>
-      <if test="round != null" >
-        round,
+      <if test="position != null" >
+        position,
       </if>
       <if test="createtime != null" >
         createtime,
@@ -145,26 +126,14 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="euid != null" >
-        #{euid,jdbcType=INTEGER},
-      </if>
-      <if test="suid != null" >
-        #{suid,jdbcType=INTEGER},
-      </if>
-      <if test="wuid != null" >
-        #{wuid,jdbcType=INTEGER},
-      </if>
-      <if test="nuid != null" >
-        #{nuid,jdbcType=INTEGER},
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
       </if>
       <if test="roomid != null" >
         #{roomid,jdbcType=BIGINT},
       </if>
-      <if test="round != null" >
-        #{round,jdbcType=INTEGER},
+      <if test="position != null" >
+        #{position,jdbcType=INTEGER},
       </if>
       <if test="createtime != null" >
         #{createtime,jdbcType=TIMESTAMP},
@@ -186,23 +155,14 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.euid != null" >
-        euid = #{record.euid,jdbcType=INTEGER},
-      </if>
-      <if test="record.suid != null" >
-        suid = #{record.suid,jdbcType=INTEGER},
-      </if>
-      <if test="record.wuid != null" >
-        wuid = #{record.wuid,jdbcType=INTEGER},
-      </if>
-      <if test="record.nuid != null" >
-        nuid = #{record.nuid,jdbcType=INTEGER},
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=INTEGER},
       </if>
       <if test="record.roomid != null" >
         roomid = #{record.roomid,jdbcType=BIGINT},
       </if>
-      <if test="record.round != null" >
-        round = #{record.round,jdbcType=INTEGER},
+      <if test="record.position != null" >
+        position = #{record.position,jdbcType=INTEGER},
       </if>
       <if test="record.createtime != null" >
         createtime = #{record.createtime,jdbcType=TIMESTAMP},
@@ -218,12 +178,9 @@
   <update id="updateByExample" parameterType="map" >
     update gg_room_player
     set id = #{record.id,jdbcType=INTEGER},
-      euid = #{record.euid,jdbcType=INTEGER},
-      suid = #{record.suid,jdbcType=INTEGER},
-      wuid = #{record.wuid,jdbcType=INTEGER},
-      nuid = #{record.nuid,jdbcType=INTEGER},
+      uid = #{record.uid,jdbcType=INTEGER},
       roomid = #{record.roomid,jdbcType=BIGINT},
-      round = #{record.round,jdbcType=INTEGER},
+      position = #{record.position,jdbcType=INTEGER},
       createtime = #{record.createtime,jdbcType=TIMESTAMP},
       lastdate = #{record.lastdate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -233,23 +190,14 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.eboji.persist.pojo.GgRoomPlayer" >
     update gg_room_player
     <set >
-      <if test="euid != null" >
-        euid = #{euid,jdbcType=INTEGER},
-      </if>
-      <if test="suid != null" >
-        suid = #{suid,jdbcType=INTEGER},
-      </if>
-      <if test="wuid != null" >
-        wuid = #{wuid,jdbcType=INTEGER},
-      </if>
-      <if test="nuid != null" >
-        nuid = #{nuid,jdbcType=INTEGER},
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
       </if>
       <if test="roomid != null" >
         roomid = #{roomid,jdbcType=BIGINT},
       </if>
-      <if test="round != null" >
-        round = #{round,jdbcType=INTEGER},
+      <if test="position != null" >
+        position = #{position,jdbcType=INTEGER},
       </if>
       <if test="createtime != null" >
         createtime = #{createtime,jdbcType=TIMESTAMP},
@@ -262,12 +210,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.eboji.persist.pojo.GgRoomPlayer" >
     update gg_room_player
-    set euid = #{euid,jdbcType=INTEGER},
-      suid = #{suid,jdbcType=INTEGER},
-      wuid = #{wuid,jdbcType=INTEGER},
-      nuid = #{nuid,jdbcType=INTEGER},
+    set uid = #{uid,jdbcType=INTEGER},
       roomid = #{roomid,jdbcType=BIGINT},
-      round = #{round,jdbcType=INTEGER},
+      position = #{position,jdbcType=INTEGER},
       createtime = #{createtime,jdbcType=TIMESTAMP},
       lastdate = #{lastdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

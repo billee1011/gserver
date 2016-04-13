@@ -3,20 +3,20 @@ package com.eboji.model.message.mj;
 import com.eboji.model.common.MsgType;
 
 public class MjJoinResMsg extends MjBaseMsg {
-	private static final long serialVersionUID = 7055555370977867162L;
-	
+	private static final long serialVersionUID = -5516718806582360190L;
+
 	public MjJoinResMsg() {
 		super();
 		setT(MsgType.MJ_JOINRES);
 	}
 	
-	private String status;
+	private Integer status;
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 }

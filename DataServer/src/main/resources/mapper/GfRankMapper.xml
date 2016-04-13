@@ -100,20 +100,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.eboji.persist.pojo.GfRank" >
-    insert into gf_rank (id, roomid, uid, 
-      rank, createtime, remark
-      )
-    values (#{id,jdbcType=BIGINT}, #{roomid,jdbcType=BIGINT}, #{uid,jdbcType=INTEGER}, 
-      #{rank,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GfRank" useGeneratedKeys="true" keyProperty="id" >
+    insert into gf_rank (roomid, uid, rank, 
+      createtime, remark)
+    values (#{roomid,jdbcType=BIGINT}, #{uid,jdbcType=INTEGER}, #{rank,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GfRank" >
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GfRank" useGeneratedKeys="true" keyProperty="id" >
     insert into gf_rank
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="roomid != null" >
         roomid,
       </if>
@@ -131,9 +126,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="roomid != null" >
         #{roomid,jdbcType=BIGINT},
       </if>

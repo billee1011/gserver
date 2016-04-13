@@ -101,20 +101,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.eboji.persist.pojo.GfScore" >
-    insert into gf_score (id, roomid, round, 
-      uid, score, createtime, 
-      remark)
-    values (#{id,jdbcType=BIGINT}, #{roomid,jdbcType=BIGINT}, #{round,jdbcType=INTEGER}, 
-      #{uid,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{remark,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.eboji.persist.pojo.GfScore" useGeneratedKeys="true" keyProperty="id" >
+    insert into gf_score (roomid, round, uid, 
+      score, createtime, remark
+      )
+    values (#{roomid,jdbcType=BIGINT}, #{round,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, 
+      #{score,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GfScore" >
+  <insert id="insertSelective" parameterType="com.eboji.persist.pojo.GfScore" useGeneratedKeys="true" keyProperty="id" >
     insert into gf_score
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="roomid != null" >
         roomid,
       </if>
@@ -135,9 +132,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="roomid != null" >
         #{roomid,jdbcType=BIGINT},
       </if>
