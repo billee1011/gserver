@@ -11,16 +11,16 @@ public class ShutdownHook {
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			@Override
 			public void run() {
-				logger.info("Server is stopping...");
+				logger.info("IMServer is stopping...");
 				
 				dofinish();
 				
-				logger.info("Server has been stopped.");
+				logger.info("IMServer has been stopped.");
 			}
 		});
 	}
 	
 	private static void dofinish() {
-		logger.info("finish closing all work!");
+		logger.info("IMServer is trying to finish all works!");
 	}
 }

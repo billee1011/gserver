@@ -14,7 +14,7 @@ import ch.qos.logback.core.joran.spi.JoranException;
 import com.eboji.login.util.ConfigUtil;
 
 /**
- * 代理服务启动的入口类
+ * 登录服务启动的入口类
  * @author zhoucl 2016-02-21
  */
 public class LoginServerBootstrap {
@@ -58,6 +58,7 @@ public class LoginServerBootstrap {
 	}
 	
 	public static void main(String[] args) {
+		logger.info("LoginServer is starting.");
 		DEBUG = Boolean.valueOf(System.getProperty("debug", "true"));
 		
 		try {
@@ -89,6 +90,7 @@ public class LoginServerBootstrap {
 	}
 	
 	private static void checkArgs(String[] args) {
+		logger.info("check args is starting.");
 		try {
 			for (int i = 0; i < args.length; ++i) {
 				if (args[i].startsWith("--port")) {
@@ -112,6 +114,7 @@ public class LoginServerBootstrap {
 			logger.error("Can not parse arguments! See --help");
 			System.exit(-1);
 		}
+		logger.info("check args finished.");
 	}
 	
 	private static void loadProps(Boolean isDebug) {
@@ -128,15 +131,15 @@ public class LoginServerBootstrap {
 				filePath = jarPath + "/config.properties";
 			}
 			
-			logger.info("Load config file: "  + filePath + " success!");
 			fis = new FileInputStream(new File(filePath));
-			
 			Properties p = new Properties();
 			p.load(fis);
 			
+			logger.info("loading config file: "  + filePath + " success!");
+			
 			ConfigUtil.setProps(p);
 		} catch (Exception e) {
-			logger.error("Load config file: " + filePath + " exception:\n" + e.getMessage());
+			logger.error("loading config file: " + filePath + " exception:\n" + e.getMessage());
 		}
 	}
 }

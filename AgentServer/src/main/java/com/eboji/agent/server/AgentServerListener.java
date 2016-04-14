@@ -52,7 +52,7 @@ public class AgentServerListener {
 			
 			ChannelFuture f = bootstrap.bind(port).sync();
 			if(f.isSuccess()) {
-				logger.info("Agent Server listened in port " + this.port + " started.");
+				logger.info("AgentServer listened on port: " + this.port + " has been started.");
 				
 				RegisterCenterServerUtil.registerService();
 			}

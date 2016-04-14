@@ -1,16 +1,14 @@
 package com.eboji.center.handler;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.eboji.model.constant.Constant;
+import com.eboji.model.util.CommonUtil;
 
 /**
  * 客户端注册信息存储类
@@ -18,38 +16,60 @@ import com.eboji.model.constant.Constant;
  *
  */
 public class RegisterServerInfoMap {
-	private static final Logger logger = LoggerFactory.getLogger(RegisterServerInfoMap.class);
+	private static Map<String, Set<String>> serverInfoMap = 
+			new ConcurrentHashMap<String, Set<String>>();
 	
-	private static Map<Integer, Set<String>> serverInfoMap = 
-			new ConcurrentHashMap<Integer, Set<String>>();
-	
-	public static Map<Integer, Set<String>> getServerInfoMap() {
+	public static Map<String, Set<String>> getServerInfoMap() {
 		return serverInfoMap;
 	}
 	
-	public static void put(Integer serviceId, String address) {
-		if(serverInfoMap.get(serviceId) == null) {
-			Set<String> addressSet = new HashSet<String>();
-			addressSet.add(address);
-			serverInfoMap.put(serviceId, addressSet);
-		} else {
-			serverInfoMap.get(serviceId).add(address);
+	public static void put(String server, String address) {
+		String[] servers = server.split(Constant.STR_UNDERLINE);
+		String realServer = server;
+		String gameIds = "";
+		if(servers.length > 1) {
+			realServer = servers[0];
+			gameIds = servers[1];
 		}
 		
-		printRegisters();
+		if(serverInfoMap.get(realServer) == null) {
+			Set<String> addressSet = new HashSet<String>();
+			if(gameIds.equals("")) {
+				addressSet.add(address);
+				serverInfoMap.put(realServer, addressSet);
+			} else {
+				String[] gameIdArr = gameIds.split("\\|");
+				for(String gameId : gameIdArr) {
+					addressSet.add(gameId + Constant.STR_UNDERLINE + address);
+				}
+				serverInfoMap.put(realServer, addressSet);
+			}
+		} else {
+			if(gameIds.equals("")) {
+				serverInfoMap.get(realServer).add(address);
+			} else {
+				String[] gameIdArr = gameIds.split("\\|");
+				for(String gameId : gameIdArr) {
+					serverInfoMap.get(realServer).add(gameId + Constant.STR_UNDERLINE + address);
+				}
+			}
+		}
+		
+		CommonUtil.printRegisters(serverInfoMap);
 	}
 	
 	public static void remove(String address) {
-		Integer serviceId = null;
+		String server = null;
+		List<String> addressList = new ArrayList<String>();
 		boolean find = false;
-		for(Map.Entry<Integer, Set<String>> entry : 
+		for(Map.Entry<String, Set<String>> entry : 
 			serverInfoMap.entrySet()) {
 			Set<String> addressSet = entry.getValue();
 			for(String addr : addressSet) {
-				if(addr.equals(address)) {
+				if(addr.contains(address)) {
 					find = true;
-					serviceId = entry.getKey();
-					break;
+					server = entry.getKey();
+					addressList.add(addr);
 				}
 			}
 			
@@ -58,27 +78,11 @@ public class RegisterServerInfoMap {
 			}
 		}
 		
-		if(serviceId != null) {
-			serverInfoMap.get(serviceId).remove(address);
-			printRegisters();
-		}
-	}
-	
-	private static void printRegisters() {
-		Iterator<Entry<Integer, Set<String>>> iter = serverInfoMap.entrySet().iterator();
-		while(iter.hasNext()) {
-			Entry<Integer, Set<String>> entry = iter.next();
-			if(entry.getKey().intValue() == Constant.SRV_AGENT) {
-				logger.info("代理服务(" + Constant.SRV_AGENT + "):" + entry.getValue());
-			} else if(entry.getKey().intValue() == Constant.SRV_LOGIN) {
-				logger.info("登录服务(" + Constant.SRV_LOGIN + "):" + entry.getValue());
-			} else if(entry.getKey().intValue() == Constant.SRV_GAME) {
-				logger.info("游戏服务(" + Constant.SRV_GAME + "):" + entry.getValue());
-			} else if(entry.getKey().intValue() == Constant.SRV_DATA) {
-				logger.info("数据服务(" + Constant.SRV_DATA + "):" + entry.getValue());
-			} else if(entry.getKey().intValue() == Constant.SRV_IM) {
-				logger.info("消息服务(" + Constant.SRV_IM + "):" + entry.getValue());
+		if(server != null) {
+			for(String addr : addressList) {
+				serverInfoMap.get(server).remove(addr);
 			}
+			CommonUtil.printRegisters(serverInfoMap);
 		}
 	}
 }

@@ -21,14 +21,13 @@ public class Daemon {
 	}
 	
 	public void init() {
-		logger.info("CenterServer initialize context is starting...");
+		logger.info("CenterServer initialize context is starting.");
 		initContext();
 	}
 	
 	protected void initContext() {
 		setContext(null);
 		setContext(new AnnotationConfigApplicationContext(SpringConfiguration.class));
-		
 		logger.info("CenterServer initialize context finished.");
 	}
 	
@@ -40,8 +39,6 @@ public class Daemon {
 	 * CenterServer启动
 	 */
 	public void start() throws Exception {
-		logger.info("CenterServer will be started...");
-		
 		new CenterServerListener(getPort());
 	}
 

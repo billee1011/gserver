@@ -14,7 +14,7 @@ public class RegisterMsg extends BaseMsg {
 	
 	private int cport;		//各服务端口号
 	
-	private int serverId;	//服务ID号
+	private String server;	//服务号
 
 	public int getPort() {
 		return port;
@@ -32,11 +32,11 @@ public class RegisterMsg extends BaseMsg {
 		this.cport = cport;
 	}
 
-	public int getServerId() {
-		return serverId;
+	public String getServer() {
+		return server;
 	}
 
-	public void setServerId(int serverId) {
-		this.serverId = serverId;
+	public void setServer(String server) {
+		this.server = server;
 	}
 }

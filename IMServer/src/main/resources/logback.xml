@@ -20,7 +20,7 @@
 	
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder charset="UTF-8">
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %level [%C:%L] - %msg%n</pattern>
         </encoder>
     </appender>
  
@@ -31,7 +31,7 @@
         </rollingPolicy>
  
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %level [%C:%L] - %msg%n</pattern>
         </encoder>
     </appender>
     

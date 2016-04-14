@@ -23,12 +23,11 @@ public class Daemon {
 	protected void initContext() {
 		setContext(null);
 		setContext(new AnnotationConfigApplicationContext(SpringConfiguration.class));
-		
-		logger.info("AgentServer initialzed context.");
+		logger.info("initialzed context finished.");
 	}
 	
 	public void init() {
-		logger.info("AgentServer initialize context is starting...");
+		logger.info("initialize context is starting.");
 		initContext();
 	}
 	
@@ -40,8 +39,6 @@ public class Daemon {
 	 * AgentServer启动
 	 */
 	public void start() throws Exception {
-		logger.info("AgentServer will be started...");
-		
 		new AgentServerListener(getPort());
 	}
 

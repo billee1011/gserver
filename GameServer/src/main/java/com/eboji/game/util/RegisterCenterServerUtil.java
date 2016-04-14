@@ -29,11 +29,14 @@ public class RegisterCenterServerUtil {
 			ServerClientTransfer.getServiceMap().put(Constant.SRV_CENTER, sets);
 		}
 		
-		RegisterMsg regMsg = new RegisterMsg();
-		regMsg.setPort(Daemon.getInstance().getPort());
-		regMsg.setCport(regMsg.getPort());
-		regMsg.setServerId(Constant.SRV_GAME);
+		String game = ConfigUtil.getProps("game");
 		
-		ServerClientTransfer.write(regMsg);
+		if(game != null && !"".equals(game)) {
+			RegisterMsg regMsg = new RegisterMsg();
+			regMsg.setPort(Daemon.getInstance().getPort());
+			regMsg.setCport(regMsg.getPort());
+			regMsg.setServer(Constant.SRV_GAME + Constant.STR_UNDERLINE + game);
+			ServerClientTransfer.write(regMsg);
+		}
 	}
 }

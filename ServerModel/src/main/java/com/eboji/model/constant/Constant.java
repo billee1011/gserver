@@ -24,13 +24,13 @@ public class Constant {
 	public static final String STATUS_FAILED	="FAILED";
 	
 	//服务类型编码
-	public static final Integer SRV_AGENT		= 0x3E8;		//代理服务(1000)
-	public static final Integer SRV_LOGIN		= 0x3E9;		//登录服务(1001)
-	public static final Integer SRV_GAME		= 0x3EA;		//游戏服务(1002)
-	public static final Integer SRV_DATA		= 0x3EB;		//数据服务(1003)
-	public static final Integer SRV_IM      	= 0x3EC;		//文件服务(1004)
+	public static final String SRV_AGENT		= "AGENT";		//代理服务(1000)
+	public static final String SRV_LOGIN		= "LOGIN";		//登录服务(1001)
+	public static final String SRV_GAME	        = "GAME";		//游戏服务(1002)
+	public static final String SRV_DATA	        = "DATA";		//数据服务(1003)
+	public static final String SRV_IM   	   	= "IM";			//文件服务(1004)
 	
-	public static final Integer SRV_CENTER		= 0x270F;		//中心服务(9999)
+	public static final String SRV_CENTER		= "CENTER";		//中心服务(9999)
 	
 	//游戏类型编码
 	//麻将类型

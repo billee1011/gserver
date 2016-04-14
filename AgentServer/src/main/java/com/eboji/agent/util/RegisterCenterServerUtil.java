@@ -33,7 +33,7 @@ public class RegisterCenterServerUtil {
 		RegisterMsg regMsg = new RegisterMsg();
 		regMsg.setPort(Daemon.getInstance().getPort());
 		regMsg.setCport(regMsg.getPort());
-		regMsg.setServerId(Constant.SRV_AGENT);
+		regMsg.setServer(Constant.SRV_AGENT);
 		
 		ServerClientTransfer.write(regMsg);
 	}

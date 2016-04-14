@@ -24,7 +24,6 @@ public class Daemon {
 	protected void initContext() {
 		setContext(null);
 		setContext(new AnnotationConfigApplicationContext(SpringConfiguration.class));
-		
 		logger.info("IMServer initialize context finished.");
 	}
 	
@@ -38,23 +37,21 @@ public class Daemon {
 	}
 
 	/**
-	 * AgentServer启动
+	 * IMServer启动
 	 */
 	public void start() throws Exception {
-		logger.info("IMServer is starting.");
-		
 		new IMServerListener(getPort(), ConfigUtil.getClient());
 	}
 
 	/**
-	 * AgentServer重新启动
+	 * IMServer重新启动
 	 */
 	public void restart() {
 
 	}
 
 	/**
-	 * AgentServer停止
+	 * IMServer停止
 	 */
 	public void stop() {
 		

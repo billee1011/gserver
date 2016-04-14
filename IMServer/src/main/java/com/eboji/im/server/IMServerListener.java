@@ -57,7 +57,7 @@ public class IMServerListener {
 			
 			ChannelFuture f = bootstrap.bind(port).sync();
 			if(f.isSuccess()) {
-				logger.info("Login Server listened in port " + this.port + " started.");
+				logger.info("Login Server listened in port: " + this.port + " has been started.");
 				
 				RegisterCenterServerUtil.registerService();
 			}

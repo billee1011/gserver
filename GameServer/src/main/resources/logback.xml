@@ -10,7 +10,7 @@
 -->
 <configuration scan="true" scanPeriod="60" debug="true">
 	<!-- 属性设置 -->
-	<property name="APP_NAME" value="CenterServer" />
+	<property name="APP_NAME" value="GameServer" />
 	
 	<!-- 上下文名称,用于区分不同应用程序的记录,默认为"default" -->
 	<contextName>${APP_NAME}</contextName>
@@ -18,9 +18,10 @@
 	<!-- 获取时间戳字符串 -->
 	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
 	
+	<!-- %d{HH:mm:ss.SSS} [%thread] %-5level [%file:%line] - %msg%n -->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder charset="UTF-8">
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %level [%C:%L] - %msg%n</pattern>
         </encoder>
     </appender>
  
@@ -31,7 +32,7 @@
         </rollingPolicy>
  
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %level [%C:%L] - %msg%n</pattern>
         </encoder>
     </appender>
     

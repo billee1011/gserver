@@ -21,6 +21,6 @@ public class ShutdownHook {
 	}
 	
 	private static void dofinish() {
-		logger.info("finish closing all work!");
+		logger.info("DataServer is trying to finish all works!");
 	}
 }

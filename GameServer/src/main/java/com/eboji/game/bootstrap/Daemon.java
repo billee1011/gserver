@@ -23,7 +23,6 @@ public class Daemon {
 	protected void initContext() {
 		setContext(null);
 		setContext(new AnnotationConfigApplicationContext(SpringConfiguration.class));
-		
 		logger.info("GameServer initialize context finished.");
 	}
 	
@@ -40,8 +39,6 @@ public class Daemon {
 	 * AgentServer启动
 	 */
 	public void start() throws Exception {
-		logger.info("GameServer is starting.");
-
 		new GameServerListener(getPort());
 	}
 

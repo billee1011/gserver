@@ -36,7 +36,6 @@ public class AgentServerBootstrap {
 				jarPath = jarPath.substring(0, jarPath.lastIndexOf('/'));
 				jarPath = jarPath.substring(0, jarPath.lastIndexOf('/') + 1) + "conf";
 				
-				System.out.println(jarPath);
 				File logbackFile = new File(jarPath + "/logback.xml");
 				
 				if (logbackFile.exists()) {
@@ -60,6 +59,7 @@ public class AgentServerBootstrap {
 	}
 	
 	public static void main(String[] args) {
+		logger.info("AgentServer is starting.");
 		DEBUG = Boolean.valueOf(System.getProperty("debug", "true"));
 		
 		try {
@@ -91,6 +91,7 @@ public class AgentServerBootstrap {
 	}
 	
 	private static void checkArgs(String[] args) {
+		logger.info("checking args is starting.");
 		try {
 			for (int i = 0; i < args.length; ++i) {
 				if (args[i].startsWith("--port")) {
@@ -114,6 +115,8 @@ public class AgentServerBootstrap {
 			logger.error("Can not parse arguments! See --help");
 			System.exit(-1);
 		}
+		
+		logger.info("checking args finished.");
 	}
 	
 	private static void loadProps(Boolean isDebug) {
@@ -128,19 +131,17 @@ public class AgentServerBootstrap {
 				jarPath = jarPath.substring(0, jarPath.lastIndexOf('/'));
 				jarPath = jarPath.substring(0, jarPath.lastIndexOf('/') + 1) + "conf";
 				filePath = jarPath + "/config.properties";
-				
-				System.out.println(filePath);
 			}
 			
-			logger.info("Load config file: "  + filePath + " success!");
 			fis = new FileInputStream(new File(filePath));
-			
 			Properties p = new Properties();
 			p.load(fis);
 			
+			logger.info("loading config file: "  + filePath + " success!");
+			
 			ConfigUtil.setProps(p);
 		} catch (Exception e) {
-			logger.error("Load config file: " + filePath + " exception:\n" + e.getMessage());
+			logger.error("loading config file: " + filePath + " exception:\n" + e.getMessage());
 		}
 	}
 }

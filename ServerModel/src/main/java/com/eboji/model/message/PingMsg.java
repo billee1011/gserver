@@ -9,4 +9,24 @@ public class PingMsg extends BaseMsg {
 		super();
 		setT(MsgType.PING);
 	}
+	
+	private int cport;		//各服务端口号
+	
+	private String type;
+
+	public int getCport() {
+		return cport;
+	}
+
+	public void setCport(int cport) {
+		this.cport = cport;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

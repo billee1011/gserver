@@ -16,7 +16,7 @@ public class RegisterResMsg extends BaseMsg {
 	
 	private String status;
 	
-	private Map<Integer, Set<String>> serviceMap;
+	private Map<String, Set<String>> serviceMap;
 
 	public String getStatus() {
 		return status;
@@ -26,11 +26,11 @@ public class RegisterResMsg extends BaseMsg {
 		this.status = status;
 	}
 
-	public Map<Integer, Set<String>> getServiceMap() {
+	public Map<String, Set<String>> getServiceMap() {
 		return serviceMap;
 	}
 
-	public void setServiceMap(Map<Integer, Set<String>> serviceMap) {
+	public void setServiceMap(Map<String, Set<String>> serviceMap) {
 		this.serviceMap = serviceMap;
 	}
 }

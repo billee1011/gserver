@@ -3,11 +3,14 @@ package com.eboji.center.handler;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.eboji.model.constant.Constant;
 import com.eboji.model.message.RegisterResMsg;
 
 /**
@@ -62,15 +65,31 @@ public class CenterServerClientMap {
 	 * @param obj
 	 */
 	public static void broadcast(Object obj) {
-		Map<Integer, Set<String>> serverInfoMap = RegisterServerInfoMap
+		Map<String, Set<String>> serverInfoMap = RegisterServerInfoMap
 				.getServerInfoMap();
-		for(Map.Entry<Integer, Set<String>> entry : serverInfoMap.entrySet()) {
+		Set<String> broadcastSET = new HashSet<String>();
+		for(Map.Entry<String, Set<String>> entry : serverInfoMap.entrySet()) {
 			Set<String> addressSet = entry.getValue();
 			for(String address : addressSet) {
-				Object sendObj = filter(address, obj);
-				clientMap.get(address).writeAndFlush(sendObj);
+				String realAddress = address.split(Constant.STR_UNDERLINE).length > 1 ?
+						address.split(Constant.STR_UNDERLINE)[1]: address;
+				if(!broadcastSET.contains(realAddress)) {
+					broadcastSET.add(realAddress);
+					Object sendObj = filter(realAddress, obj);
+					clientMap.get(realAddress).writeAndFlush(sendObj);
+				}
 			}
 		}
+	}
+	
+	/**
+	 * 将obj信息发送至连接至中心服务的客户端信息
+	 * @param address
+	 * @param obj
+	 */
+	public static void send(String address, Object obj) {
+		Object sendObj = filter(address, obj);
+		clientMap.get(address).writeAndFlush(sendObj);
 	}
 	
 	/**
@@ -91,13 +110,13 @@ public class CenterServerClientMap {
 			retMsg.setT(msg.getT());
 			retMsg.setStatus(msg.getStatus());
 			
-			Map<Integer, Set<String>> serverInfoMap = msg.getServiceMap();
-			Map<Integer, Set<String>> dynamicServerInfoMap = new 
-					ConcurrentHashMap<Integer, Set<String>>();
+			Map<String, Set<String>> serverInfoMap = msg.getServiceMap();
+			Map<String, Set<String>> dynamicServerInfoMap = new 
+					ConcurrentHashMap<String, Set<String>>();
 			
 			//serverInfoMap拷贝至dynamicServerInfoMap
-			Set<Integer> keys = serverInfoMap.keySet();
-			for(Integer key : keys) {
+			Set<String> keys = serverInfoMap.keySet();
+			for(String key : keys) {
 				Set<String> value = serverInfoMap.get(key);
 				Set<String> reVal = new HashSet<String>();
 				
@@ -108,16 +127,17 @@ public class CenterServerClientMap {
 				dynamicServerInfoMap.put(key, reVal);
 			}
 			
-			Integer serviceId = null;
+			String server = null;
 			boolean find = false;
-			for(Map.Entry<Integer, Set<String>> entry : 
+			List<String> addressList = new ArrayList<String>();
+			for(Map.Entry<String, Set<String>> entry : 
 				dynamicServerInfoMap.entrySet()) {
 				Set<String> addressSet = entry.getValue();
 				for(String addr : addressSet) {
-					if(addr.equals(address)) {
+					if(addr.contains(address)) {
 						find = true;
-						serviceId = entry.getKey();
-						break;
+						server = entry.getKey();
+						addressList.add(addr);
 					}
 				}
 				
@@ -126,8 +146,10 @@ public class CenterServerClientMap {
 				}
 			}
 			
-			if(serviceId != null) {
-				dynamicServerInfoMap.get(serviceId).remove(address);
+			if(server != null) {
+				for(String addr : addressList) {
+					dynamicServerInfoMap.get(server).remove(addr);
+				}
 			}
 			
 			retMsg.setServiceMap(dynamicServerInfoMap);

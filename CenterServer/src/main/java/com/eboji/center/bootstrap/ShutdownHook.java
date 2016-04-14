@@ -17,7 +17,7 @@ public class ShutdownHook {
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			@Override
 			public void run() {
-				logger.info("CenterServer is stopping...");
+				logger.info("CenterServer is stopping.");
 				
 				dofinish();
 				
@@ -34,6 +34,6 @@ public class ShutdownHook {
 			entry.getValue().close();
 		}
 		
-		logger.info("finish closing all work!");
+		logger.info("CenterServer is trying to finish all works!");
 	}
 }

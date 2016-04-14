@@ -9,18 +9,17 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.alibaba.fastjson.JSONObject;
 import com.eboji.agent.transfer.tcp.connection.ServerClientConnection;
 import com.eboji.model.constant.Constant;
+import com.eboji.model.util.CommonUtil;
 
 public class ServerClientTransfer {
-	private static final Logger logger = LoggerFactory.getLogger(ServerClientTransfer.class);
-	
 	private static Map<String, SocketChannel> socketChannelMap = new ConcurrentHashMap<String, SocketChannel>();
 	
-	private static Map<Integer, Set<String>> serviceMap = new ConcurrentHashMap<Integer, Set<String>>();
+	private static Map<String, Set<String>> serviceMap = new ConcurrentHashMap<String, Set<String>>();
+	
+	public static Map<String, Set<String>> gameMap = new ConcurrentHashMap<String, Set<String>>();
 	
 	public static Map<String, SocketChannel> getSocketChannelMap() {
 		return socketChannelMap;
@@ -31,31 +30,39 @@ public class ServerClientTransfer {
 		ServerClientTransfer.socketChannelMap = socketChannelMap;
 	}
 
-	public static Map<Integer, Set<String>> getServiceMap() {
+	public static Map<String, Set<String>> getServiceMap() {
 		return serviceMap;
 	}
 
-	public static void setServiceMap(Map<Integer, Set<String>> serviceMap) {
+	public static void setServiceMap(Map<String, Set<String>> serviceMap) {
 		ServerClientTransfer.serviceMap = serviceMap;
 	}
 	
 	public static void remove(String remoteAddress) {
 		socketChannelMap.remove(remoteAddress);
-		Iterator<Integer> iter = serviceMap.keySet().iterator();
+		Iterator<String> iter = serviceMap.keySet().iterator();
 		while(iter.hasNext()) {
-			int key = iter.next();
+			String key = iter.next();
 			if(serviceMap.get(key).contains(remoteAddress)) {
 				serviceMap.get(key).remove(remoteAddress);
 				break;
 			}
 		}
+		
+		Iterator<String> iter1 = gameMap.keySet().iterator();
+		while(iter1.hasNext()) {
+			String key = iter1.next();
+			if(gameMap.get(key).contains(remoteAddress)) {
+				serviceMap.get(key).remove(remoteAddress);
+			}
+		}
 	}
 	
-	public static void parse(Map<Integer, Set<String>> _serviceMap) {
-		Map<Integer, Set<String>> needSets = findNeedInitial(_serviceMap);
+	public static void parse(Map<String, Set<String>> _serviceMap) {
+		Map<String, Set<String>> needSets = findNeedInitial(_serviceMap);
 		
 		//初始化
-		for(Map.Entry<Integer, Set<String>> entry : needSets.entrySet()) {
+		for(Map.Entry<String, Set<String>> entry : needSets.entrySet()) {
 			Set<String> entrysets = entry.getValue();
 			for(String serviceaddress : entrysets) {
 				String[] addresses = serviceaddress.split(Constant.STR_COLON);
@@ -72,63 +79,74 @@ public class ServerClientTransfer {
 			}
 		}
 		
-		printConnections();
+		CommonUtil.printConnections(getServiceMap());
 	}
 	
-	protected static void printConnections() {
-		if(ServerClientTransfer.getServiceMap().size() > 0)
-			logger.info("建立的TCP连接:");
-		
-		Map<Integer, Set<String>> serviceMap = ServerClientTransfer.getServiceMap();
-		Iterator<Integer> iter = serviceMap.keySet().iterator();
-		while(iter.hasNext()) {
-			int key = iter.next();
-			if(key == Constant.SRV_AGENT) {
-				logger.info("--->代理服务:" + serviceMap.get(key).toString());
-			} else if(key == Constant.SRV_LOGIN) {
-				logger.info("--->登录服务:" + serviceMap.get(key).toString());
-			} else if(key == Constant.SRV_GAME) {
-				logger.info("--->游戏服务:" + serviceMap.get(key).toString());
-			} else if(key == Constant.SRV_DATA) {
-				logger.info("--->数据服务:" + serviceMap.get(key).toString());
-			} else if(key == Constant.SRV_IM) {
-				logger.info("--->消息服务:" + serviceMap.get(key).toString());
-			} else if(key == Constant.SRV_CENTER) {
-				logger.info("--->中心服务:" + serviceMap.get(key).toString());
-			}
-		}
-	}
-	
-	protected static Map<Integer, Set<String>> findNeedInitial(Map<Integer, Set<String>> _serviceMap) {
-		Map<Integer, Set<String>> needSets = new ConcurrentHashMap<Integer, Set<String>>();
+	protected static Map<String, Set<String>> findNeedInitial(Map<String, Set<String>> _serviceMap) {
+		Map<String, Set<String>> needSets = new ConcurrentHashMap<String, Set<String>>();
 		
 		boolean isIncludeKey = false;
-		for(Map.Entry<Integer, Set<String>> entry : _serviceMap.entrySet()) {
+		for(Map.Entry<String, Set<String>> entry : _serviceMap.entrySet()) {
 			//AgentServer-->LoginServer|AgentServer-->GameServer|AgentServer-->IMServer
-			if(entry.getKey().intValue() == Constant.SRV_LOGIN.intValue() 
-					|| entry.getKey().intValue() == Constant.SRV_GAME.intValue() 
-					|| entry.getKey().intValue() == Constant.SRV_IM.intValue()) {
+			if(entry.getKey().contains(Constant.SRV_LOGIN) 
+					|| entry.getKey().contains(Constant.SRV_GAME) 
+					|| entry.getKey().contains(Constant.SRV_IM)) {
 				Set<String> centerService = entry.getValue();
-				for(Map.Entry<Integer, Set<String>> innerEntry : serviceMap.entrySet()) {
-					if(entry.getKey().intValue() == innerEntry.getKey().intValue()) {
+				for(Map.Entry<String, Set<String>> innerEntry : serviceMap.entrySet()) {
+					if(entry.getKey().equals(innerEntry.getKey())) {
 						isIncludeKey = true;
 						Set<String> services = innerEntry.getValue();
 						boolean flag = false;
 						for(String cService : centerService) {
-							for(String service : services) {
-								if(cService.equals(service)) {
-									flag = true;
-									break;
+							if(!cService.contains(Constant.STR_UNDERLINE)) {	//非游戏服务注册连接
+								for(String service : services) {
+									if(cService.equals(service)) {
+										flag = true;
+										break;
+									}
+								}
+								
+								if(!flag) {
+									if(needSets.get(entry.getKey()) == null) {
+										Set<String> sets = new HashSet<String>();
+										sets.add(cService);
+										needSets.put(entry.getKey(), sets);
+									} else {
+										needSets.get(entry.getKey()).add(cService);
+									}
 								}
 							}
-							
-							if(!flag) {
-								if(needSets.get(entry.getKey()) == null) {
-									Set<String> sets = new HashSet<String>();
-									sets.add(cService);
-									needSets.put(entry.getKey(), sets);
+						}
+						
+						flag = false;
+						for(String cService : centerService) {
+							if(cService.contains(Constant.STR_UNDERLINE)) {	//游戏服务注册连接
+								String gameId = cService.split(Constant.STR_UNDERLINE)[0];
+								String realCService = cService.split(Constant.STR_UNDERLINE)[1];
+								
+								for(String service : services) {
+									if(realCService.equals(service)) {
+										flag = true;
+										break;
+									}
+								}
+								
+								if(!flag) {
+									if(needSets.get(entry.getKey()) == null) {
+										Set<String> sets = new HashSet<String>();
+										sets.add(cService);
+										needSets.put(entry.getKey(), sets);
+									} else {
+										needSets.get(entry.getKey()).add(cService);
+									}
+								}
+								
+								if(gameMap.get(gameId) == null || gameMap.get(gameId).size() == 0) {
+									Set<String> address = new HashSet<String>();
+									address.add(realCService);
+									gameMap.put(gameId, address);
 								} else {
-									needSets.get(entry.getKey()).add(cService);
+									gameMap.get(gameId).add(realCService);
 								}
 							}
 						}
@@ -137,12 +155,33 @@ public class ServerClientTransfer {
 				
 				if(!isIncludeKey) {
 					for(String cService : centerService) {
-						if(needSets.get(entry.getKey()) == null) {
-							Set<String> sets = new HashSet<String>();
-							sets.add(cService);
-							needSets.put(entry.getKey(), sets);
-						} else {
-							needSets.get(entry.getKey()).add(cService);
+						if(!cService.contains(Constant.STR_UNDERLINE)) {	//非游戏服务注册连接
+							if(needSets.get(entry.getKey()) == null) {
+								Set<String> sets = new HashSet<String>();
+								sets.add(cService);
+								needSets.put(entry.getKey(), sets);
+							} else {
+								needSets.get(entry.getKey()).add(cService);
+							}
+						} else if(cService.contains(Constant.STR_UNDERLINE)) {	//游戏服务注册连接
+							String gameId = cService.split(Constant.STR_UNDERLINE)[0];
+							String realCService = cService.split(Constant.STR_UNDERLINE)[1];
+							
+							if(needSets.get(entry.getKey()) == null) {
+								Set<String> sets = new HashSet<String>();
+								sets.add(realCService);
+								needSets.put(entry.getKey(), sets);
+							} else {
+								needSets.get(entry.getKey()).add(realCService);
+							}
+							
+							if(gameMap.get(gameId) == null || gameMap.get(gameId).size() == 0) {
+								Set<String> address = new HashSet<String>();
+								address.add(realCService);
+								gameMap.put(gameId, address);
+							} else {
+								gameMap.get(gameId).add(realCService);
+							}
 						}
 					}
 				}
@@ -172,7 +211,7 @@ public class ServerClientTransfer {
 	}
 	
 	public static void processMj(Object obj) {
-		Set<String> serviceSet = serviceMap.get(Constant.SRV_GAME);
+		Set<String> serviceSet = gameMap.get(((JSONObject)JSONObject.toJSON(obj)).get("gid"));
 		if(serviceSet != null && serviceSet.size() > 0) {
 			int index = 0;
 			if(serviceSet.size() > 1) {

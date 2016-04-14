@@ -3,6 +3,7 @@ package com.eboji.center.handler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.timeout.IdleState;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.constant.Constant;
 import com.eboji.model.message.BaseMsg;
+import com.eboji.model.message.PingMsg;
 import com.eboji.model.message.RegisterMsg;
 import com.eboji.model.message.RegisterResMsg;
 
@@ -38,9 +40,20 @@ public class CenterServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		try {
 			MsgType type = msg.getT();
 			switch (type) {
-			//客户端空闲PING消息接收处理
+			//客户端空闲心跳PING消息接收处理
 			case PING:
-				logger.debug("receive ping from client:[" + ctx.channel().remoteAddress() + "] ok!");
+				PingMsg ping = (PingMsg)msg;
+				if(String.valueOf(IdleState.READER_IDLE).equals(ping.getType())) {
+					String remote = ctx.channel().remoteAddress().toString();
+					String remoteIP = remote.substring(1, remote.indexOf(Constant.STR_COLON));
+					String address = remoteIP + Constant.STR_COLON + ping.getCport();
+					
+					RegisterResMsg regResMsg = new RegisterResMsg();
+					regResMsg.setStatus(Constant.STATUS_SUCCESS);
+					regResMsg.setServiceMap(RegisterServerInfoMap.getServerInfoMap());
+					CenterServerClientMap.send(address, regResMsg);
+					logger.info("接收到" + address + "的[" + ping.getType() + "]PING消息!");
+				}
 				break;
 			
 			//客户端向中心服务进行注册消息接收处理
@@ -60,12 +73,13 @@ public class CenterServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
+		CenterServerClientMap.remove((SocketChannel)ctx.channel());
 		logger.info("remote address: " + ctx.channel().remoteAddress() + ", " + cause.getMessage()); 
 	}
 	
 	//注册过程处理
 	protected void RegProcess(ChannelHandlerContext ctx, RegisterMsg regMsg) {
-		int serviceId = regMsg.getServerId();
+		String server = regMsg.getServer();
 		
 		String remote = ctx.channel().remoteAddress().toString();
 		String remoteIP = remote.substring(1, remote.indexOf(Constant.STR_COLON));
@@ -76,13 +90,13 @@ public class CenterServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			CenterServerClientMap.put(address, (SocketChannel)ctx.channel());
 		
 		//写入服务注册类，作为信息发送给注册服务
-		RegisterServerInfoMap.put(serviceId, address);
+		RegisterServerInfoMap.put(server, address);
 		
 		RegisterResMsg regResMsg = new RegisterResMsg();
 		regResMsg.setStatus(Constant.STATUS_SUCCESS);
 		regResMsg.setServiceMap(RegisterServerInfoMap.getServerInfoMap());
 		CenterServerClientMap.broadcast(regResMsg);
 		
-		logger.info(regMsg.getServerId() + "[" + remote + "]向中心服务注册成功!");
+		logger.info(regMsg.getServer() + "[" + remote + "]向中心服务注册成功!");
 	}
 }

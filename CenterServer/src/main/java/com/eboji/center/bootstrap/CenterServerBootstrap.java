@@ -58,6 +58,7 @@ public class CenterServerBootstrap {
 	}
 	
 	public static void main(String[] args) {
+		logger.info("CenterServer is starting.");
 		DEBUG = Boolean.valueOf(System.getProperty("debug", "true"));
 		
 		try {
@@ -89,6 +90,7 @@ public class CenterServerBootstrap {
 	}
 	
 	private static void checkArgs(String[] args) {
+		logger.info("check args is starting.");
 		try {
 			for (int i = 0; i < args.length; ++i) {
 				if (args[i].startsWith("--port")) {
@@ -108,6 +110,7 @@ public class CenterServerBootstrap {
 			logger.error("Can not parse arguments! See --help");
 			System.exit(-1);
 		}
+		logger.info("check args finished.");
 	}
 	
 	private static void loadProps(Boolean isDebug) {
@@ -124,15 +127,15 @@ public class CenterServerBootstrap {
 				filePath = jarPath + "/config.properties";
 			}
 			
-			logger.info("Load config file: "  + filePath + " success!");
 			fis = new FileInputStream(new File(filePath));
-			
 			Properties p = new Properties();
 			p.load(fis);
 			
+			logger.info("loading config file: "  + filePath + " success!");
+			
 			ConfigUtil.setProps(p);
 		} catch (Exception e) {
-			logger.error("Load config file: " + filePath + " exception:\n" + e.getMessage());
+			logger.error("loading config file: " + filePath + " exception:\n" + e.getMessage());
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.eboji.game.server.transfer.tcp.connection;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -39,12 +40,13 @@ public class ServerClientConnection {
 			Bootstrap bootstrap = new Bootstrap();
 			bootstrap.group(workerGroup);
 			bootstrap.channel(NioSocketChannel.class);
-			bootstrap.option(ChannelOption.SO_BACKLOG, 128);
+			bootstrap.option(ChannelOption.TCP_NODELAY, true);
+			bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT);
 			bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
 					ChannelPipeline pipe = ch.pipeline();
-					pipe.addLast(new IdleStateHandler(30, 20, 0));
+					pipe.addLast(new IdleStateHandler(60, 0, 120));
 					pipe.addLast(new MsgEncoder());
 					pipe.addLast(new MsgDecoder());
 					pipe.addLast(new ServerClientHandler());

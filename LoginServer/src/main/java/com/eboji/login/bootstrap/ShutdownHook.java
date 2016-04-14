@@ -11,16 +11,16 @@ public class ShutdownHook {
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			@Override
 			public void run() {
-				logger.info("Server is stopping...");
+				logger.info("LoginServer is stopping...");
 				
 				dofinish();
 				
-				logger.info("Server has been stopped.");
+				logger.info("LoginServer has been stopped.");
 			}
 		});
 	}
 	
 	private static void dofinish() {
-		logger.info("finish closing all work!");
+		logger.info("LoginServer is trying to finish all works!");
 	}
 }

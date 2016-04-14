@@ -25,7 +25,6 @@ public class Daemon {
 	protected void initContext() {
 		setContext(null);
 		setContext(new AnnotationConfigApplicationContext(SpringConfiguration.class));
-		
 		logger.info("DataServer initialize context finished.");
 	}
 	
@@ -42,7 +41,6 @@ public class Daemon {
 	 * DataServer启动
 	 */
 	public void start() throws Exception {
-		logger.info("DataServer is starting.");
 		DataService dataService = (DataService)context.getBean("dataService");
 		new DataServerListener(getPort(), ConfigUtil.getClient(), dataService);
 	}
