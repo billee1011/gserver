@@ -25,13 +25,16 @@ public class DataServerListener {
 	
 	private int port;
 	
+	private int poolSize;
+	
 	private MemCacheClient memCacheClient = null;
 	
 	private DataService dataService = null;
 	
-	public DataServerListener(int port, MemCacheClient memCacheClient, 
+	public DataServerListener(int port, int poolSize, MemCacheClient memCacheClient, 
 			DataService dataService) throws Exception {
 		this.port = port;
+		this.poolSize = poolSize;
 		this.memCacheClient = memCacheClient;
 		this.dataService = dataService;
 		
@@ -56,7 +59,7 @@ public class DataServerListener {
 					ChannelPipeline pipe = ch.pipeline();
 					pipe.addLast(new MsgEncoder());
 					pipe.addLast(new MsgDecoder());
-					pipe.addLast(new DataServerHandler(memCacheClient, dataService));
+					pipe.addLast(new DataServerHandler(poolSize, memCacheClient, dataService));
 				}
 			});
 			

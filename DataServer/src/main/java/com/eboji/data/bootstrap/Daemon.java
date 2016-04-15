@@ -18,6 +18,8 @@ public class Daemon {
 	private int port = 9093;
 	
 	private ApplicationContext context = null;
+	
+	private int poolSize = 4;
 
 	private Daemon() {
 	}
@@ -42,7 +44,7 @@ public class Daemon {
 	 */
 	public void start() throws Exception {
 		DataService dataService = (DataService)context.getBean("dataService");
-		new DataServerListener(getPort(), ConfigUtil.getClient(), dataService);
+		new DataServerListener(getPort(), getPoolSize(), ConfigUtil.getClient(), dataService);
 	}
 
 	/**
@@ -73,5 +75,13 @@ public class Daemon {
 
 	public void setContext(ApplicationContext context) {
 		this.context = context;
+	}
+
+	public int getPoolSize() {
+		return poolSize;
+	}
+
+	public void setPoolSize(int threadPoolSize) {
+		this.poolSize = threadPoolSize;
 	}
 }

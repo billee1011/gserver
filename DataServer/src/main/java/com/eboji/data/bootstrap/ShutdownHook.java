@@ -1,8 +1,9 @@
 package com.eboji.data.bootstrap;
 
 import org.slf4j.LoggerFactory;
-
 import org.slf4j.Logger;
+
+import com.eboji.data.handler.DataServerExecutors;
 
 public class ShutdownHook {
 	private static final Logger logger = LoggerFactory.getLogger(ShutdownHook.class);
@@ -22,5 +23,8 @@ public class ShutdownHook {
 	
 	private static void dofinish() {
 		logger.info("DataServer is trying to finish all works!");
+		if(DataServerExecutors.getService() != null) {
+			DataServerExecutors.getService().shutdownNow();
+		}
 	}
 }

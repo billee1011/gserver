@@ -19,9 +19,9 @@ public class DataServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	
 	protected DataServerProcessor dataProcessor = null;
 	
-	public DataServerHandler(MemCacheClient memCacheClient, DataService dataService) {
+	public DataServerHandler(int poolSize, MemCacheClient memCacheClient, DataService dataService) {
 		this.memCacheClient = memCacheClient;
-		this.dataProcessor = new DataServerProcessor(dataService);
+		this.dataProcessor = new DataServerProcessor(dataService, poolSize);
 	}
 	
 	@Override
