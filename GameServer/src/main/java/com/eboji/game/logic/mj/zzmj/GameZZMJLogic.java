@@ -31,8 +31,7 @@ public class GameZZMJLogic extends GameBaseLogic {
 		0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29		//条
 	};
 
-	@Override
-	public void randMj(Byte[] mj, Integer mjMaxCount, Integer randCount) {
+	protected void randMj(Byte[] mj, Integer mjMaxCount, Integer randCount) {
 		Integer index = 0;
 		Byte temp;
 		Random rand = new Random(System.currentTimeMillis());
@@ -59,7 +58,6 @@ public class GameZZMJLogic extends GameBaseLogic {
 		System.out.println();
 	}
 
-	@Override
 	public void sortMj(Byte[] mjHand, int mjHandCount) {
 		List<Byte> mjList  = Arrays.asList(mjHand);
 		mjList.sort(new ByteComparator());
@@ -78,6 +76,7 @@ public class GameZZMJLogic extends GameBaseLogic {
 		//按次数随机洗牌
 		randMj(mj, ORG_MJ_MAX, r);
 		
+		//给各个玩家发牌
 		
 	}
 	

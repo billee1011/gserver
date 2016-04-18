@@ -20,8 +20,7 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	
 	protected LoginServerProcessor processor = null;
 	
-	public LoginServerHandler(MemCacheClient memCacheClient) {
-		this.memCacheClient = memCacheClient;
+	public LoginServerHandler() {
 		this.processor = new LoginServerProcessor();
 	}
 	

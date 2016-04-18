@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import com.eboji.commons.util.memcached.MemCacheClient;
 import com.eboji.game.logic.mj.GameBaseLogic;
-import com.eboji.game.server.transfer.facade.TransferFacade;
+import com.eboji.game.room.GameRoomAccess;
+import com.eboji.game.room.impl.GameRoomAccessImpl;
 import com.eboji.game.util.ConfigUtil;
 import com.eboji.model.message.BaseMsg;
-import com.eboji.model.message.dt.DtCreGGRoomMsg;
 import com.eboji.model.message.mj.MjCreateMsg;
 import com.eboji.model.message.mj.MjJoinMsg;
 
@@ -22,8 +22,12 @@ public class GameServerProcessor {
 	
 	protected Map<Integer, GameBaseLogic> gameMap = new HashMap<Integer, GameBaseLogic>();
 	
+	private GameRoomAccess gameRoomAccess = null;
+	
 	public GameServerProcessor() {
 		try {
+			gameRoomAccess = new GameRoomAccessImpl();
+			
 			Map<Integer, String> maps = ConfigUtil.getGameProps();
 			Iterator<Entry<Integer, String>> iter = maps.entrySet().iterator();
 			while(iter.hasNext()) {
@@ -44,37 +48,16 @@ public class GameServerProcessor {
 			//创建房间处理逻辑
 			MjCreateMsg createMsg = (MjCreateMsg)obj;
 			createMsg.setRas(remoteAddress);
-			createRoom(client, createMsg);
+			gameRoomAccess.createRoomFunc(client, obj);
 		} else if(obj instanceof MjJoinMsg) {
 			//加入房间处理逻辑
 			MjJoinMsg joinMsg = (MjJoinMsg)obj;
 			joinMsg.setRas(remoteAddress);
-			joinRoom(client, joinMsg);
+			gameRoomAccess.joinRoonFunc(client, obj);
 		} else {
 			//游戏处理逻辑总开关
 			String gid = obj.getGid();
 			gameMap.get(Integer.parseInt(gid)).process(obj);
 		}
-	}
-	
-	protected synchronized void createRoom(MemCacheClient client, Object object) {
-		if(object instanceof MjCreateMsg) {
-			MjCreateMsg mjMsg = (MjCreateMsg)object;
-			DtCreGGRoomMsg msg = new DtCreGGRoomMsg();
-			msg.setCid(mjMsg.getCid());
-			msg.setGid(mjMsg.getGid());
-			msg.setUid(mjMsg.getUid());
-			msg.setGamePrice(mjMsg.getGamePrice());
-			msg.setGameType(mjMsg.getGameType());
-			msg.setRas(mjMsg.getRas());
-			TransferFacade.facade(msg);
-		}
-	}
-	
-	protected synchronized void joinRoom(MemCacheClient client, Object object) {
-		if(object instanceof MjJoinMsg) {
-			MjJoinMsg msg = (MjJoinMsg)object;
-			TransferFacade.facade(msg);
- 		}
 	}
 }

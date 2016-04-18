@@ -7,7 +7,6 @@ import io.netty.channel.socket.SocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eboji.commons.util.memcached.MemCacheClient;
 import com.eboji.data.service.DataService;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.message.BaseMsg;
@@ -15,12 +14,9 @@ import com.eboji.model.message.BaseMsg;
 public class DataServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(DataServerHandler.class);
 	
-	protected MemCacheClient memCacheClient = null;
-	
 	protected DataServerProcessor dataProcessor = null;
 	
-	public DataServerHandler(int poolSize, MemCacheClient memCacheClient, DataService dataService) {
-		this.memCacheClient = memCacheClient;
+	public DataServerHandler(int poolSize, DataService dataService) {
 		this.dataProcessor = new DataServerProcessor(dataService, poolSize);
 	}
 	

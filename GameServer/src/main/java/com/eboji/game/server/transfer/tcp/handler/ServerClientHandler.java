@@ -5,6 +5,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,11 +14,15 @@ import org.slf4j.LoggerFactory;
 
 import com.eboji.game.bootstrap.Daemon;
 import com.eboji.game.handler.GameServerClientMap;
+import com.eboji.game.room.GameRoomMap;
+import com.eboji.game.room.vo.GameRoomVO;
 import com.eboji.game.server.transfer.tcp.ServerClientTransfer;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.message.BaseMsg;
 import com.eboji.model.message.PingMsg;
 import com.eboji.model.message.RegisterResMsg;
+import com.eboji.model.message.mj.MjCreateResMsg;
+import com.eboji.model.message.mj.MjJoinResMsg;
 
 public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(ServerClientHandler.class);
@@ -77,5 +82,29 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		String remoteAddress = remote.substring(1);
 		ServerClientTransfer.remove(remoteAddress);
 		logger.error("remote address: " + ctx.channel().remoteAddress() + ", " + cause.getMessage());
+	}
+	
+	protected void processTransfer(BaseMsg msg) {
+		if(msg instanceof MjCreateResMsg) {
+			if(msg.getRoomNo() != 0) {
+				GameRoomVO vo = new GameRoomVO();
+				vo.setGid(msg.getGid());
+				vo.setRoomNo(msg.getRoomNo());
+				Map<String, String> uMap = new HashMap<String, String>();
+				uMap.put(msg.getUid(), msg.getRas());
+				
+				GameRoomMap.getRoomMap().put(msg.getRoomNo(), vo);
+			}
+		} else if(msg instanceof MjJoinResMsg) {
+			MjJoinResMsg res = (MjJoinResMsg)msg;
+			if(res.getStatus() != null && res.getStatus() == 1) {
+				GameRoomMap.getRoomMap().get(msg.getRoomNo()).getuMap()
+					.put(res.getUid(), res.getRas());
+			}
+		}
+		
+		if(msg.getRas() != null && !msg.getRas().equals("")) {
+			GameServerClientMap.get(msg.getRas()).writeAndFlush(msg);
+		}
 	}
 }

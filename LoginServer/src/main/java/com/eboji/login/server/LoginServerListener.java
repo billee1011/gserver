@@ -13,7 +13,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eboji.commons.util.memcached.MemCacheClient;
 import com.eboji.login.codec.MsgDecoder;
 import com.eboji.login.codec.MsgEncoder;
 import com.eboji.login.handler.LoginServerHandler;
@@ -24,11 +23,8 @@ public class LoginServerListener {
 	
 	private int port;
 	
-	private MemCacheClient memCacheClient;
-	
-	public LoginServerListener(int port, MemCacheClient memCacheClient) throws Exception {
+	public LoginServerListener(int port) throws Exception {
 		this.port = port;
-		this.memCacheClient = memCacheClient;
 		
 		bind();
 	}
@@ -51,7 +47,7 @@ public class LoginServerListener {
 					ChannelPipeline pipe = ch.pipeline();
 					pipe.addLast(new MsgEncoder());
 					pipe.addLast(new MsgDecoder());
-					pipe.addLast(new LoginServerHandler(memCacheClient));
+					pipe.addLast(new LoginServerHandler());
 				}
 			});
 			

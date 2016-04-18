@@ -14,6 +14,7 @@ import com.eboji.agent.util.JSONUtil;
 import com.eboji.agent.util.RandomUtil;
 import com.eboji.model.common.MsgType;
 import com.eboji.model.constant.Constant;
+import com.eboji.model.message.BaseMsg;
 import com.eboji.model.message.LoginMsg;
 
 public class AgentServerHandler extends SimpleChannelInboundHandler<String> {
@@ -62,7 +63,7 @@ public class AgentServerHandler extends SimpleChannelInboundHandler<String> {
 				if(uID != null) {
 					//游戏逻辑请求，转换成相应的消息类实例，转发至游戏服务进行业务处理
 					logger.info("用户[" + uID + "],发起" + type + "请求!");
-					Object o = JSONUtil.JSONObject2Object(obj, type);
+					BaseMsg o = (BaseMsg)JSONUtil.JSONObject2Object(obj, type);
 					TransferFacade.facade(o);
 				} else {
 					//用户重新登录消息

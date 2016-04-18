@@ -8,7 +8,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.eboji.data.bootstrap.config.SpringConfiguration;
 import com.eboji.data.server.DataServerListener;
 import com.eboji.data.service.DataService;
-import com.eboji.data.util.ConfigUtil;
 
 public class Daemon {
 	private static final Logger logger = LoggerFactory.getLogger(Daemon.class);
@@ -44,7 +43,7 @@ public class Daemon {
 	 */
 	public void start() throws Exception {
 		DataService dataService = (DataService)context.getBean("dataService");
-		new DataServerListener(getPort(), getPoolSize(), ConfigUtil.getClient(), dataService);
+		new DataServerListener(getPort(), getPoolSize(), dataService);
 	}
 
 	/**

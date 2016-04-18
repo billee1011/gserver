@@ -23,7 +23,7 @@ public class JoinRoomTask extends BaseTask {
 		res = new MjJoinResMsg();
 		res.setCid(obj.getCid());
 		res.setGid(obj.getGid());
-		res.setRas(obj.getRas());
+		//res.setRas(obj.getRas());
 		res.setRoomNo(obj.getRoomNo());
 		res.setUid(obj.getUid());
 		if(player != null) {

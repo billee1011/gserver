@@ -10,8 +10,12 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.fastjson.JSONObject;
+import com.eboji.agent.handler.AgentServerClientMap;
 import com.eboji.agent.transfer.tcp.connection.ServerClientConnection;
+import com.eboji.agent.util.ConfigUtil;
 import com.eboji.model.constant.Constant;
+import com.eboji.model.message.BaseMsg;
+import com.eboji.model.message.mj.MjJoinResMsg;
 import com.eboji.model.util.CommonUtil;
 
 public class ServerClientTransfer {
@@ -20,6 +24,8 @@ public class ServerClientTransfer {
 	private static Map<String, Set<String>> serviceMap = new ConcurrentHashMap<String, Set<String>>();
 	
 	public static Map<String, Set<String>> gameMap = new ConcurrentHashMap<String, Set<String>>();
+	
+	public static Map<Integer, String> gameRouteMap = new ConcurrentHashMap<Integer, String>();
 	
 	public static Map<String, SocketChannel> getSocketChannelMap() {
 		return socketChannelMap;
@@ -38,6 +44,10 @@ public class ServerClientTransfer {
 		ServerClientTransfer.serviceMap = serviceMap;
 	}
 	
+	public static Map<Integer, String> getGameRouteMap() {
+		return gameRouteMap;
+	}
+
 	public static void remove(String remoteAddress) {
 		socketChannelMap.remove(remoteAddress);
 		Iterator<String> iter = serviceMap.keySet().iterator();
@@ -210,16 +220,46 @@ public class ServerClientTransfer {
 		}
 	}
 	
-	public static void processMj(Object obj) {
+	public static void processMj(BaseMsg obj) {
+		String gameHost = null;
 		Set<String> serviceSet = gameMap.get(((JSONObject)JSONObject.toJSON(obj)).get("gid"));
-		if(serviceSet != null && serviceSet.size() > 0) {
-			int index = 0;
-			if(serviceSet.size() > 1) {
-				Random rand = new Random(System.currentTimeMillis());
-				index = rand.nextInt(serviceSet.size());
+		Integer roomNo = obj.getRoomNo();
+		
+		if(roomNo != null && roomNo != 0) {
+			Object roomObj = ConfigUtil.getClient().get(Constant.MEM_ROOM_PREFIX + obj.getRoomNo());
+			if(roomObj != null) {
+				gameHost = String.valueOf(roomObj);
+				if(serviceSet.contains(gameHost)) {
+					socketChannelMap.get(gameHost).writeAndFlush(obj);
+				} else {
+					//加入房间异常失败
+					MjJoinResMsg res = new MjJoinResMsg();
+					res.setCid(obj.getCid());
+					res.setGid(obj.getGid());
+					res.setRoomNo(obj.getRoomNo());
+					res.setUid(obj.getUid());
+					res.setStatus(-2);	//无法到达请求服务失败
+					AgentServerClientMap.get(obj.getUid()).writeAndFlush(res);
+				}
+			} else {
+				//房间号不存在，加入房间失败
+				MjJoinResMsg res = new MjJoinResMsg();
+				res.setCid(obj.getCid());
+				res.setGid(obj.getGid());
+				res.setRoomNo(obj.getRoomNo());
+				res.setUid(obj.getUid());
+				res.setStatus(0);	//房间不存在
+				AgentServerClientMap.get(obj.getUid()).writeAndFlush(res);
 			}
-				
-			socketChannelMap.get(serviceSet.toArray()[index]).writeAndFlush(obj);
+		} else {
+			if(serviceSet != null && serviceSet.size() > 0) {
+				int index = 0;
+				if(serviceSet.size() > 1) {
+					Random rand = new Random(System.currentTimeMillis());
+					index = rand.nextInt(serviceSet.size());
+				}
+				socketChannelMap.get(serviceSet.toArray()[index]).writeAndFlush(obj);
+			}
 		}
 	}
 }

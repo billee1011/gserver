@@ -8,14 +8,4 @@ public class MjBaseMsg extends BaseMsg {
 	public MjBaseMsg() {
 		super();
 	}
-	
-	private int roomNo;
-
-	public int getRoomNo() {
-		return roomNo;
-	}
-
-	public void setRoomNo(int roomNo) {
-		this.roomNo = roomNo;
-	}
 }

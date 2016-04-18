@@ -20,6 +20,8 @@ public abstract class BaseMsg implements Serializable {
 	
 	//tcp连接的remoteaddress
 	private String ras;
+	
+	private int roomNo;
 
 	public MsgType getT() {
 		return t;
@@ -59,5 +61,13 @@ public abstract class BaseMsg implements Serializable {
 
 	public void setRas(String ras) {
 		this.ras = ras;
+	}
+	
+	public int getRoomNo() {
+		return roomNo;
+	}
+
+	public void setRoomNo(int roomNo) {
+		this.roomNo = roomNo;
 	}
 }

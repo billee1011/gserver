@@ -15,9 +15,11 @@ public class Constant {
 	
 	//消息传递中的特定KEY值
 	public static final String KEY_TYPE 		= "t";
-	public static final String KEY_GID			= "gid";
-	public static final String KEY_CID			= "cid";
-	public static final String KEY_UID			= "uid";
+	public static final String KEY_GID	        = "gid";
+	public static final String KEY_CID	        = "cid";
+	public static final String KEY_UID	        = "uid";
+	
+	public static final String MEM_ROOM_PREFIX	= "R_";
 	
 	//状态值
 	public static final String STATUS_SUCCESS	="SUCCESS";

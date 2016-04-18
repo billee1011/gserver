@@ -7,7 +7,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.eboji.login.bootstrap.config.SpringConfiguration;
 import com.eboji.login.server.LoginServerListener;
-import com.eboji.login.util.ConfigUtil;
 
 public class Daemon {
 	private static final Logger logger = LoggerFactory.getLogger(Daemon.class);
@@ -40,7 +39,7 @@ public class Daemon {
 	 * LoginServer启动
 	 */
 	public void start() throws Exception {
-		new LoginServerListener(getPort(), ConfigUtil.getClient());
+		new LoginServerListener(getPort());
 	}
 
 	/**
