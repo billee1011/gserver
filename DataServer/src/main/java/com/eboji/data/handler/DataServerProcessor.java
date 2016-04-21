@@ -8,10 +8,15 @@ import com.eboji.data.handler.task.JoinRoomTask;
 import com.eboji.data.handler.task.LoginTask;
 import com.eboji.data.service.DataService;
 import com.eboji.model.message.BaseMsg;
+import com.eboji.model.message.CreateRoomMsg;
+import com.eboji.model.message.JoinRoomMsg;
 import com.eboji.model.message.LoginMsg;
-import com.eboji.model.message.dt.DtCreGGRoomMsg;
-import com.eboji.model.message.mj.MjJoinMsg;
 
+/**
+ * 数据服务处理核心转发类
+ * @author zhoucl
+ *
+ */
 public class DataServerProcessor {
 	private DataService dataService;
 	
@@ -21,17 +26,22 @@ public class DataServerProcessor {
 				newFixedThreadPool(poolSize));
 	}
 	
+	/**
+	 * 转发处理方法
+	 * @param msg
+	 * @param remoteAddress
+	 */
 	public void process(BaseMsg msg, String remoteAddress) {
 		BaseTask task = null;
-		if(msg instanceof DtCreGGRoomMsg) {
+		if(msg instanceof CreateRoomMsg) {
 			task = new CreateRoomTask(remoteAddress, 
-					(DtCreGGRoomMsg)msg, dataService);
+					(CreateRoomMsg)msg, dataService);
 		} else if(msg instanceof LoginMsg) {
 			task = new LoginTask(remoteAddress, 
 					(LoginMsg)msg, dataService);
-		} else if(msg instanceof MjJoinMsg) {
+		} else if(msg instanceof JoinRoomMsg) {
 			task = new JoinRoomTask(remoteAddress, 
-					(MjJoinMsg)msg, dataService);
+					(JoinRoomMsg)msg, dataService);
 		}
 		
 		if(task != null) {

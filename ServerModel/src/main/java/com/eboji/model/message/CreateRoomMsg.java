@@ -1,20 +1,19 @@
-package com.eboji.model.message.dt;
+package com.eboji.model.message;
 
 import com.eboji.model.common.MsgType;
-import com.eboji.model.message.BaseMsg;
 
-public class DtCreGGRoomMsg extends BaseMsg {
-	private static final long serialVersionUID = -7032019248281449077L;
+public class CreateRoomMsg extends BaseMsg {
+	private static final long serialVersionUID = 5665023124426065521L;
 	
-	public DtCreGGRoomMsg() {
+	public CreateRoomMsg() {
 		super();
-		setT(MsgType.DT_CREGGROOM);
+		setT(MsgType.CREATEROOM);
 	}
 	
 	public int gameType;
 	
 	public long gamePrice;
-
+	
 	public int getGameType() {
 		return gameType;
 	}

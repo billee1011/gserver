@@ -15,17 +15,18 @@ public enum MsgType {
 	LOGOUT("LogoutMsg"),					//登出请求消息
 	LOGOUTRES("LogoutResMsg"),				//响应登出消息
 	
-	CONN("ConnMsg"),						//服务之间建立TCP请求消息
+	CONN("ConnMsg"),				        //服务之间建立TCP请求消息
 	CONNRES("ConnResMsg"),					//服务之间建立TCP请求响应消息
 	
-	REG("RegisterMsg"),						//各服务向中心服务注册请求消息
+	REG("RegisterMsg"),				        //各服务向中心服务注册请求消息
 	REGRES("RegisterResMsg"),				//中心服务相应注册请求的消息
 	
+	CREATEROOM("CreateRoomMsg"), 			//创建房间
+	CREATEROOMRES("CreateRoomResMsg"),		//创建房间响应消息
+	JOINROOM("JoinRoomMsg"),		        //加入房间
+	JOINROOMRES("JoinRoomResMsg"),			//加入房间响应消息
+	
 	/** 麻将类消息定义开始 **/
-	MJ_CREATE("MjCreateMsg"),				//创建房间
-	MJ_CREATERES("MjCreateResMsg"),			//创建房间响应消息
-	MJ_JOIN("MjJoinMsg"),					//加入房间
-	MJ_JOINRES("MjJoinResMsg"),				//加入房间响应消息
 	MJ_START("MjStartMsg"),					//麻将游戏开始消息
 	MJ_DEAL("MjDealMsg"),					//发牌
 	MJ_HU("MjHuMsg"),						//胡牌
@@ -41,12 +42,7 @@ public enum MsgType {
 	/**
 	 * 数据服务类消息定义
 	 */
-	DT_CREGGROOM("DtCreGGRoomMsg"),		//存储开房信息
-	DT_CREGGROOMRS("DtCreGGRoomRsMsg"),	//存储开房信息响应返回
-	
-	DT_LOGIN("DtLoginMsg"),					//存储登录信息
-	DT_LOGOUT("DtLogoutMsg"),				//存储登出消息
-	
+
 	ASK("AskMsg"),
 	 
 	REPLY2SERVER("ReplyToServerMsg"),

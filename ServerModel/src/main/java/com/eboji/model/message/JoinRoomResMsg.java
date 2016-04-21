@@ -1,13 +1,13 @@
-package com.eboji.model.message.mj;
+package com.eboji.model.message;
 
 import com.eboji.model.common.MsgType;
 
-public class MjJoinResMsg extends MjBaseMsg {
+public class JoinRoomResMsg extends BaseMsg {
 	private static final long serialVersionUID = -5516718806582360190L;
 
-	public MjJoinResMsg() {
+	public JoinRoomResMsg() {
 		super();
-		setT(MsgType.MJ_JOINRES);
+		setT(MsgType.JOINROOMRES);
 	}
 	
 	private Integer status;

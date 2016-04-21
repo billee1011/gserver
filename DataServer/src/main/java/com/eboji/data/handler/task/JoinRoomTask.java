@@ -2,14 +2,14 @@ package com.eboji.data.handler.task;
 
 import com.eboji.data.handler.DataServerClientMap;
 import com.eboji.data.service.DataService;
-import com.eboji.model.message.mj.MjJoinMsg;
-import com.eboji.model.message.mj.MjJoinResMsg;
+import com.eboji.model.message.JoinRoomMsg;
+import com.eboji.model.message.JoinRoomResMsg;
 import com.eboji.persist.pojo.GgRoomPlayer;
 
 public class JoinRoomTask extends BaseTask {
-	private MjJoinMsg msg;
+	private JoinRoomMsg msg;
 	
-	public JoinRoomTask(String remoteAddress, MjJoinMsg msg,
+	public JoinRoomTask(String remoteAddress, JoinRoomMsg msg,
 			DataService dataService) {
 		super(remoteAddress, dataService);
 		this.msg = msg;
@@ -17,10 +17,10 @@ public class JoinRoomTask extends BaseTask {
 	
 	@Override
 	public Boolean call() throws Exception {
-		MjJoinResMsg res = null;
-		MjJoinMsg obj = (MjJoinMsg)this.msg;
+		JoinRoomResMsg res = null;
+		JoinRoomMsg obj = (JoinRoomMsg)this.msg;
 		GgRoomPlayer player = joinRoom(obj);
-		res = new MjJoinResMsg();
+		res = new JoinRoomResMsg();
 		res.setCid(obj.getCid());
 		res.setGid(obj.getGid());
 		//res.setRas(obj.getRas());
@@ -42,7 +42,7 @@ public class JoinRoomTask extends BaseTask {
 		return true;
 	}
 
-	protected GgRoomPlayer joinRoom(MjJoinMsg msg) {
+	protected GgRoomPlayer joinRoom(JoinRoomMsg msg) {
 		GgRoomPlayer player = dataService.joinRoom(Integer.parseInt(msg.getGid()), 
 				msg.getRoomNo(), Integer.parseInt(msg.getUid()));
 		return player;

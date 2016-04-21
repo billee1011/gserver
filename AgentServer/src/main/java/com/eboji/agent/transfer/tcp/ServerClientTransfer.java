@@ -15,7 +15,7 @@ import com.eboji.agent.transfer.tcp.connection.ServerClientConnection;
 import com.eboji.agent.util.ConfigUtil;
 import com.eboji.model.constant.Constant;
 import com.eboji.model.message.BaseMsg;
-import com.eboji.model.message.mj.MjJoinResMsg;
+import com.eboji.model.message.JoinRoomResMsg;
 import com.eboji.model.util.CommonUtil;
 
 public class ServerClientTransfer {
@@ -233,7 +233,7 @@ public class ServerClientTransfer {
 					socketChannelMap.get(gameHost).writeAndFlush(obj);
 				} else {
 					//加入房间异常失败
-					MjJoinResMsg res = new MjJoinResMsg();
+					JoinRoomResMsg res = new JoinRoomResMsg();
 					res.setCid(obj.getCid());
 					res.setGid(obj.getGid());
 					res.setRoomNo(obj.getRoomNo());
@@ -243,7 +243,7 @@ public class ServerClientTransfer {
 				}
 			} else {
 				//房间号不存在，加入房间失败
-				MjJoinResMsg res = new MjJoinResMsg();
+				JoinRoomResMsg res = new JoinRoomResMsg();
 				res.setCid(obj.getCid());
 				res.setGid(obj.getGid());
 				res.setRoomNo(obj.getRoomNo());

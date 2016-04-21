@@ -2,9 +2,9 @@ package com.eboji.agent.transfer.facade;
 
 import com.eboji.agent.transfer.tcp.ServerClientTransfer;
 import com.eboji.model.message.BaseMsg;
+import com.eboji.model.message.CreateRoomMsg;
 import com.eboji.model.message.LoginMsg;
-import com.eboji.model.message.mj.MjCreateMsg;
-import com.eboji.model.message.mj.MjJoinMsg;
+import com.eboji.model.message.JoinRoomMsg;
 import com.eboji.model.message.mj.MjStartMsg;
 
 public class TransferFacade {
@@ -14,9 +14,9 @@ public class TransferFacade {
 			ServerClientTransfer.login(obj);
 		} else if(obj instanceof MjStartMsg) {
 			ServerClientTransfer.processMj(obj);
-		} else if(obj instanceof MjCreateMsg) {
+		} else if(obj instanceof CreateRoomMsg) {
 			ServerClientTransfer.processMj(obj);
-		} else if(obj instanceof MjJoinMsg) {
+		} else if(obj instanceof JoinRoomMsg) {
 			ServerClientTransfer.processMj(obj);
 		}
 	}

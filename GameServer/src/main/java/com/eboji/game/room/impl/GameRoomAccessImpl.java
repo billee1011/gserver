@@ -4,30 +4,22 @@ import com.eboji.commons.util.memcached.MemCacheClient;
 import com.eboji.game.room.GameRoomAccess;
 import com.eboji.game.server.transfer.facade.TransferFacade;
 import com.eboji.model.message.BaseMsg;
-import com.eboji.model.message.dt.DtCreGGRoomMsg;
-import com.eboji.model.message.mj.MjCreateMsg;
-import com.eboji.model.message.mj.MjJoinMsg;
+import com.eboji.model.message.CreateRoomMsg;
+import com.eboji.model.message.JoinRoomMsg;
 
 public class GameRoomAccessImpl implements GameRoomAccess {
 	@Override
 	public void createRoomFunc(MemCacheClient client, BaseMsg obj) {
-		if(obj instanceof MjCreateMsg) {
-			MjCreateMsg mjMsg = (MjCreateMsg)obj;
-			DtCreGGRoomMsg msg = new DtCreGGRoomMsg();
-			msg.setCid(mjMsg.getCid());
-			msg.setGid(mjMsg.getGid());
-			msg.setUid(mjMsg.getUid());
-			msg.setGamePrice(mjMsg.getGamePrice());
-			msg.setGameType(mjMsg.getGameType());
-			msg.setRas(mjMsg.getRas());
-			TransferFacade.facade(msg);
+		if(obj instanceof CreateRoomMsg) {
+			CreateRoomMsg mjMsg = (CreateRoomMsg)obj;
+			TransferFacade.facade(mjMsg);
 		}
 	}
 
 	@Override
 	public void joinRoonFunc(MemCacheClient client, BaseMsg obj) {
-		if(obj instanceof MjJoinMsg) {
-			MjJoinMsg msg = (MjJoinMsg)obj;
+		if(obj instanceof JoinRoomMsg) {
+			JoinRoomMsg msg = (JoinRoomMsg)obj;
 			TransferFacade.facade(msg);
  		}
 	}

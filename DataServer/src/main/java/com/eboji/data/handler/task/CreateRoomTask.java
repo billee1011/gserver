@@ -2,8 +2,8 @@ package com.eboji.data.handler.task;
 
 import com.eboji.data.handler.DataServerClientMap;
 import com.eboji.data.service.DataService;
-import com.eboji.model.message.dt.DtCreGGRoomMsg;
-import com.eboji.model.message.mj.MjCreateResMsg;
+import com.eboji.model.message.CreateRoomMsg;
+import com.eboji.model.message.CreateRoomResMsg;
 import com.eboji.persist.pojo.GgRoom;
 
 /**
@@ -11,9 +11,9 @@ import com.eboji.persist.pojo.GgRoom;
  * @author zhoucl
  */
 public class CreateRoomTask extends BaseTask {
-	private DtCreGGRoomMsg msg;
+	private CreateRoomMsg msg;
 	
-	public CreateRoomTask(String remoteAddress, DtCreGGRoomMsg msg, 
+	public CreateRoomTask(String remoteAddress, CreateRoomMsg msg, 
 			DataService dataService) {
 		super(remoteAddress, dataService);
 		this.msg = msg;
@@ -27,8 +27,8 @@ public class CreateRoomTask extends BaseTask {
 		return true;
 	}
 	
-	protected Object createRoom(DtCreGGRoomMsg msg) {
-		MjCreateResMsg retObj = new MjCreateResMsg();
+	protected Object createRoom(CreateRoomMsg msg) {
+		CreateRoomResMsg retObj = new CreateRoomResMsg();
 		GgRoom room = dataService.createRoom(Integer.parseInt(msg.getGid()), msg.getGameType(), 
 				msg.getGamePrice(), Integer.parseInt(msg.getUid()));
 		

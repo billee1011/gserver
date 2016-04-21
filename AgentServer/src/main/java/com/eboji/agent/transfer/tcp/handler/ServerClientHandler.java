@@ -23,9 +23,9 @@ import com.eboji.model.constant.Constant;
 import com.eboji.model.message.BaseMsg;
 import com.eboji.model.message.ConnResMsg;
 import com.eboji.model.message.LoginResMsg;
+import com.eboji.model.message.CreateRoomResMsg;
 import com.eboji.model.message.PingMsg;
 import com.eboji.model.message.RegisterResMsg;
-import com.eboji.model.message.mj.MjCreateResMsg;
 
 public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 	private static final Logger logger = LoggerFactory.getLogger(ServerClientHandler.class);
@@ -84,7 +84,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			logger.info(JSONObject.toJSONString(msg));
 			Channel channelU = AgentServerClientMap.get(uId);
 			if(channelU != null) {
-				if(msg instanceof MjCreateResMsg) {
+				if(msg instanceof CreateRoomResMsg) {
 					ConfigUtil.getClient().add(Constant.MEM_ROOM_PREFIX + msg.getRoomNo(), 
 							ctx.channel().remoteAddress().toString().substring(1));
 				}
