@@ -63,7 +63,15 @@ public class ServerClientTransfer {
 		while(iter1.hasNext()) {
 			String key = iter1.next();
 			if(gameMap.get(key).contains(remoteAddress)) {
-				serviceMap.get(key).remove(remoteAddress);
+				gameMap.get(key).remove(remoteAddress);
+			}
+		}
+		
+		Iterator<Integer> iter2 = gameRouteMap.keySet().iterator();
+		while(iter1.hasNext()) {
+			Integer key = iter2.next();
+			if(gameRouteMap.get(key).contains(remoteAddress)) {
+				gameMap.get(key).remove(remoteAddress);
 			}
 		}
 	}
@@ -222,8 +230,8 @@ public class ServerClientTransfer {
 	
 	public static void processMj(BaseMsg obj) {
 		String gameHost = null;
-		Set<String> serviceSet = gameMap.get(((JSONObject)JSONObject.toJSON(obj)).get("gid"));
 		Integer roomNo = obj.getRoomNo();
+		Set<String> serviceSet = gameMap.get(((JSONObject)JSONObject.toJSON(obj)).get("gid"));
 		
 		if(roomNo != null && roomNo != 0) {
 			Object roomObj = ConfigUtil.getClient().get(Constant.MEM_ROOM_PREFIX + obj.getRoomNo());
@@ -252,6 +260,7 @@ public class ServerClientTransfer {
 				AgentServerClientMap.get(obj.getUid()).writeAndFlush(res);
 			}
 		} else {
+			//创建房间请求
 			if(serviceSet != null && serviceSet.size() > 0) {
 				int index = 0;
 				if(serviceSet.size() > 1) {

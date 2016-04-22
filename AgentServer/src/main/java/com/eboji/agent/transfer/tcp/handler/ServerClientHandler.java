@@ -88,6 +88,7 @@ public class ServerClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 					ConfigUtil.getClient().add(Constant.MEM_ROOM_PREFIX + msg.getRoomNo(), 
 							ctx.channel().remoteAddress().toString().substring(1));
 				}
+				msg.setRas(null);
 				channelU.writeAndFlush(JSONObject.toJSONString(msg));
 			}
 			break;
