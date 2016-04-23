@@ -7,9 +7,11 @@ import com.eboji.commons.Constant;
 import com.eboji.commons.codec.MsgDecoder;
 import com.eboji.commons.codec.MsgEncoder;
 import com.eboji.commons.hook.ConnectionFactory;
+import com.eboji.commons.jetty.JettyServerFactory;
 import com.eboji.im.bootstrap.Daemon;
-import com.eboji.im.server.transfer.ServerClientTransfer;
 import com.eboji.im.server.transfer.TransferHandler;
+import com.eboji.im.server.transfer.TransferProcessor;
+import com.eboji.im.servlet.ServiceServlet;
 import com.eboji.im.util.ConfigUtil;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -60,8 +62,22 @@ public class IMServerListener {
 				
 				ConnectionFactory.registerServiceToCenterServer(ConfigUtil.getProps("centerserver"), 
 						new TransferHandler(), Daemon.getInstance().getPort(), 
-						ServerClientTransfer.getSocketChannelMap(), 
-						ServerClientTransfer.getServiceMap(), Constant.SRV_IM);
+						TransferProcessor.getSocketChannelMap(), 
+						TransferProcessor.getServiceMap(), Constant.SRV_IM);
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							JettyServerFactory.getInstance()
+								.port(Daemon.getInstance().getPort() + 10000)
+								.addServlet(new ServiceServlet())
+								.build().start();
+						} catch (Exception e) {
+							logger.warn("jetty server start failed!");
+						}
+					}
+				}).start();
 			}
 			
 			f.channel().closeFuture().sync();

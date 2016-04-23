@@ -12,7 +12,7 @@ import com.eboji.commons.util.CommonUtil;
 
 import io.netty.channel.socket.SocketChannel;
 
-public class ServerClientTransfer {
+public class TransferProcessor {
 	private static Map<String, SocketChannel> socketChannelMap = new ConcurrentHashMap<String, SocketChannel>();
 	
 	private static Map<String, Set<String>> serviceMap = new ConcurrentHashMap<String, Set<String>>();
@@ -23,7 +23,7 @@ public class ServerClientTransfer {
 
 	public static void setSocketChannelMap(
 			Map<String, SocketChannel> socketChannelMap) {
-		ServerClientTransfer.socketChannelMap = socketChannelMap;
+		TransferProcessor.socketChannelMap = socketChannelMap;
 	}
 
 	public static Map<String, Set<String>> getServiceMap() {
@@ -31,7 +31,7 @@ public class ServerClientTransfer {
 	}
 
 	public static void setServiceMap(Map<String, Set<String>> serviceMap) {
-		ServerClientTransfer.serviceMap = serviceMap;
+		TransferProcessor.serviceMap = serviceMap;
 	}
 	
 	public static void remove(String remoteAddress) {
@@ -57,15 +57,15 @@ public class ServerClientTransfer {
 				ConnectionBuilder client = new ConnectionBuilder(
 						Integer.parseInt(addresses[1]), addresses[0],
 						new TransferHandler());
-				ServerClientTransfer.getSocketChannelMap().put(serviceaddress, 
+				TransferProcessor.getSocketChannelMap().put(serviceaddress, 
 						client.getSocketChannel());
-				Set<String> sets = ServerClientTransfer.getServiceMap().get(entry.getKey());
+				Set<String> sets = TransferProcessor.getServiceMap().get(entry.getKey());
 				if(sets == null) {
 					sets = new HashSet<String>();
 				}
 				
 				sets.add(serviceaddress);
-				ServerClientTransfer.getServiceMap().put(entry.getKey(), sets);
+				TransferProcessor.getServiceMap().put(entry.getKey(), sets);
 			}
 		}
 		

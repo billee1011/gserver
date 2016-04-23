@@ -7,10 +7,12 @@ import com.eboji.commons.Constant;
 import com.eboji.commons.codec.MsgDecoder;
 import com.eboji.commons.codec.MsgEncoder;
 import com.eboji.commons.hook.ConnectionFactory;
+import com.eboji.commons.jetty.JettyServerFactory;
 import com.eboji.data.bootstrap.Daemon;
 import com.eboji.data.server.transfer.TransferHandler;
 import com.eboji.data.server.transfer.TransferProcessor;
 import com.eboji.data.service.DataService;
+import com.eboji.data.servlet.ServiceServlet;
 import com.eboji.data.util.ConfigUtil;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -71,6 +73,20 @@ public class DataServerListener {
 						new TransferHandler() , Daemon.getInstance().getPort(), 
 						TransferProcessor.getSocketChannelMap(), 
 						TransferProcessor.getServiceMap(), Constant.SRV_DATA);
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							JettyServerFactory.getInstance()
+								.port(Daemon.getInstance().getPort() + 10000)
+								.addServlet(new ServiceServlet())
+								.build().start();
+						} catch (Exception e) {
+							logger.warn("jetty server start failed!");
+						}
+					}
+				}).start();
 			}
 			
 			f.channel().closeFuture().sync();

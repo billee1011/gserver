@@ -50,7 +50,7 @@ public class TransferHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		case REGRES:		//中心注册响应
 			RegisterResMsg regResMsg = (RegisterResMsg)msg;
 			Map<String, Set<String>> sets = regResMsg.getServiceMap();
-			ServerClientTransfer.parse(sets);
+			TransferProcessor.parse(sets);
 			logger.info("注册中心广播服务创建连接成功!");
 			break;
 		default:
@@ -66,7 +66,7 @@ public class TransferHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		//删除相应的连接
 		String remote = ctx.channel().remoteAddress().toString();
 		String remoteAddress = remote.substring(1);
-		ServerClientTransfer.remove(remoteAddress);
+		TransferProcessor.remove(remoteAddress);
 		logger.info("remote address: " + ctx.channel().remoteAddress() + ", " + cause.getMessage());
 	}
 }

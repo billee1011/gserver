@@ -1,5 +1,14 @@
 package com.eboji.center.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.eboji.center.bootstrap.Daemon;
+import com.eboji.center.servlet.ServiceServlet;
+import com.eboji.commons.codec.MsgDecoder;
+import com.eboji.commons.codec.MsgEncoder;
+import com.eboji.commons.jetty.JettyServerFactory;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,12 +18,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.eboji.commons.codec.MsgDecoder;
-import com.eboji.commons.codec.MsgEncoder;
 
 public class CenterServerListener {
 	private static final Logger logger = LoggerFactory.getLogger(CenterServerListener.class);
@@ -52,7 +55,19 @@ public class CenterServerListener {
 			if(f.isSuccess()) {
 				logger.info("CenterServer listened in port: " + this.port + " has been started.");
 				
-				//RegisterServiceUtil.registerService();
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							JettyServerFactory.getInstance()
+								.port(Daemon.getInstance().getPort() + 10000)
+								.addServlet(new ServiceServlet())
+								.build().start();
+						} catch (Exception e) {
+							logger.warn("jetty server start failed!");
+						}
+					}
+				}).start();
 			}
 			
 			f.channel().closeFuture().sync();

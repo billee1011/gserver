@@ -7,9 +7,11 @@ import com.eboji.commons.Constant;
 import com.eboji.commons.codec.MsgDecoder;
 import com.eboji.commons.codec.MsgEncoder;
 import com.eboji.commons.hook.ConnectionFactory;
+import com.eboji.commons.jetty.JettyServerFactory;
 import com.eboji.login.bootstrap.Daemon;
 import com.eboji.login.server.transfer.TransferHandler;
 import com.eboji.login.server.transfer.TransferProcessor;
+import com.eboji.login.servlet.ServiceServlet;
 import com.eboji.login.util.ConfigUtil;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -63,6 +65,20 @@ public class LoginServerListener {
 						new TransferHandler(), Daemon.getInstance().getPort(), 
 						TransferProcessor.getSocketChannelMap(), 
 						TransferProcessor.getServiceMap(), Constant.SRV_LOGIN);
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							JettyServerFactory.getInstance()
+								.port(Daemon.getInstance().getPort() + 10000)
+								.addServlet(new ServiceServlet())
+								.build().start();
+						} catch (Exception e) {
+							logger.warn("jetty server start failed!");
+						}
+					}
+				}).start();
 			}
 			
 			f.channel().closeFuture().sync();

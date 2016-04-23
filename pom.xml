@@ -12,7 +12,7 @@
 
 	<name>RootProject</name>
 	<url>http://maven.apache.org</url>
-	
+
 	<modules>
 		<module>AgentServer</module>
 		<module>CenterServer</module>
@@ -75,6 +75,8 @@
 
 		<!-- junit -->
 		<junit-version>4.11</junit-version>
+
+		<jetty.version>9.3.6.v20151106</jetty.version>
 	</properties>
 
 	<dependencyManagement>
@@ -260,6 +262,34 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlets</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 
 		<!-- junit -->
