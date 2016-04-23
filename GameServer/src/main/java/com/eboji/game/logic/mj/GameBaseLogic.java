@@ -1,6 +1,6 @@
 package com.eboji.game.logic.mj;
 
-import com.eboji.model.message.BaseMsg;
+import com.eboji.commons.msg.BaseMsg;
 
 
 public abstract class GameBaseLogic {

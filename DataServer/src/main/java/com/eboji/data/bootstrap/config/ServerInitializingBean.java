@@ -11,14 +11,14 @@ import com.eboji.data.util.ConfigUtil;
 public class ServerInitializingBean implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		//createMemCacheClient();
+		createMemCacheClient();
 	}
 	
 	/**
 	 * 初始化缓存服务器的连接
 	 */
 	protected void createMemCacheClient() {
-		String memcacheserversp = ConfigUtil.getProps("memcacheservers");
+		String memcacheserversp = ConfigUtil.getProps("memcacheserver");
 		String[] memcacheservers = memcacheserversp.split("\\|");
 		Integer[] weights = new Integer[memcacheservers.length];
 		for(int i = 0; i < memcacheservers.length; i++) {

@@ -22,8 +22,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.eboji</groupId>
-			<artifactId>ServerModel</artifactId>
-			<version>0.0.1</version>
+			<artifactId>Commons</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

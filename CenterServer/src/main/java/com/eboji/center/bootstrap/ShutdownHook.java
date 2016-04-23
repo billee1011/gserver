@@ -6,9 +6,10 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
-import com.eboji.center.handler.CenterServerClientMap;
+import com.eboji.center.server.CenterServerClientMap;
+
+import org.slf4j.Logger;
 
 public class ShutdownHook {
 	private static final Logger logger = LoggerFactory.getLogger(ShutdownHook.class);

@@ -3,10 +3,14 @@ package com.eboji.agent.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.eboji.agent.bootstrap.Daemon;
 import com.eboji.agent.codec.AgentDecoder;
 import com.eboji.agent.codec.AgentEncoder;
-import com.eboji.agent.handler.AgentServerHandler;
-import com.eboji.agent.util.RegisterCenterServerUtil;
+import com.eboji.agent.transfer.TransferHandler;
+import com.eboji.agent.transfer.TransferProcessor;
+import com.eboji.agent.util.ConfigUtil;
+import com.eboji.commons.Constant;
+import com.eboji.commons.hook.ConnectionFactory;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -54,7 +58,11 @@ public class AgentServerListener {
 			if(f.isSuccess()) {
 				logger.info("AgentServer listened on port: " + this.port + " has been started.");
 				
-				RegisterCenterServerUtil.registerService();
+				ConnectionFactory.registerServiceToCenterServer(ConfigUtil.getProps("centerserver"), 
+						new TransferHandler() , Daemon.getInstance().getPort(), 
+						TransferProcessor.getSocketChannelMap(), 
+						TransferProcessor.getServiceMap(), Constant.SRV_AGENT);
+				//RegisterCenterServerUtil.registerService();
 			}
 			
 			f.channel().closeFuture().sync();

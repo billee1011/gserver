@@ -3,8 +3,8 @@ package com.eboji.game.manager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eboji.game.room.GameServerCfgMap;
-import com.eboji.model.message.BaseMsg;
+import com.eboji.commons.msg.BaseMsg;
+import com.eboji.game.server.GameServerCfgMap;
 
 public class DefaultGameServerManager extends GameServerManager {
 	private static final Logger logger = 

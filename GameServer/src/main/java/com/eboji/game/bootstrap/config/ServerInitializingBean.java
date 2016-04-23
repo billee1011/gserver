@@ -9,14 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
+import com.eboji.commons.Constant;
 import com.eboji.commons.util.memcached.MemCacheClient;
 import com.eboji.commons.util.memcached.MemcachedConfiguration;
 import com.eboji.commons.util.redis.RedisClient;
 import com.eboji.game.logic.mj.GameBaseLogic;
 import com.eboji.game.manager.GameServerManager;
-import com.eboji.game.room.GameServerCfgMap;
+import com.eboji.game.server.GameServerCfgMap;
 import com.eboji.game.util.ConfigUtil;
-import com.eboji.model.constant.Constant;
 
 @Component("serverInitializingBean")
 public class ServerInitializingBean implements InitializingBean {
@@ -42,7 +42,9 @@ public class ServerInitializingBean implements InitializingBean {
 			weights[i] = 3;
 		}
 		if(memcacheservers.length > 0) {
-			MemCacheClient client = new MemCacheClient(new MemcachedConfiguration(), memcacheservers, weights, "gameServer");
+			MemCacheClient client = new MemCacheClient(
+					new MemcachedConfiguration(), 
+					memcacheservers, weights, "gameServer");
 			ConfigUtil.setClient(client);
 		}
 	}
@@ -53,7 +55,8 @@ public class ServerInitializingBean implements InitializingBean {
 	protected void createRedisClient() {
 		String redisserversp = ConfigUtil.getProps("redisserver");
 		String[] redisservers = redisserversp.split(Constant.STR_COLON);
-		RedisClient client = new RedisClient(redisservers[0], Integer.parseInt(redisservers[1]), null);
+		RedisClient client = new RedisClient(redisservers[0], 
+				Integer.parseInt(redisservers[1]), null);
 		ConfigUtil.setRedisClient(client);
 	}
 	
@@ -66,11 +69,13 @@ public class ServerInitializingBean implements InitializingBean {
 			Iterator<Entry<Integer, String>> iter = maps.entrySet().iterator();
 			while(iter.hasNext()) {
 				Entry<Integer, String> entry = iter.next();
-				GameBaseLogic baseLogic = (GameBaseLogic)Class.forName(entry.getValue()).newInstance();
+				GameBaseLogic baseLogic = 
+						(GameBaseLogic)Class.forName(entry.getValue()).newInstance();
 				GameServerCfgMap.getGameMap().put(entry.getKey(), baseLogic);
 			}
 		} catch (Exception e) {
-			logger.error("Initial GameServerLogic " + e.getMessage() + ", GameServer start failed!", e);
+			logger.error("Initial GameServerLogic " + 
+					e.getMessage() + ", GameServer start failed!", e);
 			System.exit(-1);
 		}
 	}
@@ -81,7 +86,8 @@ public class ServerInitializingBean implements InitializingBean {
 					.forName(ConfigUtil.getProps("game.manager")).newInstance();
 			GameServerCfgMap.setGameManager(gameManager);
 		} catch (Exception e) {
-			logger.error("Initial GameServerManager " + e.getMessage() + ", GameServer start failed!", e);
+			logger.error("Initial GameServerManager " +
+					e.getMessage() + ", GameServer start failed!", e);
 			System.exit(-1);
 		}
 	}

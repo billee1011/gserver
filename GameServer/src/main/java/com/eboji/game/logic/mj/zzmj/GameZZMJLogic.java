@@ -5,8 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+import com.eboji.commons.msg.BaseMsg;
 import com.eboji.game.logic.mj.GameBaseLogic;
-import com.eboji.model.message.BaseMsg;
 
 public class GameZZMJLogic extends GameBaseLogic {
 	//麻将的张数

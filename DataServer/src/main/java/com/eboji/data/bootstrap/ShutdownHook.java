@@ -1,9 +1,10 @@
 package com.eboji.data.bootstrap;
 
 import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
-import com.eboji.data.handler.DataServerExecutors;
+import com.eboji.data.server.DataServerExecutors;
+
+import org.slf4j.Logger;
 
 public class ShutdownHook {
 	private static final Logger logger = LoggerFactory.getLogger(ShutdownHook.class);

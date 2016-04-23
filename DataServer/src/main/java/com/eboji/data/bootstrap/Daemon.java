@@ -34,7 +34,7 @@ public class Daemon {
 		initContext();
 	}
 	
-	public static Daemon getInstance() {
+	public synchronized static Daemon getInstance() {
 		return daemon;
 	}
 

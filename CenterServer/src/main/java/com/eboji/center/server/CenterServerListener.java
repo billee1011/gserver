@@ -13,9 +13,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.eboji.center.codec.MsgDecoder;
-import com.eboji.center.codec.MsgEncoder;
-import com.eboji.center.handler.CenterServerHandler;
+import com.eboji.commons.codec.MsgDecoder;
+import com.eboji.commons.codec.MsgEncoder;
 
 public class CenterServerListener {
 	private static final Logger logger = LoggerFactory.getLogger(CenterServerListener.class);

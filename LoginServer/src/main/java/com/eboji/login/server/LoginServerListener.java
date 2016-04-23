@@ -1,5 +1,17 @@
 package com.eboji.login.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.eboji.commons.Constant;
+import com.eboji.commons.codec.MsgDecoder;
+import com.eboji.commons.codec.MsgEncoder;
+import com.eboji.commons.hook.ConnectionFactory;
+import com.eboji.login.bootstrap.Daemon;
+import com.eboji.login.server.transfer.TransferHandler;
+import com.eboji.login.server.transfer.TransferProcessor;
+import com.eboji.login.util.ConfigUtil;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,14 +21,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.eboji.login.codec.MsgDecoder;
-import com.eboji.login.codec.MsgEncoder;
-import com.eboji.login.handler.LoginServerHandler;
-import com.eboji.login.util.RegisterCenterServerUtil;
 
 public class LoginServerListener {
 	private static final Logger logger = LoggerFactory.getLogger(LoginServerListener.class);
@@ -55,7 +59,10 @@ public class LoginServerListener {
 			if(f.isSuccess()) {
 				logger.info("Login Server listened in port: " + this.port + " has been started.");
 				
-				RegisterCenterServerUtil.registerService();
+				ConnectionFactory.registerServiceToCenterServer(ConfigUtil.getProps("centerserver"), 
+						new TransferHandler(), Daemon.getInstance().getPort(), 
+						TransferProcessor.getSocketChannelMap(), 
+						TransferProcessor.getServiceMap(), Constant.SRV_LOGIN);
 			}
 			
 			f.channel().closeFuture().sync();

@@ -1,5 +1,17 @@
 package com.eboji.game.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.eboji.commons.Constant;
+import com.eboji.commons.codec.MsgDecoder;
+import com.eboji.commons.codec.MsgEncoder;
+import com.eboji.commons.hook.ConnectionFactory;
+import com.eboji.game.bootstrap.Daemon;
+import com.eboji.game.server.transfer.TransferHandler;
+import com.eboji.game.server.transfer.TransferProcessor;
+import com.eboji.game.util.ConfigUtil;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,15 +21,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.eboji.game.codec.MsgDecoder;
-import com.eboji.game.codec.MsgEncoder;
-import com.eboji.game.handler.GameServerHandler;
-import com.eboji.game.util.ConfigUtil;
-import com.eboji.game.util.RegisterCenterServerUtil;
 
 public class GameServerListener {
 	private static final Logger logger = LoggerFactory.getLogger(GameServerListener.class);
@@ -47,7 +50,7 @@ public class GameServerListener {
 					ChannelPipeline pipe = ch.pipeline();
 					pipe.addLast(new MsgEncoder());
 					pipe.addLast(new MsgDecoder());
-					pipe.addLast(new GameServerHandler(ConfigUtil.getClient()));
+					pipe.addLast(new GameServerHandler());
 				}
 			});
 			
@@ -55,7 +58,11 @@ public class GameServerListener {
 			if(f.isSuccess()) {
 				logger.info("Game Server listened in port: " + this.port + " has been started.");
 				
-				RegisterCenterServerUtil.registerService();
+				ConnectionFactory.registerGameServiceToCenterServer(ConfigUtil.getProps("centerserver"), 
+						new TransferHandler(), Daemon.getInstance().getPort(), 
+						TransferProcessor.getSocketChannelMap(), 
+						TransferProcessor.getServiceMap(), Constant.SRV_GAME, 
+						ConfigUtil.getProps("game"));
 			}
 			
 			f.channel().closeFuture().sync();

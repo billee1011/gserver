@@ -1,5 +1,17 @@
 package com.eboji.im.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.eboji.commons.Constant;
+import com.eboji.commons.codec.MsgDecoder;
+import com.eboji.commons.codec.MsgEncoder;
+import com.eboji.commons.hook.ConnectionFactory;
+import com.eboji.im.bootstrap.Daemon;
+import com.eboji.im.server.transfer.ServerClientTransfer;
+import com.eboji.im.server.transfer.TransferHandler;
+import com.eboji.im.util.ConfigUtil;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -10,26 +22,13 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.eboji.commons.util.memcached.MemCacheClient;
-import com.eboji.im.codec.MsgDecoder;
-import com.eboji.im.codec.MsgEncoder;
-import com.eboji.im.handler.IMServerHandler;
-import com.eboji.im.util.RegisterCenterServerUtil;
-
 public class IMServerListener {
 	private static final Logger logger = LoggerFactory.getLogger(IMServerListener.class);
 	
 	private int port;
 	
-	private MemCacheClient memCacheClient;
-	
-	public IMServerListener(int port, MemCacheClient memCacheClient) throws Exception {
+	public IMServerListener(int port) throws Exception {
 		this.port = port;
-		this.memCacheClient = memCacheClient;
-		
 		bind();
 	}
 	
@@ -51,15 +50,18 @@ public class IMServerListener {
 					ChannelPipeline pipe = ch.pipeline();
 					pipe.addLast(new MsgEncoder());
 					pipe.addLast(new MsgDecoder());
-					pipe.addLast(new IMServerHandler(memCacheClient));
+					pipe.addLast(new IMServerHandler());
 				}
 			});
 			
 			ChannelFuture f = bootstrap.bind(port).sync();
 			if(f.isSuccess()) {
-				logger.info("Login Server listened in port: " + this.port + " has been started.");
+				logger.info("IM Server listened in port: " + this.port + " has been started.");
 				
-				RegisterCenterServerUtil.registerService();
+				ConnectionFactory.registerServiceToCenterServer(ConfigUtil.getProps("centerserver"), 
+						new TransferHandler(), Daemon.getInstance().getPort(), 
+						ServerClientTransfer.getSocketChannelMap(), 
+						ServerClientTransfer.getServiceMap(), Constant.SRV_IM);
 			}
 			
 			f.channel().closeFuture().sync();

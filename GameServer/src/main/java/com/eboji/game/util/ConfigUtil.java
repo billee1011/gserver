@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import com.eboji.commons.Constant;
 import com.eboji.commons.util.memcached.MemCacheClient;
 import com.eboji.commons.util.redis.RedisClient;
-import com.eboji.model.constant.Constant;
 
 public class ConfigUtil {
 	private static Properties props = null;

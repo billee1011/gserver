@@ -1,5 +1,18 @@
 package com.eboji.data.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.eboji.commons.Constant;
+import com.eboji.commons.codec.MsgDecoder;
+import com.eboji.commons.codec.MsgEncoder;
+import com.eboji.commons.hook.ConnectionFactory;
+import com.eboji.data.bootstrap.Daemon;
+import com.eboji.data.server.transfer.TransferHandler;
+import com.eboji.data.server.transfer.TransferProcessor;
+import com.eboji.data.service.DataService;
+import com.eboji.data.util.ConfigUtil;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,15 +22,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.eboji.data.codec.MsgDecoder;
-import com.eboji.data.codec.MsgEncoder;
-import com.eboji.data.handler.DataServerHandler;
-import com.eboji.data.service.DataService;
-import com.eboji.data.util.RegisterCenterServerUtil;
 
 public class DataServerListener {
 	private static final Logger logger = LoggerFactory.getLogger(DataServerListener.class);
@@ -63,7 +67,10 @@ public class DataServerListener {
 			if(f.isSuccess()) {
 				logger.info("Login Server listened in port: " + this.port + " has been started.");
 				
-				RegisterCenterServerUtil.registerService();
+				ConnectionFactory.registerServiceToCenterServer(ConfigUtil.getProps("centerserver"), 
+						new TransferHandler() , Daemon.getInstance().getPort(), 
+						TransferProcessor.getSocketChannelMap(), 
+						TransferProcessor.getServiceMap(), Constant.SRV_DATA);
 			}
 			
 			f.channel().closeFuture().sync();

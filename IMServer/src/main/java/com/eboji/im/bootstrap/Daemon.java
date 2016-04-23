@@ -7,7 +7,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.eboji.im.bootstrap.config.SpringConfiguration;
 import com.eboji.im.server.IMServerListener;
-import com.eboji.im.util.ConfigUtil;
 
 public class Daemon {
 	private static final Logger logger = LoggerFactory.getLogger(Daemon.class);
@@ -32,7 +31,7 @@ public class Daemon {
 		initContext();
 	}
 	
-	public static Daemon getInstance() {
+	public synchronized static Daemon getInstance() {
 		return daemon;
 	}
 
@@ -40,7 +39,7 @@ public class Daemon {
 	 * IMServer启动
 	 */
 	public void start() throws Exception {
-		new IMServerListener(getPort(), ConfigUtil.getClient());
+		new IMServerListener(getPort());
 	}
 
 	/**

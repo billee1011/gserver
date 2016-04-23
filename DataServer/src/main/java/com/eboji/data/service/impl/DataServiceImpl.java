@@ -10,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.eboji.commons.Constant;
+import com.eboji.commons.msg.LoginMsg;
+import com.eboji.commons.util.RandomUtil;
 import com.eboji.data.service.DataService;
 import com.eboji.data.util.ConfigUtil;
-import com.eboji.model.message.LoginMsg;
-import com.eboji.model.util.RandomUtil;
 import com.eboji.persist.dao.GcOffDepositMapper;
 import com.eboji.persist.dao.GcRatioCoinMapper;
 import com.eboji.persist.dao.GcRatioTaxMapper;
@@ -71,8 +72,9 @@ public class DataServiceImpl implements DataService {
 	
 	@Override
 	@Transactional
-	public GgRoom createRoom(int gameId, int gameType, long gamePrice, int uId) {
-		GgRoom room = null;
+	public GgRoom createRoom(int gameId, int gameType, long gamePrice, int uId,
+			String gameServer) throws Exception {
+		GgRoom room = new GgRoom();
 		int count = 1;
 		int row = 0;
 		long start = System.currentTimeMillis();
@@ -96,6 +98,8 @@ public class DataServiceImpl implements DataService {
 				count++;
 				
 				if(System.currentTimeMillis() - start >= 2000) {
+					room = null;
+					room = new GgRoom();
 					break;
 				}
 			}
@@ -103,12 +107,17 @@ public class DataServiceImpl implements DataService {
 		
 		logger.debug("生成房间号的次数:" + count);
 		
-		GgRoomPlayer roomPlayer = new GgRoomPlayer();
-		roomPlayer.setRoomid(room.getId());
-		roomPlayer.setUid(uId);
-		roomPlayer.setCreatetime(new Date(System.currentTimeMillis()));
-		roomPlayer.setPosition(1);
-		ggRoomPlayerMapper.insertSelective(roomPlayer);
+		if(room.getRoomno() != null && room.getRoomno() != 0) {
+			GgRoomPlayer roomPlayer = new GgRoomPlayer();
+			roomPlayer.setRoomid(room.getId());
+			roomPlayer.setUid(uId);
+			roomPlayer.setCreatetime(new Date(System.currentTimeMillis()));
+			roomPlayer.setPosition(1);
+			ggRoomPlayerMapper.insertSelective(roomPlayer);
+			
+			if(!ConfigUtil.getClient().add(Constant.MEM_ROOM_PREFIX + room.getRoomno(), gameServer))
+				throw new Exception("Memcache Add Exception!!!");
+		}
 		
 		return room;
 	}

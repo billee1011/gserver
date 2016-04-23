@@ -31,7 +31,7 @@ public class Daemon {
 		logger.info("CenterServer initialize context finished.");
 	}
 	
-	public static Daemon getInstance() {
+	public synchronized static Daemon getInstance() {
 		return daemon;
 	}
 
