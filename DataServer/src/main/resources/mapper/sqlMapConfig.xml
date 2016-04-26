@@ -28,6 +28,7 @@
 		<mapper resource="mapper/GfScoreMapper.xml" />
 		<mapper resource="mapper/GgHistMapper.xml" />
 		<mapper resource="mapper/GgRoomMapper.xml" />
+		<mapper resource="mapper/GgRoomMemMapper.xml" />
 		<mapper resource="mapper/GgRoomPlayerMapper.xml" />
 		<mapper resource="mapper/GuDepositMapper.xml" />
 		<mapper resource="mapper/GuLoginMapper.xml" />

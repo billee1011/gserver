@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eboji.commons.Constant;
+import com.eboji.commons.msg.JoinRoomNoMemMsg;
 import com.eboji.commons.msg.LoginMsg;
 import com.eboji.commons.util.RandomUtil;
 import com.eboji.data.service.DataService;
@@ -23,11 +24,14 @@ import com.eboji.persist.dao.GfRewardMapper;
 import com.eboji.persist.dao.GfScoreMapper;
 import com.eboji.persist.dao.GgHistMapper;
 import com.eboji.persist.dao.GgRoomMapper;
+import com.eboji.persist.dao.GgRoomMemMapper;
 import com.eboji.persist.dao.GgRoomPlayerMapper;
 import com.eboji.persist.dao.GuLoginMapper;
 import com.eboji.persist.dao.GuUserMapper;
 import com.eboji.persist.pojo.GgRoom;
 import com.eboji.persist.pojo.GgRoomExample;
+import com.eboji.persist.pojo.GgRoomMem;
+import com.eboji.persist.pojo.GgRoomMemExample;
 import com.eboji.persist.pojo.GgRoomPlayer;
 import com.eboji.persist.pojo.GuLogin;
 import com.eboji.persist.pojo.GuUser;
@@ -63,6 +67,9 @@ public class DataServiceImpl implements DataService {
 	
 	@Autowired
 	GgRoomPlayerMapper ggRoomPlayerMapper;
+	
+	@Autowired
+	GgRoomMemMapper ggRoomMemMapper;
 	
 	@Autowired
 	GuLoginMapper guLoginMapper;
@@ -115,8 +122,18 @@ public class DataServiceImpl implements DataService {
 			roomPlayer.setPosition(1);
 			ggRoomPlayerMapper.insertSelective(roomPlayer);
 			
-			if(!ConfigUtil.getClient().add(Constant.MEM_ROOM_PREFIX + room.getRoomno(), gameServer))
-				throw new Exception("Memcache Add Exception!!!");
+			GgRoomMem mem = new GgRoomMem();
+			mem.setK(Constant.MEM_ROOM_PREFIX + room.getRoomno());
+			mem.setV(gameServer);
+			mem.setStatus(1);
+			mem.setCreatedate(new Date());
+			ggRoomMemMapper.insertSelective(mem);
+			
+			try {
+				ConfigUtil.getClient().add(Constant.MEM_ROOM_PREFIX + room.getRoomno(), gameServer);
+			} catch (Exception e) {
+				logger.warn("Memcache Add [" + Constant.MEM_ROOM_PREFIX + room.getRoomno() + "]Exception!!!");
+			}
 		}
 		
 		return room;
@@ -188,5 +205,17 @@ public class DataServiceImpl implements DataService {
 		}
 		
 		return ret;
+	}
+
+	@Override
+	public GgRoomMem selectGameInfo(JoinRoomNoMemMsg msg) {	
+		GgRoomMemExample example = new GgRoomMemExample();
+		example.createCriteria()
+			.andKEqualTo(Constant.MEM_ROOM_PREFIX + msg.getRoomNo())
+			.andStatusEqualTo(1);
+		List<GgRoomMem> grmList = ggRoomMemMapper.selectByExample(example);
+		if(grmList != null && grmList.size() > 0)
+			return grmList.get(0);
+		return null;
 	}
 }

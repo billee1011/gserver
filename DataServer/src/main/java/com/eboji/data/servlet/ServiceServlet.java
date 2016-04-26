@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
 import com.eboji.data.server.transfer.TransferProcessor;
 
 public class ServiceServlet extends HttpServlet {
@@ -24,7 +25,7 @@ public class ServiceServlet extends HttpServlet {
 			throws ServletException, IOException {
 	    resp.setContentType("text/html;charset=utf-8");
 	    ServletOutputStream out = resp.getOutputStream();
-	    out.write(TransferProcessor.getServiceMap().toString().getBytes());
+	    out.write(JSON.toJSONString(TransferProcessor.getServiceMap()).getBytes());
 	    out.flush();
 	    out.close();
 	}

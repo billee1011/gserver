@@ -7,18 +7,27 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.fastjson.JSONObject;
 import com.eboji.agent.server.AgentServerClientMap;
 import com.eboji.agent.util.ConfigUtil;
 import com.eboji.commons.Constant;
 import com.eboji.commons.hook.ConnectionBuilder;
 import com.eboji.commons.msg.BaseMsg;
+import com.eboji.commons.msg.JoinRoomMsg;
+import com.eboji.commons.msg.JoinRoomNoMemMsg;
 import com.eboji.commons.msg.JoinRoomResMsg;
+import com.eboji.commons.msg.ReJoinRoomMsg;
 import com.eboji.commons.util.CommonUtil;
+import com.eboji.commons.util.memcached.MemCacheClient;
 
 import io.netty.channel.socket.SocketChannel;
 
 public class TransferProcessor {
+	private static final Logger logger = LoggerFactory.getLogger(TransferProcessor.class);
+	
 	private static Map<String, SocketChannel> socketChannelMap = new ConcurrentHashMap<String, SocketChannel>();
 	
 	private static Map<String, Set<String>> serviceMap = new ConcurrentHashMap<String, Set<String>>();
@@ -233,42 +242,94 @@ public class TransferProcessor {
 		Integer roomNo = obj.getRoomNo();
 		Set<String> serviceSet = gameMap.get(((JSONObject)JSONObject.toJSON(obj)).get("gid"));
 		
-		if(roomNo != null && roomNo != 0) {
-			Object roomObj = ConfigUtil.getClient().get(Constant.MEM_ROOM_PREFIX + obj.getRoomNo());
-			if(roomObj != null) {
-				gameHost = String.valueOf(roomObj);
-				if(serviceSet.contains(gameHost)) {
-					socketChannelMap.get(gameHost).writeAndFlush(obj);
+		if(obj instanceof ReJoinRoomMsg) {
+			ReJoinRoomMsg reJoinMsg = (ReJoinRoomMsg)obj;
+			JoinRoomMsg msg = new JoinRoomMsg();
+			msg.setCid(reJoinMsg.getCid());
+			msg.setGid(reJoinMsg.getGid());
+			msg.setRoomNo(reJoinMsg.getRoomNo());
+			msg.setUid(reJoinMsg.getUid());
+			socketChannelMap.get(reJoinMsg.getGameHost()).writeAndFlush(msg);
+		} else {
+			if(roomNo != null && roomNo != 0) {
+				MemCacheClient client = ConfigUtil.getClient();
+				if(client != null) {
+					Object roomObj = null; 
+					roomObj = client.get(Constant.MEM_ROOM_PREFIX + obj.getRoomNo());
+					if(roomObj != null) {
+						gameHost = String.valueOf(roomObj);
+						if(serviceSet.contains(gameHost)) {
+							socketChannelMap.get(gameHost).writeAndFlush(obj);
+						} else {
+							//加入房间异常失败
+							JoinRoomResMsg res = obtainJRMsg(obj, -2);
+							AgentServerClientMap.get(obj.getUid()).writeAndFlush(res);
+						}
+					} else {
+						//房间号不存在，加入房间失败
+						//JoinRoomResMsg res = obtainJRMsg(obj, 0);
+						//AgentServerClientMap.get(obj.getUid()).writeAndFlush(res);
+						logger.error("Memcache Get [" + Constant.MEM_ROOM_PREFIX + obj.getRoomNo() + "]Exception!!!");
+						//通过数据库查找创建房间的游戏服务
+						if(serviceSet != null && serviceSet.size() > 0) {
+							int index = getRandom(serviceSet.size());
+							JoinRoomNoMemMsg msg = obtainJRNMsg(obj);
+							socketChannelMap.get(serviceSet.toArray()[index]).writeAndFlush(msg);
+						} else {
+							//加入房间异常失败
+							JoinRoomResMsg res = obtainJRMsg(obj, -2);
+							AgentServerClientMap.get(obj.getUid()).writeAndFlush(res);
+						}
+					}
 				} else {
-					//加入房间异常失败
-					JoinRoomResMsg res = new JoinRoomResMsg();
-					res.setCid(obj.getCid());
-					res.setGid(obj.getGid());
-					res.setRoomNo(obj.getRoomNo());
-					res.setUid(obj.getUid());
-					res.setStatus(-2);	//无法到达请求服务失败
-					AgentServerClientMap.get(obj.getUid()).writeAndFlush(res);
+					logger.error("Memcache was not exist!!!");
+					//通过数据库查找创建房间的游戏服务
+					if(serviceSet != null && serviceSet.size() > 0) {
+						int index = getRandom(serviceSet.size());
+						JoinRoomNoMemMsg msg = obtainJRNMsg(obj);
+						socketChannelMap.get(serviceSet.toArray()[index]).writeAndFlush(msg);
+					} else {
+						//加入房间异常失败
+						JoinRoomResMsg res = obtainJRMsg(obj, -2);
+						AgentServerClientMap.get(obj.getUid()).writeAndFlush(res);
+					}
 				}
 			} else {
-				//房间号不存在，加入房间失败
-				JoinRoomResMsg res = new JoinRoomResMsg();
-				res.setCid(obj.getCid());
-				res.setGid(obj.getGid());
-				res.setRoomNo(obj.getRoomNo());
-				res.setUid(obj.getUid());
-				res.setStatus(0);	//房间不存在
-				AgentServerClientMap.get(obj.getUid()).writeAndFlush(res);
-			}
-		} else {
-			//创建房间请求
-			if(serviceSet != null && serviceSet.size() > 0) {
-				int index = 0;
-				if(serviceSet.size() > 1) {
-					Random rand = new Random(System.currentTimeMillis());
-					index = rand.nextInt(serviceSet.size());
+				//创建房间请求
+				if(serviceSet != null && serviceSet.size() > 0) {
+					int index = getRandom(serviceSet.size());
+					socketChannelMap.get(serviceSet.toArray()[index]).writeAndFlush(obj);
 				}
-				socketChannelMap.get(serviceSet.toArray()[index]).writeAndFlush(obj);
 			}
 		}
+	}
+	
+	protected static int getRandom(int size) {
+		int ret = 0;
+		if(size > 1) {
+			ret = new Random().nextInt(size - 1);
+		}
+		
+		return ret;
+	}
+	
+	protected static JoinRoomResMsg obtainJRMsg(BaseMsg obj, int status) {
+		JoinRoomResMsg res = new JoinRoomResMsg();
+		res.setCid(obj.getCid());
+		res.setGid(obj.getGid());
+		res.setRoomNo(obj.getRoomNo());
+		res.setUid(obj.getUid());
+		res.setStatus(status);	//无法到达请求服务失败
+		return res;
+	}
+	
+	protected static JoinRoomNoMemMsg obtainJRNMsg(BaseMsg obj) {
+		JoinRoomNoMemMsg res = new JoinRoomNoMemMsg();
+		res.setCid(obj.getCid());
+		res.setGid(obj.getGid());
+		res.setRas(obj.getRas());
+		res.setRoomNo(obj.getRoomNo());
+		res.setUid(obj.getUid());
+		return res;
 	}
 }

@@ -5,9 +5,11 @@ import java.util.concurrent.Executors;
 import com.eboji.commons.msg.BaseMsg;
 import com.eboji.commons.msg.CreateRoomMsg;
 import com.eboji.commons.msg.JoinRoomMsg;
+import com.eboji.commons.msg.JoinRoomNoMemMsg;
 import com.eboji.commons.msg.LoginMsg;
 import com.eboji.data.server.task.BaseTask;
 import com.eboji.data.server.task.CreateRoomTask;
+import com.eboji.data.server.task.GetGameServerInfoTask;
 import com.eboji.data.server.task.JoinRoomTask;
 import com.eboji.data.server.task.LoginTask;
 import com.eboji.data.service.DataService;
@@ -42,6 +44,9 @@ public class DataServerProcessor {
 		} else if(msg instanceof JoinRoomMsg) {
 			task = new JoinRoomTask(remoteAddress, 
 					(JoinRoomMsg)msg, dataService);
+		} else if(msg instanceof JoinRoomNoMemMsg) {
+			task = new GetGameServerInfoTask(remoteAddress, 
+					(JoinRoomNoMemMsg)msg, dataService);
 		}
 		
 		if(task != null) {

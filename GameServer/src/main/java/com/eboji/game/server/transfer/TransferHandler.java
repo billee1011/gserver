@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.eboji.commons.msg.BaseMsg;
 import com.eboji.commons.msg.CreateRoomResMsg;
+import com.eboji.commons.msg.JoinRoomNoMemResMsg;
 import com.eboji.commons.msg.JoinRoomResMsg;
 import com.eboji.commons.msg.PingMsg;
 import com.eboji.commons.msg.RegisterResMsg;
@@ -100,6 +101,8 @@ public class TransferHandler extends SimpleChannelInboundHandler<BaseMsg> {
 				GameServerCfgMap.getRoomMap().get(msg.getRoomNo()).getuMap()
 					.put(res.getUid(), res.getRas());
 			}
+		} else if(msg instanceof JoinRoomNoMemResMsg) {
+			logger.info("查找游戏服务host:" + ((JoinRoomNoMemResMsg)msg).getGameHost());
 		}
 		
 		if(msg.getRas() != null && !msg.getRas().equals("")) {

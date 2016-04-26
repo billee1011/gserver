@@ -264,6 +264,7 @@
 			<version>${fastjson-version}</version>
 		</dependency>
 
+		<!-- Jetty -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
@@ -291,6 +292,13 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-all</artifactId>
+			<version>5.13.2</version>
+		</dependency>
+
 
 		<!-- junit -->
 		<dependency>

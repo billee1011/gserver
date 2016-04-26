@@ -25,6 +25,9 @@ public enum MsgType {
 	CREATEROOMRES("CreateRoomResMsg"),		//创建房间响应消息
 	JOINROOM("JoinRoomMsg"),		        //加入房间
 	JOINROOMRES("JoinRoomResMsg"),			//加入房间响应消息
+	JOINROOMNOMEM("JoinRoomNoMemMsg"),		//加入房间缓存失效消息
+	JOINROOMNOMEMRES("JoinRoomNoMemResMsg"),//加入房间缓存失效获取游戏服务地址返回消息
+	REJOINROOM("ReJoinRoomMsg"),			//重新加入房间
 	
 	/** 麻将类消息定义开始 **/
 	MJ_START("MjStartMsg"),					//麻将游戏开始消息

@@ -1,7 +1,9 @@
 package com.eboji.data.service;
 
+import com.eboji.commons.msg.JoinRoomNoMemMsg;
 import com.eboji.commons.msg.LoginMsg;
 import com.eboji.persist.pojo.GgRoom;
+import com.eboji.persist.pojo.GgRoomMem;
 import com.eboji.persist.pojo.GgRoomPlayer;
 import com.eboji.persist.pojo.GuUser;
 
@@ -15,4 +17,6 @@ public interface DataService {
 	GuUser login(LoginMsg msg);
 	
 	void addLogin(int uId, String ip);
+	
+	GgRoomMem selectGameInfo(JoinRoomNoMemMsg msg);
 }

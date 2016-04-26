@@ -12,8 +12,10 @@ import com.eboji.agent.server.AgentServerClientMap;
 import com.eboji.commons.Constant;
 import com.eboji.commons.msg.BaseMsg;
 import com.eboji.commons.msg.ConnResMsg;
+import com.eboji.commons.msg.JoinRoomNoMemResMsg;
 import com.eboji.commons.msg.LoginResMsg;
 import com.eboji.commons.msg.PingMsg;
+import com.eboji.commons.msg.ReJoinRoomMsg;
 import com.eboji.commons.msg.RegisterResMsg;
 import com.eboji.commons.type.MsgType;
 
@@ -74,6 +76,19 @@ public class TransferHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			Map<String, Set<String>> sets = regResMsg.getServiceMap();
 			TransferProcessor.parse(sets);
 			logger.info("注册中心广播服务创建连接成功!");
+			break;
+			
+		case JOINROOMNOMEMRES:
+			JoinRoomNoMemResMsg joinNoMemRes = (JoinRoomNoMemResMsg)msg;
+			ReJoinRoomMsg joinMsg = new ReJoinRoomMsg();
+			joinMsg.setCid(joinNoMemRes.getCid());
+			joinMsg.setGid(joinNoMemRes.getGid());
+			joinMsg.setRas(joinNoMemRes.getRas());
+			joinMsg.setRoomNo(joinNoMemRes.getRoomNo());
+			joinMsg.setUid(joinNoMemRes.getUid());
+			joinMsg.setGameHost(joinNoMemRes.getGameHost());
+			TransferFacade.facade(joinMsg);
+			logger.info("重新进入房间");
 			break;
 		default:
 			//进行游戏服务信息的解析，获取需要转发的数据

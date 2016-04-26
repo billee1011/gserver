@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.eboji.commons.msg.BaseMsg;
 import com.eboji.commons.msg.CreateRoomMsg;
 import com.eboji.commons.msg.JoinRoomMsg;
+import com.eboji.commons.msg.JoinRoomNoMemMsg;
 import com.eboji.game.bootstrap.Daemon;
 
 public class GameServerProcessor {
@@ -22,12 +23,16 @@ public class GameServerProcessor {
 			CreateRoomMsg createMsg = (CreateRoomMsg)obj;
 			createMsg.setRas(remoteAddress);
 			createMsg.setGamePort(Daemon.getInstance().getPort());
-			GameServerCfgMap.getGameManager().createRoomFunc(obj);
+			GameServerCfgMap.getGameManager().createRoomFunc(createMsg);
 		} else if(obj instanceof JoinRoomMsg) {
 			//加入房间处理逻辑
 			JoinRoomMsg joinMsg = (JoinRoomMsg)obj;
 			joinMsg.setRas(remoteAddress);
-			GameServerCfgMap.getGameManager().joinRoonFunc(obj);
+			GameServerCfgMap.getGameManager().joinRoonFunc(joinMsg);
+		} else if(obj instanceof JoinRoomNoMemMsg) {
+			JoinRoomNoMemMsg joinNoMemMsg = (JoinRoomNoMemMsg)obj;
+			joinNoMemMsg.setRas(remoteAddress);
+			GameServerCfgMap.getGameManager().getGameServerInfo(joinNoMemMsg);
 		} else {
 			//游戏处理逻辑总开关
 			GameServerCfgMap.getGameManager().process(obj);
