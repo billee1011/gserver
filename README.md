@@ -1,2 +1,2 @@
-# RootProject
-Root Project
+# gserver
+gserver is a backend server for game.
